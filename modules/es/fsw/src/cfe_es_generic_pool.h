@@ -236,7 +236,7 @@ bool CFE_ES_GenPoolValidateState(const CFE_ES_GenPoolRecord_t *PoolRecPtr);
  * than size_t, to be compatible with the type used in telemetry
  * messages.
  */
-void CFE_ES_GenPoolGetUsage(CFE_ES_GenPoolRecord_t *PoolRecPtr, CFE_ES_MemOffset_t *FreeSizeBuf,
+void CFE_ES_GenPoolGetUsage(const CFE_ES_GenPoolRecord_t *PoolRecPtr, CFE_ES_MemOffset_t *FreeSizeBuf,
                             CFE_ES_MemOffset_t *TotalSizeBuf);
 
 /*---------------------------------------------------------------------------------------*/
@@ -250,7 +250,7 @@ void CFE_ES_GenPoolGetUsage(CFE_ES_GenPoolRecord_t *PoolRecPtr, CFE_ES_MemOffset
  * \param[out] AllocCountBuf  Buffer to store allocation count
  * \param[out] ValidationErrorCountBuf  Buffer to store validation error count
  */
-void CFE_ES_GenPoolGetCounts(CFE_ES_GenPoolRecord_t *PoolRecPtr, uint16 *NumBucketsBuf, uint32 *AllocCountBuf,
+void CFE_ES_GenPoolGetCounts(const CFE_ES_GenPoolRecord_t *PoolRecPtr, uint16 *NumBucketsBuf, uint32 *AllocCountBuf,
                              uint32 *ValidationErrorCountBuf);
 
 /*---------------------------------------------------------------------------------------*/

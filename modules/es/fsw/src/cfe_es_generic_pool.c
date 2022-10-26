@@ -50,7 +50,7 @@
  * Find the appropriate bucket given a requested block size
  *
  *-----------------------------------------------------------------*/
-uint16 CFE_ES_GenPoolFindBucket(CFE_ES_GenPoolRecord_t *PoolRecPtr, size_t ReqSize)
+uint16 CFE_ES_GenPoolFindBucket(const CFE_ES_GenPoolRecord_t *PoolRecPtr, size_t ReqSize)
 {
     uint16 Index;
 
@@ -604,7 +604,7 @@ bool CFE_ES_GenPoolValidateState(const CFE_ES_GenPoolRecord_t *PoolRecPtr)
  * See description in header file for argument/return detail
  *
  *-----------------------------------------------------------------*/
-void CFE_ES_GenPoolGetUsage(CFE_ES_GenPoolRecord_t *PoolRecPtr, CFE_ES_MemOffset_t *FreeSizeBuf,
+void CFE_ES_GenPoolGetUsage(const CFE_ES_GenPoolRecord_t *PoolRecPtr, CFE_ES_MemOffset_t *FreeSizeBuf,
                             CFE_ES_MemOffset_t *TotalSizeBuf)
 {
     if (TotalSizeBuf != NULL)
@@ -623,7 +623,7 @@ void CFE_ES_GenPoolGetUsage(CFE_ES_GenPoolRecord_t *PoolRecPtr, CFE_ES_MemOffset
  * See description in header file for argument/return detail
  *
  *-----------------------------------------------------------------*/
-void CFE_ES_GenPoolGetCounts(CFE_ES_GenPoolRecord_t *PoolRecPtr, uint16 *NumBucketsBuf, uint32 *AllocCountBuf,
+void CFE_ES_GenPoolGetCounts(const CFE_ES_GenPoolRecord_t *PoolRecPtr, uint16 *NumBucketsBuf, uint32 *AllocCountBuf,
                              uint32 *ValidationErrorCountBuf)
 {
     if (NumBucketsBuf != NULL)
