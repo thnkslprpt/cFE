@@ -475,13 +475,13 @@ void CFE_ES_InitializeFileSystems(uint32 StartType)
 
     memset(&StatBuf, 0, sizeof(StatBuf));
 
-    /*
-    ** Get the memory area for the RAM disk
-    */
-    PspStatus = CFE_PSP_GetVolatileDiskMem(&(RamDiskMemoryAddress), &(RamDiskMemorySize));
-
     while (true)
     {
+        /*
+         ** Get the memory area for the RAM disk
+         */
+        PspStatus = CFE_PSP_GetVolatileDiskMem(&(RamDiskMemoryAddress), &(RamDiskMemorySize));
+
         if (PspStatus != CFE_PSP_SUCCESS)
         {
             CFE_ES_WriteToSysLog("%s: Cannot Get Memory for Volatile Disk. EC = 0x%08X\n", __func__,
@@ -624,7 +624,7 @@ void CFE_ES_InitializeFileSystems(uint32 StartType)
                 break;
             } /* end if BlocksFree */
         }     /* end if processor reset */
-        
+
         break;
     }
 
