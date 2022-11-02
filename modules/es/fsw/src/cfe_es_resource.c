@@ -85,14 +85,19 @@ CFE_ES_AppRecord_t *CFE_ES_LocateAppRecordByName(const char *Name)
     /*
     ** Search the Application table for an app with a matching name.
     */
-    for (Count = CFE_PLATFORM_ES_MAX_APPLICATIONS;
-         (CFE_ES_AppRecordIsUsed(AppRecPtr) && strcmp(Name, CFE_ES_AppRecordGetName(AppRecPtr)) == 0);)
+    Count     = CFE_PLATFORM_ES_MAX_APPLICATIONS;
+    while (true)
     {
         if (Count == 0)
         {
             AppRecPtr = NULL;
             break;
         }
+        if (CFE_ES_AppRecordIsUsed(AppRecPtr) && strcmp(Name, CFE_ES_AppRecordGetName(AppRecPtr)) == 0)
+        {
+            break;
+        }
+
         ++AppRecPtr;
         --Count;
     }
