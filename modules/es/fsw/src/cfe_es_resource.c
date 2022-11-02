@@ -79,21 +79,28 @@ CFE_ES_TaskId_t CFE_ES_TaskId_FromOSAL(osal_id_t id)
  *-----------------------------------------------------------------*/
 CFE_ES_AppRecord_t *CFE_ES_LocateAppRecordByName(const char *Name)
 {
-    CFE_ES_AppRecord_t *AppRecPtr = CFE_ES_Global.AppTable;
+    CFE_ES_AppRecord_t *AppRecPtr;
     uint32              Count;
 
     /*
     ** Search the Application table for an app with a matching name.
     */
-    for (Count = CFE_PLATFORM_ES_MAX_APPLICATIONS;
-         (CFE_ES_AppRecordIsUsed(AppRecPtr) && strcmp(Name, CFE_ES_AppRecordGetName(AppRecPtr)) == 0);
-         ++AppRecPtr, --Count)
+    AppRecPtr = CFE_ES_Global.AppTable;
+    Count     = CFE_PLATFORM_ES_MAX_APPLICATIONS;
+    while (true)
     {
         if (Count == 0)
         {
             AppRecPtr = NULL;
             break;
         }
+        if (CFE_ES_AppRecordIsUsed(AppRecPtr) && strcmp(Name, CFE_ES_AppRecordGetName(AppRecPtr)) == 0)
+        {
+            break;
+        }
+
+        AppRecPtr++;
+        --Count;
     }
 
     return AppRecPtr;
