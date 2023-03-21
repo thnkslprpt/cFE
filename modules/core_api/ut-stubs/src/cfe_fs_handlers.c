@@ -219,7 +219,7 @@ void UT_DefaultHandler_CFE_FS_ExtractFilenameFromPath(void *UserObj, UT_EntryKey
     char *      FileNameOnly = UT_Hook_GetArgValueByName(Context, "FileNameOnly", char *);
 
     int    i, j;
-    int    StringLength;
+    size_t StringLength;
     int    DirMarkIdx;
     int32  status;
     uint32 UserBuffLen;
