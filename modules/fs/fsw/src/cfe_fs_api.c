@@ -598,7 +598,7 @@ CFE_Status_t CFE_FS_ExtractFilenameFromPath(const char *OriginalPath, char *File
     uint32       i;
     uint32       j;
     size_t       StringLength;
-    int          DirMarkIdx;
+    int32        DirMarkIdx;
     CFE_Status_t ReturnCode;
 
     if (OriginalPath == NULL || FileNameOnly == NULL)
