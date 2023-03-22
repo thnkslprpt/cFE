@@ -1190,7 +1190,7 @@ char *CFE_ES_StatusToString(CFE_Status_t status, CFE_StatusString_t *status_stri
  *  will be treated as a normal table from now on.
  *
  */
-#define CFE_TBL_WARN_NOT_CRITICAL ((CFE_Status_t)0x4c000026)
+#define CFE_TBL_ERR_NOT_CRITICAL ((CFE_Status_t)0xcc000026)
 
 /**
  * @brief Recovered Table

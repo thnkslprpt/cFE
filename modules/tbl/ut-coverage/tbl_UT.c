@@ -1751,7 +1751,7 @@ void Test_CFE_TBL_Register(void)
     UT_InitData();
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RegisterCDSEx), 1, CFE_ES_NO_RESOURCE_IDS_AVAILABLE);
     UtAssert_INT32_EQ(CFE_TBL_Register(&TblHandle1, "UT_Table1", sizeof(UT_Table1_t), CFE_TBL_OPT_CRITICAL, NULL),
-                      CFE_TBL_WARN_NOT_CRITICAL);
+                      CFE_TBL_ERR_NOT_CRITICAL);
     CFE_UtAssert_EVENTNOTSENT(CFE_TBL_REGISTER_ERR_EID);
     CFE_UtAssert_EVENTCOUNT(0);
 

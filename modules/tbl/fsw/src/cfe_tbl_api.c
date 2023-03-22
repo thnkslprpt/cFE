@@ -464,7 +464,7 @@ CFE_Status_t CFE_TBL_Register(CFE_TBL_Handle_t *TblHandlePtr, const char *Name, 
                                                  AppName, Name, (unsigned int)Status);
 
                             /* Notify caller that although they asked for it to be critical, it isn't */
-                            Status = CFE_TBL_WARN_NOT_CRITICAL;
+                            Status = CFE_TBL_ERR_NOT_CRITICAL;
                         }
                     }
 
