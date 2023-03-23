@@ -182,7 +182,7 @@
 ** \retval #CFE_TBL_BAD_ARGUMENT             \copybrief CFE_TBL_BAD_ARGUMENT
 ** \retval #CFE_TBL_ERR_INVALID_OPTIONS      \copybrief CFE_TBL_ERR_INVALID_OPTIONS
 ** \retval #CFE_TBL_WARN_DUPLICATE           \copybrief CFE_TBL_WARN_DUPLICATE
-** \retval #CFE_TBL_ERR_NOT_CRITICAL        \copybrief CFE_TBL_ERR_NOT_CRITICAL
+** \retval #CFE_TBL_ERR_NOT_CRITICAL         \copybrief CFE_TBL_ERR_NOT_CRITICAL
 **
 ** \sa #CFE_TBL_Unregister, #CFE_TBL_Share
 **/

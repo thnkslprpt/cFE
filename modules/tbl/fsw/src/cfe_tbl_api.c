@@ -481,17 +481,21 @@ CFE_Status_t CFE_TBL_Register(CFE_TBL_Handle_t *TblHandlePtr, const char *Name, 
         CFE_TBL_UnlockRegistry();
     }
 
-    /* On Error conditions, notify ground of screw up */
-    if (Status < 0)
+    if (Status != CFE_TBL_ERR_NOT_CRITICAL)
     {
-        /* Make sure the returned handle is invalid when an error occurs */
-        *TblHandlePtr = CFE_TBL_BAD_TABLE_HANDLE;
+        /* On Error conditions, notify ground of screw up */
+        if (Status < 0)
+        {
+            /* Make sure the returned handle is invalid when an error occurs */
+            *TblHandlePtr = CFE_TBL_BAD_TABLE_HANDLE;
 
-        /* Translate AppID of caller into App Name */
-        CFE_ES_GetAppName(AppName, ThisAppId, sizeof(AppName));
+            /* Translate AppID of caller into App Name */
+            CFE_ES_GetAppName(AppName, ThisAppId, sizeof(AppName));
 
-        CFE_EVS_SendEventWithAppID(CFE_TBL_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR, CFE_TBL_Global.TableTaskAppId,
-                                   "%s Failed to Register '%s', Status=0x%08X", AppName, TblName, (unsigned int)Status);
+            CFE_EVS_SendEventWithAppID(CFE_TBL_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR, CFE_TBL_Global.TableTaskAppId,
+                                       "%s Failed to Register '%s', Status=0x%08X", AppName, TblName,
+                                       (unsigned int)Status);
+        }
     }
 
     return Status;
