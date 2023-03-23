@@ -2726,7 +2726,7 @@ void Test_CFE_TBL_Manage(void)
     /* Configure table for update */
     RegRecPtr->LoadPending = true;
     UtAssert_INT32_EQ(CFE_TBL_Manage(App1TblHandle1), CFE_TBL_ERR_TABLE_LOCKED);
-    CFE_UtAssert_EVENTCOUNT(0);
+    CFE_UtAssert_EVENTCOUNT(1);
 
     /* Save the previous table's information for a subsequent test */
     AccessDescPtr  = &CFE_TBL_Global.Handles[App1TblHandle1];
