@@ -183,6 +183,8 @@ CFE_Status_t CFE_TBL_Register(CFE_TBL_Handle_t *TblHandlePtr, const char *Name, 
                     /* Warn calling application that this is a duplicate registration */
                     Status = CFE_TBL_WARN_DUPLICATE;
 
+                    CFE_ES_WriteToSysLog("%s: Attempt to register existing table ('%s')\n", __func__, TblName);
+
                     /* Find the existing access descriptor for the table       */
                     /* and return the same handle that was returned previously */
                     AccessIndex = RegRecPtr->HeadOfAccessList;
