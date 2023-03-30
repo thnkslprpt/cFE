@@ -221,29 +221,27 @@ int32 CFE_SB_AppInit(void)
         return Status;
     }
 
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(CFE_SB_CMD_MID), CFE_SB_Global.CmdPipe);
+    int arr[3] = {CFE_SB_CMD_MID, CFE_SB_SEND_HK_MID, CFE_SB_SUB_RPT_CTRL_MID};
 
-    if (Status != CFE_SUCCESS)
+    for (int i = 0; i < 3; i++)
     {
-        CFE_ES_WriteToSysLog("%s: Subscribe to Cmds Failed:RC=0x%08X\n", __func__, (unsigned int)Status);
-        return Status;
-    }
+        Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(arr[i]), CFE_SB_Global.CmdPipe);
+        if (Status != CFE_SUCCESS)
+        {
+            switch (arr[i])
+            {
+                case CFE_SB_CMD_MID:
+                    CFE_ES_WriteToSysLog("%s: Subscribe to Cmds Failed:RC=0x%08X\n", __func__, (unsigned int)Status);
+                case CFE_SB_SEND_HK_MID:
+                    CFE_ES_WriteToSysLog("%s: Subscribe to HK Request Failed:RC=0x%08X\n", __func__,
+                                         (unsigned int)Status);
+                case CFE_SB_SUB_RPT_CTRL_MID:
+                    CFE_ES_WriteToSysLog("%s: Subscribe to Subscription Report Request Failed:RC=0x%08X\n", __func__,
+                                         (unsigned int)Status);
+            }
 
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(CFE_SB_SEND_HK_MID), CFE_SB_Global.CmdPipe);
-
-    if (Status != CFE_SUCCESS)
-    {
-        CFE_ES_WriteToSysLog("%s: Subscribe to HK Request Failed:RC=0x%08X\n", __func__, (unsigned int)Status);
-        return Status;
-    }
-
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(CFE_SB_SUB_RPT_CTRL_MID), CFE_SB_Global.CmdPipe);
-
-    if (Status != CFE_SUCCESS)
-    {
-        CFE_ES_WriteToSysLog("%s: Subscribe to Subscription Report Request Failed:RC=0x%08X\n", __func__,
-                             (unsigned int)Status);
-        return Status;
+            return Status;
+        }
     }
 
     /* Ensure a ground commanded reset does not get blocked if SB mem pool  */
