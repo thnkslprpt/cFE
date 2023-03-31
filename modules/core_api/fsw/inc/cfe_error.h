@@ -1131,15 +1131,6 @@ char *CFE_ES_StatusToString(CFE_Status_t status, CFE_StatusString_t *status_stri
 #define CFE_TBL_ERR_NO_TBL_HEADER ((CFE_Status_t)0xcc00001E)
 
 /**
- * @brief Filename Too Long
- *
- *  The calling Application tried to load a table using a filename
- *  that was too long.
- *
- */
-#define CFE_TBL_ERR_FILENAME_TOO_LONG ((CFE_Status_t)0xcc00001F)
-
-/**
  * @brief File For Wrong Table
  *
  *  The calling Application tried to load a table using a file whose

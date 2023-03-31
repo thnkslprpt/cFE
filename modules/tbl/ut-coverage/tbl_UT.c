@@ -3250,8 +3250,7 @@ void Test_CFE_TBL_Internal(void)
     }
     FilenameLong[i] = '\0'; /* Null terminate file name string */
 
-    UtAssert_INT32_EQ(CFE_TBL_LoadFromFile("UT", WorkingBufferPtr, RegRecPtr, FilenameLong),
-                      CFE_TBL_ERR_FILENAME_TOO_LONG);
+    UtAssert_INT32_EQ(CFE_TBL_LoadFromFile("UT", WorkingBufferPtr, RegRecPtr, FilenameLong), OS_FS_ERR_PATH_TOO_LONG);
     CFE_UtAssert_EVENTSENT(CFE_TBL_LOAD_FILENAME_LONG_ERR_EID);
     CFE_UtAssert_EVENTCOUNT(1);
 

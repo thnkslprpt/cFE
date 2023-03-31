@@ -783,20 +783,19 @@ int32 CFE_TBL_LoadFromFile(const char *AppName, CFE_TBL_LoadBuff_t *WorkingBuffe
     uint32             NumBytes;
     uint8              ExtraByte;
 
-    if (FilenameLen > (OS_MAX_PATH_LEN - 1))
+    /* Try to open the specified table file */
+    OsStatus = OS_OpenCreate(&FileDescriptor, Filename, OS_FILE_FLAG_NONE, OS_READ_ONLY);
+
+    if (OsStatus == OS_FS_ERR_PATH_TOO_LONG)
     {
         CFE_EVS_SendEventWithAppID(CFE_TBL_LOAD_FILENAME_LONG_ERR_EID, CFE_EVS_EventType_ERROR,
                                    CFE_TBL_Global.TableTaskAppId, "%s: Filename is too long ('%s' (%lu) > %lu)",
                                    AppName, Filename, (long unsigned int)FilenameLen,
                                    (long unsigned int)OS_MAX_PATH_LEN - 1);
 
-        return CFE_TBL_ERR_FILENAME_TOO_LONG;
+        return OsStatus;
     }
-
-    /* Try to open the specified table file */
-    OsStatus = OS_OpenCreate(&FileDescriptor, Filename, OS_FILE_FLAG_NONE, OS_READ_ONLY);
-
-    if (OsStatus != OS_SUCCESS)
+    else if (OsStatus != OS_SUCCESS)
     {
         CFE_EVS_SendEventWithAppID(CFE_TBL_FILE_ACCESS_ERR_EID, CFE_EVS_EventType_ERROR, CFE_TBL_Global.TableTaskAppId,
                                    "%s: Unable to open file (Status=%ld)", AppName, (long)OsStatus);
