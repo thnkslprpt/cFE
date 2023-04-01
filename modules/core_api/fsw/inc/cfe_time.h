@@ -708,22 +708,6 @@ CFE_Status_t CFE_TIME_UnregisterSynchCallback(CFE_TIME_SynchCallbackPtr_t Callba
 **
 ******************************************************************************/
 void CFE_TIME_Print(char *PrintBuffer, CFE_TIME_SysTime_t TimeToPrint);
-
-/*****************************************************************************/
-/**
-** \brief This function is called via a timer callback set up at initialization
-**        of the TIME service.
-**
-** \par Description
-**        Drives the time processing logic from the system PSP layer.  This must be called
-**        once per second based on a hardware interrupt or OS kernel signal.
-**
-** \par Assumptions, External Events, and Notes:
-**        This will update the global data structures accordingly, incrementing each
-**        by the 1Hz amount.
-**
-******************************************************************************/
-void CFE_TIME_Local1HzISR(void);
 /**@}*/
 
 #endif /* CFE_TIME_H */
