@@ -818,7 +818,7 @@ int32 CFE_EVS_EnableAppEventsCmd(const CFE_EVS_EnableAppEventsCmd_t *data)
     EVS_AppData_t *                     AppDataPtr;
     const CFE_EVS_AppNameCmd_Payload_t *CmdPtr = &data->Payload;
     int32                               Status;
-    char                                LocalName[OS_MAX_API_NAME];
+    char                                LocalName[sizeof(CmdPtr->AppName)];
 
     /* Copy appname from command, ensures NULL termination */
     CFE_SB_MessageStringGet(LocalName, (char *)CmdPtr->AppName, NULL, sizeof(LocalName), sizeof(CmdPtr->AppName));
@@ -865,7 +865,7 @@ int32 CFE_EVS_DisableAppEventsCmd(const CFE_EVS_DisableAppEventsCmd_t *data)
     EVS_AppData_t *                     AppDataPtr;
     const CFE_EVS_AppNameCmd_Payload_t *CmdPtr = &data->Payload;
     int32                               Status;
-    char                                LocalName[OS_MAX_API_NAME];
+    char                                LocalName[sizeof(CmdPtr->AppName)];
 
     /* Copy appname from command, ensures NULL termination */
     CFE_SB_MessageStringGet(LocalName, (char *)CmdPtr->AppName, NULL, sizeof(LocalName), sizeof(CmdPtr->AppName));
@@ -912,7 +912,7 @@ int32 CFE_EVS_ResetAppCounterCmd(const CFE_EVS_ResetAppCounterCmd_t *data)
     EVS_AppData_t *                     AppDataPtr;
     const CFE_EVS_AppNameCmd_Payload_t *CmdPtr = &data->Payload;
     int32                               Status;
-    char                                LocalName[OS_MAX_API_NAME];
+    char                                LocalName[sizeof(CmdPtr->AppName)];
 
     /* Copy appname from command, ensures NULL termination */
     CFE_SB_MessageStringGet(LocalName, (char *)CmdPtr->AppName, NULL, sizeof(LocalName), sizeof(CmdPtr->AppName));
@@ -1023,7 +1023,7 @@ int32 CFE_EVS_ResetAllFiltersCmd(const CFE_EVS_ResetAllFiltersCmd_t *data)
     const CFE_EVS_AppNameCmd_Payload_t *CmdPtr = &data->Payload;
     int32                               Status;
     uint32                              i;
-    char                                LocalName[OS_MAX_API_NAME];
+    char                                LocalName[sizeof(CmdPtr->AppName)];
 
     /* Copy appname from command, ensures NULL termination */
     CFE_SB_MessageStringGet(LocalName, (char *)CmdPtr->AppName, NULL, sizeof(LocalName), sizeof(CmdPtr->AppName));

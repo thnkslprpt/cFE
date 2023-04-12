@@ -574,7 +574,7 @@ void CFE_TBL_FormTableName(char *FullTblName, const char *TblName, CFE_ES_AppId_
     CFE_ES_GetAppName(AppName, ThisAppId, sizeof(AppName));
 
     /* Ensure that AppName is null terminated */
-    AppName[OS_MAX_API_NAME - 1] = '\0';
+    AppName[sizeof(AppName) - 1] = '\0';
 
     /* Complete formation of application specific table name */
     sprintf(FullTblName, "%s.%s", AppName, TblName);
