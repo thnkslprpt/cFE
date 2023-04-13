@@ -41,24 +41,24 @@
  * Message is sent if (previous event count) & MASK == 0
  */
 /** \{ */
-const uint16 CFE_EVS_NO_FILTER = 0x0000; /**< \brief Stops any filtering.  All messages are sent. */
-const uint16 CFE_EVS_FIRST_ONE_STOP =
+extern const uint16 CFE_EVS_NO_FILTER = 0x0000; /**< \brief Stops any filtering.  All messages are sent. */
+extern const uint16 CFE_EVS_FIRST_ONE_STOP =
     0xFFFF; /**< \brief Sends the first event.  All remaining messages are filtered. */
-const uint16 CFE_EVS_FIRST_TWO_STOP =
+extern const uint16 CFE_EVS_FIRST_TWO_STOP =
     0xFFFE; /**< \brief Sends the first 2 events.  All remaining messages are filtered. */
-const uint16 CFE_EVS_FIRST_4_STOP =
+extern const uint16 CFE_EVS_FIRST_4_STOP =
     0xFFFC; /**< \brief Sends the first 4 events.  All remaining messages are filtered. */
 const uint16 CFE_EVS_FIRST_8_STOP =
     0xFFF8; /**< \brief Sends the first 8 events.  All remaining messages are filtered. */
 const uint16 CFE_EVS_FIRST_16_STOP =
     0xFFF0; /**< \brief Sends the first 16 events.  All remaining messages are filtered. */
-const uint16 CFE_EVS_FIRST_32_STOP =
+extern const uint16 CFE_EVS_FIRST_32_STOP =
     0xFFE0; /**< \brief Sends the first 32 events.  All remaining messages are filtered. */
-const uint16 CFE_EVS_FIRST_64_STOP =
+extern const uint16 CFE_EVS_FIRST_64_STOP =
     0xFFC0; /**< \brief Sends the first 64 events.  All remaining messages are filtered. */
-const uint16 CFE_EVS_EVERY_OTHER_ONE = 0x0001; /**< \brief Sends every other event. */
-const uint16 CFE_EVS_EVERY_OTHER_TWO = 0x0002; /**< \brief Sends two, filters one, sends two, filters one, etc */
-const uint16 CFE_EVS_EVERY_FOURTH_ONE =
+extern const uint16 CFE_EVS_EVERY_OTHER_ONE = 0x0001; /**< \brief Sends every other event. */
+extern const uint16 CFE_EVS_EVERY_OTHER_TWO = 0x0002; /**< \brief Sends two, filters one, sends two, filters one, etc */
+extern const uint16 CFE_EVS_EVERY_FOURTH_ONE =
     0x0003; /**< \brief Sends every fourth event message.  All others are filtered. */
 /** \} */
 
