@@ -1091,7 +1091,7 @@ bool CFE_ES_RunAppTableScan(uint32 ElapsedTime, void *Arg)
 void CFE_ES_ProcessControlRequest(CFE_ES_AppId_t AppId)
 {
     CFE_ES_AppRecord_t *     AppRecPtr;
-    uint32                   PendingControlReq;
+    CFE_ES_RunStatus_Enum_t  PendingControlReq;
     CFE_ES_AppStartParams_t  RestartParams;
     char                     OrigAppName[OS_MAX_API_NAME];
     CFE_Status_t             CleanupStatus;

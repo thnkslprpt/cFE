@@ -224,7 +224,7 @@ void UT_ResetTableRegistry(void)
 */
 void Test_CFE_TBL_TaskInit(void)
 {
-    uint32 ExitCode;
+    CFE_ES_RunStatus_Enum_t ExitCode;
     union
     {
         CFE_TBL_NoopCmd_t          NoopCmd;

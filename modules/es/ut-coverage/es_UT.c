@@ -3941,7 +3941,7 @@ void TestAPI(void)
     uint32               ResetType;
     CFE_ES_AppId_t       AppId;
     CFE_ES_TaskId_t      TaskId;
-    uint32               RunStatus;
+    CFE_ES_RunStatus_Enum_t               RunStatus;
     CFE_ES_TaskInfo_t    TaskInfo;
     CFE_ES_AppInfo_t     AppInfo;
     CFE_ES_AppRecord_t * UtAppRecPtr;

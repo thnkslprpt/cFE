@@ -337,7 +337,7 @@ CFE_Status_t CFE_ES_DeleteApp(CFE_ES_AppId_t AppID)
  * See description in header file for argument/return detail
  *
  *-----------------------------------------------------------------*/
-void CFE_ES_ExitApp(uint32 ExitStatus)
+void CFE_ES_ExitApp(CFE_ES_RunStatus_Enum_t ExitStatus)
 {
     int32               ReturnCode;
     CFE_ES_AppRecord_t *AppRecPtr;
@@ -467,7 +467,7 @@ void CFE_ES_ExitApp(uint32 ExitStatus)
  * See description in header file for argument/return detail
  *
  *-----------------------------------------------------------------*/
-bool CFE_ES_RunLoop(uint32 *RunStatus)
+bool CFE_ES_RunLoop(CFE_ES_RunStatus_Enum_t *RunStatus)
 {
     bool                ReturnCode;
     CFE_ES_AppRecord_t *AppRecPtr;

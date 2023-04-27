@@ -352,7 +352,7 @@ CFE_Status_t CFE_ES_DeleteApp(CFE_ES_AppId_t AppID);
 ** \sa #CFE_ES_RunLoop
 **
 ******************************************************************************/
-void CFE_ES_ExitApp(uint32 ExitStatus);
+void CFE_ES_ExitApp(CFE_ES_RunStatus_Enum_t ExitStatus);
 
 /*****************************************************************************/
 /**
@@ -394,7 +394,7 @@ void CFE_ES_ExitApp(uint32 ExitStatus);
 ** \sa #CFE_ES_ExitApp
 **
 ******************************************************************************/
-bool CFE_ES_RunLoop(uint32 *RunStatus);
+bool CFE_ES_RunLoop(CFE_ES_RunStatus_Enum_t *RunStatus);
 
 /*****************************************************************************/
 /**

@@ -1401,9 +1401,9 @@ FILE: xx_app.c
 
 void XX_AppMain(void)
 {
-    uint32 RunStatus = CFE_ES_RunStatus_APP_RUN;
-    CFE_SB_Buffer_t *SBBufPtr;
-    int32  Result = CFE_SUCCESS;
+    CFE_ES_RunStatus_Enum_t  RunStatus = CFE_ES_RunStatus_APP_RUN;
+    CFE_SB_Buffer_t         *SBBufPtr;
+    int32                    Result = CFE_SUCCESS;
 
     /* Performance Log (start time counter) */
     CFE_ES_PerfLogEntry(XX_APPMAIN_PERF_ID);
