@@ -68,7 +68,10 @@ typedef struct
     char   SystemLog[CFE_PLATFORM_ES_SYSTEM_LOG_SIZE];
     size_t SystemLogWriteIdx;
     size_t SystemLogEndIdx;
-    uint32 SystemLogMode;
+
+    CFE_ES_LogMode_Enum_t SystemLogMode;
+    uint8                 Padding[3]; /* Padding to align to 32-bit boundaries */
+
     uint32 SystemLogEntryNum;
 
     /*

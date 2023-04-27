@@ -1136,8 +1136,10 @@ typedef CFE_ES_FileNameCmd_t CFE_ES_WriteERLogCmd_t;
 **/
 typedef struct CFE_ES_OverWriteSysLogCmd_Payload
 {
-    uint32 Mode; /**< \brief #CFE_ES_LogMode_DISCARD=Throw away most recent messages,
-                             #CFE_ES_LogMode_OVERWRITE=Overwrite oldest with most recent */
+    CFE_ES_LogMode_Enum_t Mode; /**< \brief #CFE_ES_LogMode_DISCARD=Throw away most recent messages,
+                                     #CFE_ES_LogMode_OVERWRITE=Overwrite oldest with most recent */
+    uint8 Padding[3];           /* Padding to align to 32-bit boundaries */
+
 } CFE_ES_OverWriteSysLogCmd_Payload_t;
 
 /**
