@@ -187,7 +187,7 @@ int32 EVS_NotRegistered(EVS_AppData_t *AppDataPtr, CFE_ES_AppId_t CallerID)
  * See description in header file for argument/return detail
  *
  *-----------------------------------------------------------------*/
-bool EVS_IsFiltered(EVS_AppData_t *AppDataPtr, uint16 EventID, uint16 EventType)
+bool EVS_IsFiltered(EVS_AppData_t *AppDataPtr, uint16 EventID, CFE_EVS_EventType_Enum_t EventType)
 {
     EVS_BinFilter_t *FilterPtr;
     bool             Filtered = false;
@@ -634,7 +634,7 @@ void EVS_OutputPort4(char *Message)
  * See description in header file for argument/return detail
  *
  *-----------------------------------------------------------------*/
-int32 EVS_SendEvent(uint16 EventID, uint16 EventType, const char *Spec, ...)
+int32 EVS_SendEvent(uint16 EventID, CFE_EVS_EventType_Enum_t EventType, const char *Spec, ...)
 {
     CFE_TIME_SysTime_t Time;
     va_list            Ptr;

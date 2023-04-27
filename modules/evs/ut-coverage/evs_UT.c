@@ -325,7 +325,7 @@ void Test_Init(void)
     UT_InitData();
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetResetType), 1, -1);
     CFE_EVS_Global.EVS_LogPtr->LogMode     = CFE_EVS_LogMode_DISCARD;
-    CFE_EVS_Global.EVS_LogPtr->LogFullFlag = true;
+    CFE_EVS_Global.EVS_LogPtr->LogFullFlag = 2;
     CFE_EVS_Global.EVS_LogPtr->Next        = CFE_PLATFORM_EVS_LOG_MAX - 1;
     CFE_EVS_EarlyInit();
     CFE_UtAssert_SYSLOG(EVS_SYSLOG_MSGS[5]);

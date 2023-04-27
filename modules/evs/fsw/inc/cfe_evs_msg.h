@@ -1186,7 +1186,7 @@ typedef struct CFE_EVS_HousekeepingTlm_Payload
                                          \brief Unregistered application message send counter */
     uint8 OutputPort;               /**< \cfetlmmnemonic \EVS_OUTPUTPORT
                                          \brief Output port mask */
-    bool LogFullFlag;               /**< \cfetlmmnemonic \EVS_LOGFULL
+    uint8 LogFullFlag;              /**< \cfetlmmnemonic \EVS_LOGFULL
                                          \brief Local event log full flag */
     CFE_EVS_LogMode_Enum_t LogMode; /**< \cfetlmmnemonic \EVS_LOGMODE
                                          \brief Local event logging mode (overwrite/discard) */
