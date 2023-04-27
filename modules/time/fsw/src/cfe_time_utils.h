@@ -104,17 +104,17 @@
 */
 typedef struct
 {
-    CFE_TIME_SysTime_t AtToneMET;         /* MET at time of tone */
-    CFE_TIME_SysTime_t AtToneSTCF;        /* STCF at time of tone */
-    int16              AtToneLeapSeconds; /* Leap Seconds at time of tone */
-    int16              ClockSetState;     /* Time has been "set" */
-    int16              ClockFlyState;     /* Current fly-wheel state */
-    int16              DelayDirection;    /* Whether "AtToneDelay" is add or subtract */
-    CFE_TIME_SysTime_t AtToneDelay;       /* Adjustment for slow tone detection */
-    CFE_TIME_SysTime_t AtToneLatch;       /* Local clock latched at time of tone */
-    CFE_TIME_SysTime_t CurrentLatch;      /* Local clock latched just "now" */
-    CFE_TIME_SysTime_t TimeSinceTone;     /* Time elapsed since the tone */
-    CFE_TIME_SysTime_t CurrentMET;        /* MET at this instant */
+    CFE_TIME_SysTime_t         AtToneMET;         /* MET at time of tone */
+    CFE_TIME_SysTime_t         AtToneSTCF;        /* STCF at time of tone */
+    int16                      AtToneLeapSeconds; /* Leap Seconds at time of tone */
+    CFE_TIME_ClockState_Enum_t ClockSetState;     /* Time has been "set" */
+    int16                      ClockFlyState;     /* Current fly-wheel state */
+    int16                      DelayDirection;    /* Whether "AtToneDelay" is add or subtract */
+    CFE_TIME_SysTime_t         AtToneDelay;       /* Adjustment for slow tone detection */
+    CFE_TIME_SysTime_t         AtToneLatch;       /* Local clock latched at time of tone */
+    CFE_TIME_SysTime_t         CurrentLatch;      /* Local clock latched just "now" */
+    CFE_TIME_SysTime_t         TimeSinceTone;     /* Time elapsed since the tone */
+    CFE_TIME_SysTime_t         CurrentMET;        /* MET at this instant */
 } CFE_TIME_Reference_t;
 
 /*
@@ -174,9 +174,9 @@ typedef struct
     /*
     ** Task initialization data (not reported in housekeeping)...
     */
-    int16 ClockSource;
-    int16 ClockSignal;
-    int16 ServerFlyState;
+    CFE_TIME_SourceSelect_Enum_t ClockSource;
+    int16                        ClockSignal;
+    int16                        ServerFlyState;
 
     /*
     ** Pending data values (from "time at tone" command data)...

@@ -787,9 +787,10 @@ typedef struct CFE_TIME_SetStateCmd
  */
 typedef struct CFE_TIME_SourceCmd_Payload
 {
-    int16 TimeSource; /**< \brief #CFE_TIME_SourceSelect_INTERNAL=Internal Source,
+    CFE_TIME_SourceSelect_Enum_t TimeSource; /**< \brief #CFE_TIME_SourceSelect_INTERNAL=Internal Source,
                                   #CFE_TIME_SourceSelect_EXTERNAL=External Source   */
-                      /**< Selects either the "Internal" and "External" clock source */
+                                  /**< Selects either the "Internal" and "External" clock source */
+    uint8 Padding;
 } CFE_TIME_SourceCmd_Payload_t;
 
 /**

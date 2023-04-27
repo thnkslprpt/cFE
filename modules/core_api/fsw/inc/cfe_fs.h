@@ -94,7 +94,7 @@ CFE_Status_t CFE_FS_ReadHeader(CFE_FS_Header_t *Hdr, osal_id_t FileDes);
 ** \sa #CFE_FS_WriteHeader
 **
 ******************************************************************************/
-void CFE_FS_InitHeader(CFE_FS_Header_t *Hdr, const char *Description, uint32 SubType);
+void CFE_FS_InitHeader(CFE_FS_Header_t *Hdr, const char *Description, CFE_FS_SubType_Enum_t SubType);
 
 /*****************************************************************************/
 /**

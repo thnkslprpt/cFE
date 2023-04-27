@@ -121,11 +121,11 @@ const char *CFE_FS_GetDefaultMountPoint(CFE_FS_FileCategory_t FileCategory)
  * Generated stub function for CFE_FS_InitHeader()
  * ----------------------------------------------------
  */
-void CFE_FS_InitHeader(CFE_FS_Header_t *Hdr, const char *Description, uint32 SubType)
+void CFE_FS_InitHeader(CFE_FS_Header_t *Hdr, const char *Description, CFE_FS_SubType_Enum_t SubType)
 {
     UT_GenStub_AddParam(CFE_FS_InitHeader, CFE_FS_Header_t *, Hdr);
     UT_GenStub_AddParam(CFE_FS_InitHeader, const char *, Description);
-    UT_GenStub_AddParam(CFE_FS_InitHeader, uint32, SubType);
+    UT_GenStub_AddParam(CFE_FS_InitHeader, CFE_FS_SubType_Enum_t, SubType);
 
     UT_GenStub_Execute(CFE_FS_InitHeader, Basic, NULL);
 }

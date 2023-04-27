@@ -528,8 +528,8 @@ typedef struct CFE_TBL_LoadCmd
 */
 typedef struct CFE_TBL_DumpCmd_Payload
 {
-    uint16 ActiveTableFlag;                            /**< \brief #CFE_TBL_BufferSelect_INACTIVE=Inactive Table,
-                                                                 #CFE_TBL_BufferSelect_ACTIVE=Active Table */
+    CFE_TBL_BufferSelect_Enum_t ActiveTableFlag;       /**< \brief #CFE_TBL_BufferSelect_INACTIVE=Inactive Table,
+                                            #CFE_TBL_BufferSelect_ACTIVE=Active Table */
                                                        /**< Selects either the "Inactive"
                                                             (#CFE_TBL_BufferSelect_INACTIVE) buffer or the
                                                             "Active" (#CFE_TBL_BufferSelect_ACTIVE) buffer
@@ -558,7 +558,7 @@ typedef struct CFE_TBL_DumpCmd
 */
 typedef struct CFE_TBL_ValidateCmd_Payload
 {
-    uint16 ActiveTableFlag;                            /**< \brief #CFE_TBL_BufferSelect_INACTIVE=Inactive Table,
+    CFE_TBL_BufferSelect_Enum_t ActiveTableFlag;                            /**< \brief #CFE_TBL_BufferSelect_INACTIVE=Inactive Table,
                                                                  #CFE_TBL_BufferSelect_ACTIVE=Active Table */
                                                        /**< Selects either the "Inactive"
                                                             (#CFE_TBL_BufferSelect_INACTIVE) buffer or the
