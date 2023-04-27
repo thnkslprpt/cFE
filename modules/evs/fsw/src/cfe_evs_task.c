@@ -142,6 +142,8 @@ int32 CFE_EVS_EarlyInit(void)
         }
         else if (((CFE_EVS_Global.EVS_LogPtr->LogMode != CFE_EVS_LogMode_OVERWRITE) &&
                   (CFE_EVS_Global.EVS_LogPtr->LogMode != CFE_EVS_LogMode_DISCARD)) ||
+                 ((CFE_EVS_Global.EVS_LogPtr->LogFullFlag != false) &&
+                  (CFE_EVS_Global.EVS_LogPtr->LogFullFlag != true)) ||
                  (CFE_EVS_Global.EVS_LogPtr->Next >= CFE_PLATFORM_EVS_LOG_MAX))
         {
             CFE_ES_WriteToSysLog("%s: Event Log cleared, n=%d, c=%d, f=%d, m=%d, o=%d\n", __func__,
