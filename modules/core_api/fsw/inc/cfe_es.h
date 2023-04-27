@@ -424,7 +424,7 @@ bool CFE_ES_RunLoop(uint32 *RunStatus);
 ** \sa #CFE_ES_RunLoop
 **
 ******************************************************************************/
-CFE_Status_t CFE_ES_WaitForSystemState(uint32 MinSystemState, uint32 TimeOutMilliseconds);
+CFE_Status_t CFE_ES_WaitForSystemState(CFE_ES_AppState_Enum_t MinSystemState, uint32 TimeOutMilliseconds);
 
 /*****************************************************************************/
 /**

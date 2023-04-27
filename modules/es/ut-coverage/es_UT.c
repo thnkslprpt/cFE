@@ -583,8 +583,8 @@ static void ES_UT_SetupForOSCleanup(void)
 
 typedef struct
 {
-    uint32 AppType;
-    uint32 AppState;
+    CFE_ES_AppType_Enum_t  AppType;
+    CFE_ES_AppState_Enum_t AppState;
 } ES_UT_SetAppStateHook_t;
 
 static int32 ES_UT_SetAppStateHook(void *UserObj, int32 StubRetcode, uint32 CallCount, const UT_StubContext_t *Context)

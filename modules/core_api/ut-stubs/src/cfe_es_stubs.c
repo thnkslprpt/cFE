@@ -919,11 +919,11 @@ void CFE_ES_WaitForStartupSync(uint32 TimeOutMilliseconds)
  * Generated stub function for CFE_ES_WaitForSystemState()
  * ----------------------------------------------------
  */
-CFE_Status_t CFE_ES_WaitForSystemState(uint32 MinSystemState, uint32 TimeOutMilliseconds)
+CFE_Status_t CFE_ES_WaitForSystemState(CFE_ES_AppState_Enum_t MinSystemState, uint32 TimeOutMilliseconds)
 {
     UT_GenStub_SetupReturnBuffer(CFE_ES_WaitForSystemState, CFE_Status_t);
 
-    UT_GenStub_AddParam(CFE_ES_WaitForSystemState, uint32, MinSystemState);
+    UT_GenStub_AddParam(CFE_ES_WaitForSystemState, CFE_ES_AppState_Enum_t, MinSystemState);
     UT_GenStub_AddParam(CFE_ES_WaitForSystemState, uint32, TimeOutMilliseconds);
 
     UT_GenStub_Execute(CFE_ES_WaitForSystemState, Basic, NULL);
