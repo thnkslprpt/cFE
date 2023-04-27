@@ -1173,23 +1173,23 @@ typedef struct CFE_EVS_AppTlmData
 **/
 typedef struct CFE_EVS_HousekeepingTlm_Payload
 {
-    uint8 CommandCounter;      /**< \cfetlmmnemonic \EVS_CMDPC
-                                    \brief EVS Command Counter */
-    uint8 CommandErrorCounter; /**< \cfetlmmnemonic \EVS_CMDEC
-                                  \brief EVS Command Error Counter */
-    uint8 MessageFormatMode;   /**< \cfetlmmnemonic \EVS_MSGFMTMODE
-                                    \brief Event message format mode (short/long) */
-    uint8 MessageTruncCounter; /**< \cfetlmmnemonic \EVS_MSGTRUNC
-                                    \brief Event message truncation counter */
+    uint8 CommandCounter;                       /**< \cfetlmmnemonic \EVS_CMDPC
+                                                     \brief EVS Command Counter */
+    uint8 CommandErrorCounter;                  /**< \cfetlmmnemonic \EVS_CMDEC
+                                                     \brief EVS Command Error Counter */
+    CFE_EVS_MsgFormat_Enum_t MessageFormatMode; /**< \cfetlmmnemonic \EVS_MSGFMTMODE
+                                                     \brief Event message format mode (short/long) */
+    uint8 MessageTruncCounter;                  /**< \cfetlmmnemonic \EVS_MSGTRUNC
+                                                     \brief Event message truncation counter */
 
-    uint8 UnregisteredAppCounter; /**< \cfetlmmnemonic \EVS_UNREGAPPC
-                                       \brief Unregistered application message send counter */
-    uint8 OutputPort;             /**< \cfetlmmnemonic \EVS_OUTPUTPORT
-                                       \brief Output port mask */
-    uint8 LogFullFlag;            /**< \cfetlmmnemonic \EVS_LOGFULL
-                                       \brief Local event log full flag */
-    uint8 LogMode;                /**< \cfetlmmnemonic \EVS_LOGMODE
-                                       \brief Local event logging mode (overwrite/discard) */
+    uint8 UnregisteredAppCounter;   /**< \cfetlmmnemonic \EVS_UNREGAPPC
+                                         \brief Unregistered application message send counter */
+    uint8 OutputPort;               /**< \cfetlmmnemonic \EVS_OUTPUTPORT
+                                         \brief Output port mask */
+    bool LogFullFlag;               /**< \cfetlmmnemonic \EVS_LOGFULL
+                                         \brief Local event log full flag */
+    CFE_EVS_LogMode_Enum_t LogMode; /**< \cfetlmmnemonic \EVS_LOGMODE
+                                         \brief Local event logging mode (overwrite/discard) */
 
     uint16 MessageSendCounter; /**< \cfetlmmnemonic \EVS_MSGSENTC
                                     \brief Event message send counter */

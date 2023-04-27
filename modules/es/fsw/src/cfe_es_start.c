@@ -40,7 +40,7 @@
 #include <stdio.h>
 #include <string.h>
 
-static int32 CFE_ES_MainTaskSyncDelay(uint32 AppStateId, uint32 TimeOutMilliseconds);
+static int32 CFE_ES_MainTaskSyncDelay(CFE_ES_AppState_Enum_t AppStateId, uint32 TimeOutMilliseconds);
 
 /***************************************************************************/
 
@@ -878,7 +878,7 @@ void CFE_ES_CreateObjects(void)
  * reach the indicated state, by polling the app counters in a delay loop.
  *
  *-----------------------------------------------------------------*/
-int32 CFE_ES_MainTaskSyncDelay(uint32 AppStateId, uint32 TimeOutMilliseconds)
+int32 CFE_ES_MainTaskSyncDelay(CFE_ES_AppState_Enum_t AppStateId, uint32 TimeOutMilliseconds)
 {
     int32               Status;
     uint32              i;

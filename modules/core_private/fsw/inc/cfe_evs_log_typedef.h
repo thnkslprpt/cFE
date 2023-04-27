@@ -39,8 +39,8 @@ typedef struct
 {
     uint16                 Next;               /**< \brief Index of the next entry in the local event log */
     uint16                 LogCount;           /**< \brief Local Event Log counter */
-    uint8                  LogFullFlag;        /**< \brief Local Event Log full flag */
-    uint8                  LogMode;            /**< \brief Local Event Logging mode (overwrite/discard) */
+    bool                   LogFullFlag;        /**< \brief Local Event Log full flag */
+    CFE_EVS_LogMode_Enum_t LogMode;            /**< \brief Local Event Logging mode (overwrite/discard) */
     uint16                 LogOverflowCounter; /**< \brief Local Event Log overflow counter */
     CFE_EVS_LongEventTlm_t LogEntry[CFE_PLATFORM_EVS_LOG_MAX]; /**< \brief The actual Local Event Log entry */
 } CFE_EVS_Log_t;
