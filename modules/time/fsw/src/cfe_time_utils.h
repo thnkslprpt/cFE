@@ -179,7 +179,7 @@ typedef struct
     CFE_TIME_SourceSelect_Enum_t     ClockSource;
     CFE_TIME_ToneSignalSelect_Enum_t ClockSignal;
     CFE_TIME_FlywheelState_Enum_t    ServerFlyState;
-    uint8                            Padding[2];
+    uint8                            Padding1[2];
 
     /*
     ** Pending data values (from "time at tone" command data)...
@@ -197,7 +197,7 @@ typedef struct
 
     CFE_TIME_AdjustDirection_Enum_t OneTimeDirection; /* Add = true */
     CFE_TIME_AdjustDirection_Enum_t OneHzDirection;
-    uint8                           Padding[2];
+    uint8                           Padding2[2];
 
     /*
     ** Most recent local clock latch values...
