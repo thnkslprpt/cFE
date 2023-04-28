@@ -458,7 +458,7 @@ void CFE_TIME_SetAdjust(CFE_TIME_SysTime_t NewAdjust, CFE_TIME_AdjustDirection_E
 /**
  * @brief 1Hz STCF adjustment (time server only)
  */
-void CFE_TIME_Set1HzAdj(CFE_TIME_SysTime_t NewAdjust, int16 Direction);
+void CFE_TIME_Set1HzAdj(CFE_TIME_SysTime_t NewAdjust, CFE_TIME_AdjustDirection_Enum_t Direction);
 #endif
 
 /*
