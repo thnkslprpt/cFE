@@ -1011,7 +1011,7 @@ typedef struct CFE_TIME_DiagnosticTlm_Payload
      */
     CFE_TIME_SetState_Enum_t ClockSetState; /**< \cfetlmmnemonic \TIME_VALID
                                                  \brief Time has been "set" */
-    uint8 Padding;
+    uint8 Padding1;
 
     int16 ClockFlyState;                          /**< \cfetlmmnemonic \TIME_FLYWHEEL
                                                              \brief Current fly-wheel state */
@@ -1019,7 +1019,7 @@ typedef struct CFE_TIME_DiagnosticTlm_Payload
                                                              \brief Internal vs external, etc. */
     CFE_TIME_ToneSignalSelect_Enum_t ClockSignal; /**< \cfetlmmnemonic \TIME_SIGNAL
                                                              \brief Primary vs redundant, etc. */
-    uint8 Padding;
+    uint8 Padding2;
 
     int16 ServerFlyState; /**< \cfetlmmnemonic \TIME_SRVFLY
                                      \brief Used by clients only */
