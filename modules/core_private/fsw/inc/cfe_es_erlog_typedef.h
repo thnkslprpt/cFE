@@ -39,10 +39,10 @@
 */
 typedef struct
 {
-    uint32 DebugFlag;
-    uint32 WatchdogWriteFlag;
-    uint32 PrintfEnabledFlag;
-    uint32 LastAppId;
+    uint32         DebugFlag;
+    uint32         WatchdogWriteFlag;
+    uint32         PrintfEnabledFlag;
+    CFE_ES_AppID_t LastAppId;
 } CFE_ES_DebugVariables_t;
 
 /*
@@ -78,7 +78,7 @@ typedef struct
 {
     CFE_ES_ERLog_BaseInfo_t BaseInfo;                                         /* basic info about the event */
     uint32                  ContextSize;                                      /* Indicates the context data is valid */
-    uint32                  AppID;                                            /* The application ID */
+    CFE_ES_AppID_t          AppID;                                            /* The application ID */
     uint8                   Context[CFE_PLATFORM_ES_ER_LOG_MAX_CONTEXT_SIZE]; /* cpu  context */
 } CFE_ES_ERLog_FileEntry_t;
 

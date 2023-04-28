@@ -1009,12 +1009,12 @@ typedef struct CFE_TIME_DiagnosticTlm_Payload
     /*
      ** Data values used to define the current clock state...
      */
-    CFE_TIME_SetState_Enum_t ClockSetState; /**< \cfetlmmnemonic \TIME_VALID
-                                                 \brief Time has been "set" */
-    uint8 Padding1;
+    CFE_TIME_SetState_Enum_t ClockSetState;      /**< \cfetlmmnemonic \TIME_VALID
+                                                      \brief Time has been "set" */
+    CFE_TIME_FlywheelState_Enum_t ClockFlyState; /**< \cfetlmmnemonic \TIME_FLYWHEEL
+                                                      \brief Current fly-wheel state */
+    uint8 Padding1[2];
 
-    int16 ClockFlyState;                          /**< \cfetlmmnemonic \TIME_FLYWHEEL
-                                                             \brief Current fly-wheel state */
     int16 ClockSource;                            /**< \cfetlmmnemonic \TIME_SOURCE
                                                              \brief Internal vs external, etc. */
     CFE_TIME_ToneSignalSelect_Enum_t ClockSignal; /**< \cfetlmmnemonic \TIME_SIGNAL

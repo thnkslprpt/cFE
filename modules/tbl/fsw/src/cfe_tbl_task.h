@@ -367,7 +367,7 @@ typedef struct
 ** \retval #CFE_TBL_BAD_MSG_ID   \copydoc CFE_TBL_BAD_MSG_ID
 **
 */
-int16 CFE_TBL_SearchCmdHndlrTbl(CFE_SB_MsgId_t MessageID, uint16 CommandCode);
+int16 CFE_TBL_SearchCmdHndlrTbl(CFE_SB_MsgId_t MessageID, CFE_MSG_FcnCode_t CommandCode);
 
 /*---------------------------------------------------------------------------------------*/
 /**

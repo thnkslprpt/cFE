@@ -167,7 +167,7 @@ void CFE_TBL_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
  * See description in header file for argument/return detail
  *
  *-----------------------------------------------------------------*/
-int16 CFE_TBL_SearchCmdHndlrTbl(CFE_SB_MsgId_t MessageID, uint16 CommandCode)
+int16 CFE_TBL_SearchCmdHndlrTbl(CFE_SB_MsgId_t MessageID, CFE_MSG_FcnCode_t CommandCode)
 {
     int16 TblIndx    = CFE_TBL_BAD_CMD_CODE;
     bool  FoundMsg   = false;

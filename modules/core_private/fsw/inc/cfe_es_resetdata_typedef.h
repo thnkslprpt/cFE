@@ -60,7 +60,7 @@ typedef struct
     CFE_ES_ERLog_MetaData_t ERLog[CFE_PLATFORM_ES_ER_LOG_ENTRIES];
     uint32                  ERLogIndex;
     uint32                  ERLogEntries;
-    uint32                  LastAppId;
+    CFE_ES_AppID_t          LastAppId;
 
     /*
     ** System Log declaration

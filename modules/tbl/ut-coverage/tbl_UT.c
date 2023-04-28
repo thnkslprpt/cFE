@@ -361,8 +361,8 @@ void Test_CFE_TBL_InitData(void)
 */
 void Test_CFE_TBL_SearchCmdHndlrTbl(void)
 {
-    uint16         CmdCode;
-    CFE_SB_MsgId_t MsgID;
+    CFE_MSG_FcnCode_t CmdCode;
+    CFE_SB_MsgId_t    MsgID;
 
     UtPrintf("Begin Test Search Command Handler Table");
 
