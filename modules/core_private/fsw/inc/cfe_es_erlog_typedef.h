@@ -52,15 +52,16 @@ typedef struct
 */
 typedef struct
 {
-    uint32                  LogEntryType;                                     /* What type of log entry */
-    uint32                  ResetType;                                        /* Main cause for the reset */
-    uint32                  ResetSubtype;                                     /* The sub-type for the reset */
-    uint32                  BootSource;                                       /* The boot source  */
-    uint32                  ProcessorResetCount;                              /* The number of processor resets */
-    uint32                  MaxProcessorResetCount;                           /* The maximum number before a Power On */
-    CFE_ES_DebugVariables_t DebugVars;                                        /* ES Debug variables */
-    CFE_TIME_SysTime_t      TimeCode;                                         /* Time code */
-    char                    Description[CFE_ES_ERLOG_DESCRIPTION_MAX_LENGTH]; /* The ascii data for the event */
+    CFE_ES_LogEntryType_Enum_t LogEntryType;           /* What type of log entry */
+    uint8                      Padding[3];             /* Padding to align to 32-bit boundaries */
+    uint32                     ResetType;              /* Main cause for the reset */
+    uint32                     ResetSubtype;           /* The sub-type for the reset */
+    uint32                     BootSource;             /* The boot source  */
+    uint32                     ProcessorResetCount;    /* The number of processor resets */
+    uint32                     MaxProcessorResetCount; /* The maximum number before a Power On */
+    CFE_ES_DebugVariables_t    DebugVars;              /* ES Debug variables */
+    CFE_TIME_SysTime_t         TimeCode;               /* Time code */
+    char                       Description[CFE_ES_ERLOG_DESCRIPTION_MAX_LENGTH]; /* The ascii data for the event */
 } CFE_ES_ERLog_BaseInfo_t;
 
 /*

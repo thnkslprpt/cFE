@@ -293,7 +293,7 @@ void UT_SetAppID(CFE_ES_AppId_t AppID_in)
 ** Set the return code of CFE_PSP_GetResetArea and the data validation
 ** signature
 */
-void UT_SetStatusBSPResetArea(int32 status, uint32 Signature, uint32 ClockSignal)
+void UT_SetStatusBSPResetArea(int32 status, uint32 Signature, CFE_TIME_ToneSignalSelect_Enum_t ClockSignal)
 {
     UT_CFE_ES_ResetData.ResetData.TimeResetVars.Signature   = Signature;
     UT_CFE_ES_ResetData.ResetData.TimeResetVars.ClockSignal = ClockSignal;

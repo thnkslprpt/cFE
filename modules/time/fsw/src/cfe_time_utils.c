@@ -963,7 +963,7 @@ void CFE_TIME_SetLeapSeconds(int16 NewLeaps)
  *
  *-----------------------------------------------------------------*/
 #if (CFE_PLATFORM_TIME_CFG_SERVER == true)
-void CFE_TIME_SetAdjust(CFE_TIME_SysTime_t NewAdjust, int16 Direction)
+void CFE_TIME_SetAdjust(CFE_TIME_SysTime_t NewAdjust, CFE_TIME_AdjustDirection_Enum_t Direction)
 {
     CFE_TIME_SysTime_t                  NewSTCF;
     volatile CFE_TIME_ReferenceState_t *RefState;
@@ -998,7 +998,7 @@ void CFE_TIME_SetAdjust(CFE_TIME_SysTime_t NewAdjust, int16 Direction)
  *
  *-----------------------------------------------------------------*/
 #if (CFE_PLATFORM_TIME_CFG_SERVER == true)
-void CFE_TIME_Set1HzAdj(CFE_TIME_SysTime_t NewAdjust, int16 Direction)
+void CFE_TIME_Set1HzAdj(CFE_TIME_SysTime_t NewAdjust, CFE_TIME_AdjustDirection_Enum_t Direction)
 {
     /*
     ** Store values for 1Hz adjustment...

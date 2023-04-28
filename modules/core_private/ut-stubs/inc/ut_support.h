@@ -313,7 +313,7 @@ void UT_SetAppID(CFE_ES_AppId_t AppID_in);
 **        This function does not return a value.
 **
 ******************************************************************************/
-void UT_SetStatusBSPResetArea(int32 status, uint32 Signature, uint32 ClockSignal);
+void UT_SetStatusBSPResetArea(int32 status, uint32 Signature, CFE_TIME_ToneSignalSelect_Enum_t ClockSignal);
 
 /*****************************************************************************/
 /**

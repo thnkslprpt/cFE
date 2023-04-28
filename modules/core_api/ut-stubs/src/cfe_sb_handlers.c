@@ -41,7 +41,7 @@ typedef struct
     CFE_SB_MsgId_t     MsgId;
     uint32             UserLength;
     uint32             TotalLength;
-    uint16             CommandCode;
+    CFE_MSG_FcnCode_t  CommandCode;
     CFE_TIME_SysTime_t TimeStamp;
 } CFE_SB_StubMsg_MetaData_t;
 
