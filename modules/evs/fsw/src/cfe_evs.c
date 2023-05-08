@@ -261,6 +261,29 @@ CFE_Status_t CFE_EVS_SendTimedEvent(CFE_TIME_SysTime_t Time, uint16 EventID, uin
  * See description in header file for argument/return detail
  *
  *-----------------------------------------------------------------*/
+int32 EVS_ResetFilterVerifyCallerId(EVS_AppData_t **AppDataPtr, CFE_ES_AppId_t *AppID)
+{
+    int32 Status;
+
+    /* Query and verify the caller's AppID */
+    Status = EVS_GetCurrentContext(AppDataPtr, AppID);
+    if (Status == CFE_SUCCESS)
+    {
+        if (!EVS_AppDataIsMatch(*AppDataPtr, *AppID))
+        {
+            Status = CFE_EVS_APP_NOT_REGISTERED;
+        }
+    }
+
+    return Status;
+}
+
+/*----------------------------------------------------------------
+ *
+ * Implemented per public API
+ * See description in header file for argument/return detail
+ *
+ *-----------------------------------------------------------------*/
 int32 CFE_EVS_ResetFilter(uint16 EventID)
 {
     int32            Status;
@@ -268,26 +291,19 @@ int32 CFE_EVS_ResetFilter(uint16 EventID)
     CFE_ES_AppId_t   AppID;
     EVS_AppData_t *  AppDataPtr;
 
-    /* Query and verify the caller's AppID */
-    Status = EVS_GetCurrentContext(&AppDataPtr, &AppID);
+    Status = EVS_ResetFilterVerifyCallerId(&AppDataPtr, &AppID);
+
     if (Status == CFE_SUCCESS)
     {
-        if (!EVS_AppDataIsMatch(AppDataPtr, AppID))
+        FilterPtr = EVS_FindEventID(EventID, AppDataPtr->BinFilters);
+
+        if (FilterPtr != NULL)
         {
-            Status = CFE_EVS_APP_NOT_REGISTERED;
+            FilterPtr->Count = 0;
         }
         else
         {
-            FilterPtr = EVS_FindEventID(EventID, AppDataPtr->BinFilters);
-
-            if (FilterPtr != NULL)
-            {
-                FilterPtr->Count = 0;
-            }
-            else
-            {
-                Status = CFE_EVS_EVT_NOT_REGISTERED;
-            }
+            Status = CFE_EVS_EVT_NOT_REGISTERED;
         }
     }
 
@@ -307,20 +323,13 @@ CFE_Status_t CFE_EVS_ResetAllFilters(void)
     uint32         i;
     EVS_AppData_t *AppDataPtr;
 
-    /* Query and verify the caller's AppID */
-    Status = EVS_GetCurrentContext(&AppDataPtr, &AppID);
+    Status = EVS_ResetFilterVerifyCallerId(&AppDataPtr, &AppID);
+
     if (Status == CFE_SUCCESS)
     {
-        if (!EVS_AppDataIsMatch(AppDataPtr, AppID))
+        for (i = 0; i < CFE_PLATFORM_EVS_MAX_EVENT_FILTERS; i++)
         {
-            Status = CFE_EVS_APP_NOT_REGISTERED;
-        }
-        else
-        {
-            for (i = 0; i < CFE_PLATFORM_EVS_MAX_EVENT_FILTERS; i++)
-            {
-                AppDataPtr->BinFilters[i].Count = 0;
-            }
+            AppDataPtr->BinFilters[i].Count = 0;
         }
     }
 
