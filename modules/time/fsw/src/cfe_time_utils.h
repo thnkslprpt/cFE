@@ -493,7 +493,7 @@ int32 CFE_TIME_ToneSendMET(CFE_TIME_SysTime_t NewMET);
 
 /*---------------------------------------------------------------------------------------*/
 /**
- * @brief Send "time at tone" (external GPS)
+ * @brief Send "times at tone" (external GPS)
  *
  * the appropriate time (relative to the tone) such that the
  * "time at the tone" data command will arrive within the
