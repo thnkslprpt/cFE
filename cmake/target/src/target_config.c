@@ -35,7 +35,6 @@
 #include "cfe_platform_cfg.h"
 #include "cfe_es.h"
 #include "cfe_time.h"
-#include "cfe_time_core_internal.h"
 #include "cfe_es_resetdata_typedef.h"
 #include "cfe_version.h"   /* for CFE_VERSION_STRING */
 #include "osapi-version.h" /* for OS_VERSION_STRING */
