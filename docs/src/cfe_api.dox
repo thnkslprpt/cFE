@@ -327,7 +327,6 @@
     <LI> \ref CFEAPITIMEMisc
     <UL>
       <LI> #CFE_TIME_Print - \copybrief CFE_TIME_Print
-      <LI> #CFE_TIME_Local1HzISR - \copybrief CFE_TIME_Local1HzISR
     </UL>
   </UL>
 **/
