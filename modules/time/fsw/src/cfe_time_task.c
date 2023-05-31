@@ -437,7 +437,7 @@ int32 CFE_TIME_ToneSendCmd(const CFE_TIME_FakeToneCmd_t *data)
 
 /*----------------------------------------------------------------
  *
- * Application-scope internal function
+ * Application-scope internal functions
  * See description in header file for argument/return detail
  *
  *-----------------------------------------------------------------*/
