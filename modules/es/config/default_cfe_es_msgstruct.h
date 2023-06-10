@@ -163,7 +163,8 @@ typedef struct CFE_ES_StartAppCmd_Payload
                                                        restart Application,
                                                        #CFE_ES_ExceptionAction_PROC_RESTART=On exception,
                                                        perform a Processor Reset */
-    CFE_ES_TaskPriority_Atom_t Priority;           /**< \brief The new Applications runtime priority. */
+    uint8                      Padding;
+    CFE_ES_TaskPriority_Atom_t Priority; /**< \brief The new Applications runtime priority. */
 } CFE_ES_StartAppCmd_Payload_t;
 
 /**

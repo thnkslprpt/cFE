@@ -95,7 +95,7 @@ typedef struct CFE_SB_RouteCmd_Payload
 {
     CFE_SB_MsgId_t  MsgId; /**< \brief Message ID of route to be enabled or disabled #CFE_SB_MsgId_t */
     CFE_SB_PipeId_t Pipe;  /**< \brief Pipe ID of route to be enabled or disabled #CFE_SB_PipeId_t */
-    uint8           Spare; /**<\brief Spare byte to make command even number of bytes */
+    // uint8           Spare; /**<\brief Spare byte to make command even number of bytes */
 } CFE_SB_RouteCmd_Payload_t;
 
 /**
@@ -278,9 +278,10 @@ typedef struct CFE_SB_StatsTlm
 */
 typedef struct CFE_SB_RoutingFileEntry
 {
-    CFE_SB_MsgId_t  MsgId;                             /**< \brief Message Id portion of the route */
-    CFE_SB_PipeId_t PipeId;                            /**< \brief Pipe Id portion of the route */
-    uint8           State;                             /**< \brief Route Enabled or Disabled */
+    CFE_SB_MsgId_t  MsgId;  /**< \brief Message Id portion of the route */
+    CFE_SB_PipeId_t PipeId; /**< \brief Pipe Id portion of the route */
+    uint8           State;  /**< \brief Route Enabled or Disabled */
+    uint8           Padding;
     uint16          MsgCnt;                            /**< \brief Number of msgs with this MsgId sent to this PipeId */
     char            AppName[CFE_MISSION_MAX_API_LEN];  /**< \brief Pipe Depth Statistics */
     char            PipeName[CFE_MISSION_MAX_API_LEN]; /**< \brief Pipe Depth Statistics */
@@ -295,6 +296,7 @@ typedef struct CFE_SB_MsgMapFileEntry
 {
     CFE_SB_MsgId_t        MsgId; /**< \brief Message Id which has been subscribed to */
     CFE_SB_RouteId_Atom_t Index; /**< \brief Routing raw index value (0 based, not Route ID) */
+    uint16                Padding;
 } CFE_SB_MsgMapFileEntry_t;
 
 /**
@@ -310,9 +312,11 @@ typedef struct CFE_SB_MsgMapFileEntry
 typedef struct CFE_SB_SingleSubscriptionTlm_Payload
 {
     uint8           SubType; /**< \brief Subscription or Unsubscription */
-    CFE_SB_MsgId_t  MsgId;   /**< \brief MsgId subscribed or unsubscribe to */
-    CFE_SB_Qos_t    Qos;     /**< \brief Quality of Service, used only for interprocessor communication */
-    CFE_SB_PipeId_t Pipe;    /**< \brief Destination pipe id to send above msg id  */
+    uint8           PaddingA[3];
+    CFE_SB_MsgId_t  MsgId; /**< \brief MsgId subscribed or unsubscribe to */
+    CFE_SB_Qos_t    Qos;   /**< \brief Quality of Service, used only for interprocessor communication */
+    uint16          PaddingB;
+    CFE_SB_PipeId_t Pipe; /**< \brief Destination pipe id to send above msg id  */
 } CFE_SB_SingleSubscriptionTlm_Payload_t;
 
 typedef struct CFE_SB_SingleSubscriptionTlm
@@ -333,7 +337,8 @@ typedef struct CFE_SB_SubEntries
 {
     CFE_SB_MsgId_t  MsgId; /**< \brief MsgId portion of the subscription */
     CFE_SB_Qos_t    Qos;   /**< \brief Qos portion of the subscription */
-    CFE_SB_PipeId_t Pipe;  /**< \brief PipeId portion of the subscription */
+    uint16          Padding;
+    CFE_SB_PipeId_t Pipe; /**< \brief PipeId portion of the subscription */
 } CFE_SB_SubEntries_t;
 
 /**
