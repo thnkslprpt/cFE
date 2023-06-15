@@ -76,7 +76,7 @@ typedef struct
 typedef struct
 {
     CFE_ES_ERLog_BaseInfo_t BaseInfo;                                         /* basic info about the event */
-    uint32                  ContextSize;                                      /* Indicates the context data is valid */
+    size_t                  ContextSize;                                      /* Indicates the context data is valid */
     uint32                  AppID;                                            /* The application ID */
     uint8                   Context[CFE_PLATFORM_ES_ER_LOG_MAX_CONTEXT_SIZE]; /* cpu  context */
 } CFE_ES_ERLog_FileEntry_t;

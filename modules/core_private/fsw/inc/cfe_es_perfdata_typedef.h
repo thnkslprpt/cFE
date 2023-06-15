@@ -59,7 +59,7 @@ typedef struct
     uint32          DataEnd;
     uint32          DataCount;
     uint32          InvalidMarkerReported;
-    uint32          FilterTriggerMaskSize;
+    size_t          FilterTriggerMaskSize;
     uint32          FilterMask[CFE_ES_PERF_32BIT_WORDS_IN_MASK];
     uint32          TriggerMask[CFE_ES_PERF_32BIT_WORDS_IN_MASK];
 } CFE_ES_PerfMetaData_t;
