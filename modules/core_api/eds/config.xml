@@ -39,7 +39,7 @@
   </Package>
 
   <Package name="CFE_FS" shortDescription="File Services Configuration">
-     <Define name="FILE_CONTENT_ID" value="0x63464531" shortDescription="Magic Number for cFE compliant files (= cFE1)" />
+     <Define name="FILE_CONTENT_ID" value="0x63464531" shortDescription="Magic Number for cFE-compliant files (= cFE1)" />
   </Package>
 
   <Package name="CFE_SB" shortDescription="Software Bus Configuration">

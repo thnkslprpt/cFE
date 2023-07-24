@@ -85,7 +85,7 @@ CFE_Status_t CFE_TBL_Register(CFE_TBL_Handle_t *TblHandlePtr, const char *Name, 
         }
         else
         {
-            /* Generate application specific table name */
+            /* Generate application-specific table name */
             CFE_TBL_FormTableName(TblName, Name, ThisAppId);
 
             /* Make sure the specified size is acceptable */
