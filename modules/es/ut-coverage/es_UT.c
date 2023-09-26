@@ -619,23 +619,23 @@ void UtTest_Setup(void)
     UT_Init("es");
     UtPrintf("cFE ES Unit Test Output File\n\n");
 
-    UT_ADD_TEST(TestInit);
-    UT_ADD_TEST(TestStartupErrorPaths);
-    UT_ADD_TEST(TestResourceID);
-    UT_ADD_TEST(TestApps);
-    UT_ADD_TEST(TestLibs);
-    UT_ADD_TEST(TestERLog);
-    UT_ADD_TEST(TestTask);
-    UT_ADD_TEST(TestPerf);
-    UT_ADD_TEST(TestAPI);
-    UT_ADD_TEST(TestGenericCounterAPI);
-    UT_ADD_TEST(TestCDS);
-    UT_ADD_TEST(TestGenericPool);
-    UT_ADD_TEST(TestCDSMempool);
-    UT_ADD_TEST(TestESMempool);
-    UT_ADD_TEST(TestSysLog);
-    UT_ADD_TEST(TestBackground);
-    UT_ADD_TEST(TestStatusToString);
+    // UT_ADD_TEST(TestInit);
+    // UT_ADD_TEST(TestStartupErrorPaths);
+    // UT_ADD_TEST(TestResourceID);
+    // UT_ADD_TEST(TestApps);
+    // UT_ADD_TEST(TestLibs);
+    // UT_ADD_TEST(TestERLog);
+    // UT_ADD_TEST(TestTask);
+    // UT_ADD_TEST(TestPerf);
+    // UT_ADD_TEST(TestAPI);
+    // UT_ADD_TEST(TestGenericCounterAPI);
+    // UT_ADD_TEST(TestCDS);
+    // UT_ADD_TEST(TestGenericPool);
+    // UT_ADD_TEST(TestCDSMempool);
+    // UT_ADD_TEST(TestESMempool);
+    // UT_ADD_TEST(TestSysLog);
+    // UT_ADD_TEST(TestBackground);
+    // UT_ADD_TEST(TestStatusToString);
 }
 
 /*

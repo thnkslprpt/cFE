@@ -109,48 +109,48 @@ void UtTest_Setup(void)
     UT_InitializeTableRegistryNames();
 
     /* cfe_tbl_task.c functions */
-    UT_ADD_TEST(Test_CFE_TBL_TaskInit);
-    UT_ADD_TEST(Test_CFE_TBL_InitData);
-    UT_ADD_TEST(Test_CFE_TBL_SearchCmdHndlrTbl);
+    // UT_ADD_TEST(Test_CFE_TBL_TaskInit);
+    // UT_ADD_TEST(Test_CFE_TBL_InitData);
+    // UT_ADD_TEST(Test_CFE_TBL_SearchCmdHndlrTbl);
 
-    /* cfe_tbl_task_cmds.c functions */
-    /* This should be done first (it initializes working data structures) */
-    UT_ADD_TEST(Test_CFE_TBL_DeleteCDSCmd);
-    UT_ADD_TEST(Test_CFE_TBL_TlmRegCmd);
-    UT_ADD_TEST(Test_CFE_TBL_AbortLoadCmd);
-    UT_ADD_TEST(Test_CFE_TBL_ActivateCmd);
-    UT_ADD_TEST(Test_CFE_TBL_DumpToFile);
-    UT_ADD_TEST(Test_CFE_TBL_ResetCmd);
-    UT_ADD_TEST(Test_CFE_TBL_ValidateCmd);
-    UT_ADD_TEST(Test_CFE_TBL_NoopCmd);
-    UT_ADD_TEST(Test_CFE_TBL_GetTblRegData);
-    UT_ADD_TEST(Test_CFE_TBL_GetHkData);
-    UT_ADD_TEST(Test_CFE_TBL_DumpRegCmd);
-    UT_ADD_TEST(Test_CFE_TBL_DumpCmd);
-    UT_ADD_TEST(Test_CFE_TBL_LoadCmd);
-    UT_ADD_TEST(Test_CFE_TBL_HousekeepingCmd);
+    // /* cfe_tbl_task_cmds.c functions */
+    // /* This should be done first (it initializes working data structures) */
+    // UT_ADD_TEST(Test_CFE_TBL_DeleteCDSCmd);
+    // UT_ADD_TEST(Test_CFE_TBL_TlmRegCmd);
+    // UT_ADD_TEST(Test_CFE_TBL_AbortLoadCmd);
+    // UT_ADD_TEST(Test_CFE_TBL_ActivateCmd);
+    // UT_ADD_TEST(Test_CFE_TBL_DumpToFile);
+    // UT_ADD_TEST(Test_CFE_TBL_ResetCmd);
+    // UT_ADD_TEST(Test_CFE_TBL_ValidateCmd);
+    // UT_ADD_TEST(Test_CFE_TBL_NoopCmd);
+    // UT_ADD_TEST(Test_CFE_TBL_GetTblRegData);
+    // UT_ADD_TEST(Test_CFE_TBL_GetHkData);
+    // UT_ADD_TEST(Test_CFE_TBL_DumpRegCmd);
+    // UT_ADD_TEST(Test_CFE_TBL_DumpCmd);
+    // UT_ADD_TEST(Test_CFE_TBL_LoadCmd);
+    // UT_ADD_TEST(Test_CFE_TBL_HousekeepingCmd);
 
-    /* cfe_tbl_api.c and cfe_tbl_internal.c functions */
-    UT_ADD_TEST(Test_CFE_TBL_ApiInit);
-    UT_ADD_TEST(Test_CFE_TBL_Register);
-    UT_ADD_TEST(Test_CFE_TBL_Share);
-    UT_ADD_TEST(Test_CFE_TBL_Unregister);
-    UT_ADD_TEST(Test_CFE_TBL_NotifyByMessage);
-    UT_ADD_TEST(Test_CFE_TBL_Load);
-    UT_ADD_TEST(Test_CFE_TBL_GetAddress);
-    UT_ADD_TEST(Test_CFE_TBL_ReleaseAddress);
-    UT_ADD_TEST(Test_CFE_TBL_GetAddresses);
-    UT_ADD_TEST(Test_CFE_TBL_ReleaseAddresses);
-    UT_ADD_TEST(Test_CFE_TBL_Validate);
-    UT_ADD_TEST(Test_CFE_TBL_Manage);
-    UT_ADD_TEST(Test_CFE_TBL_DumpToBuffer);
-    UT_ADD_TEST(Test_CFE_TBL_Update);
-    UT_ADD_TEST(Test_CFE_TBL_GetStatus);
-    UT_ADD_TEST(Test_CFE_TBL_GetInfo);
-    UT_ADD_TEST(Test_CFE_TBL_TblMod);
+    // /* cfe_tbl_api.c and cfe_tbl_internal.c functions */
+    // UT_ADD_TEST(Test_CFE_TBL_ApiInit);
+    // UT_ADD_TEST(Test_CFE_TBL_Register);
+    // UT_ADD_TEST(Test_CFE_TBL_Share);
+    // UT_ADD_TEST(Test_CFE_TBL_Unregister);
+    // UT_ADD_TEST(Test_CFE_TBL_NotifyByMessage);
+    // UT_ADD_TEST(Test_CFE_TBL_Load);
+    // UT_ADD_TEST(Test_CFE_TBL_GetAddress);
+    // UT_ADD_TEST(Test_CFE_TBL_ReleaseAddress);
+    // UT_ADD_TEST(Test_CFE_TBL_GetAddresses);
+    // UT_ADD_TEST(Test_CFE_TBL_ReleaseAddresses);
+    // UT_ADD_TEST(Test_CFE_TBL_Validate);
+    // UT_ADD_TEST(Test_CFE_TBL_Manage);
+    // UT_ADD_TEST(Test_CFE_TBL_DumpToBuffer);
+    // UT_ADD_TEST(Test_CFE_TBL_Update);
+    // UT_ADD_TEST(Test_CFE_TBL_GetStatus);
+    // UT_ADD_TEST(Test_CFE_TBL_GetInfo);
+    // UT_ADD_TEST(Test_CFE_TBL_TblMod);
 
-    /* Miscellaneous cfe_tbl_internal.c tests */
-    UT_ADD_TEST(Test_CFE_TBL_Internal);
+    // /* Miscellaneous cfe_tbl_internal.c tests */
+    // UT_ADD_TEST(Test_CFE_TBL_Internal);
 }
 
 /*

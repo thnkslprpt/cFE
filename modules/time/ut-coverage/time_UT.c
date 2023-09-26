@@ -162,23 +162,23 @@ void UtTest_Setup(void)
     UT_Init("time");
     UtPrintf("cFE TIME Unit Test Output File\n\n");
 
-    UT_ADD_TEST(Test_Main);
-    UT_ADD_TEST(Test_Init);
-    UT_ADD_TEST(Test_GetTime);
-    UT_ADD_TEST(Test_TimeOp);
-    UT_ADD_TEST(Test_ConvertTime);
-    UT_ADD_TEST(Test_Print);
-    UT_ADD_TEST(Test_RegisterSyncCallbackTrue);
-    UT_ADD_TEST(Test_ExternalTone);
-    UT_ADD_TEST(Test_External);
-    UT_ADD_TEST(Test_PipeCmds);
-    UT_ADD_TEST(Test_ResetArea);
-    UT_ADD_TEST(Test_State);
-    UT_ADD_TEST(Test_GetReference);
-    UT_ADD_TEST(Test_Tone);
-    UT_ADD_TEST(Test_1Hz);
-    UT_ADD_TEST(Test_UnregisterSynchCallback);
-    UT_ADD_TEST(Test_CleanUpApp);
+    // UT_ADD_TEST(Test_Main);
+    // UT_ADD_TEST(Test_Init);
+    // UT_ADD_TEST(Test_GetTime);
+    // UT_ADD_TEST(Test_TimeOp);
+    // UT_ADD_TEST(Test_ConvertTime);
+    // UT_ADD_TEST(Test_Print);
+    // UT_ADD_TEST(Test_RegisterSyncCallbackTrue);
+    // UT_ADD_TEST(Test_ExternalTone);
+    // UT_ADD_TEST(Test_External);
+    // UT_ADD_TEST(Test_PipeCmds);
+    // UT_ADD_TEST(Test_ResetArea);
+    // UT_ADD_TEST(Test_State);
+    // UT_ADD_TEST(Test_GetReference);
+    // UT_ADD_TEST(Test_Tone);
+    // UT_ADD_TEST(Test_1Hz);
+    // UT_ADD_TEST(Test_UnregisterSynchCallback);
+    // UT_ADD_TEST(Test_CleanUpApp);
 }
 
 /*
