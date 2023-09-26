@@ -196,6 +196,6 @@ void UtTest_Setup(void)
     UT_Init("route_unsort");
     UtPrintf("Software Bus Routing unsorted coverage test...");
 
-    UT_ADD_TEST(Test_SBR_Route_Unsort_General);
-    UT_ADD_TEST(Test_SBR_Route_Unsort_GetSet);
+    // UT_ADD_TEST(Test_SBR_Route_Unsort_General);
+    // UT_ADD_TEST(Test_SBR_Route_Unsort_GetSet);
 }

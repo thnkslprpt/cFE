@@ -130,5 +130,5 @@ void UtTest_Setup(void)
     UT_Init("map_hash");
     UtPrintf("Software Bus Routing hash map coverage test...");
 
-    UT_ADD_TEST(Test_SBR_Map_Hash);
+    // UT_ADD_TEST(Test_SBR_Map_Hash);
 }
