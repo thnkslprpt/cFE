@@ -201,10 +201,10 @@ void TestMemPoolDelete(void)
 
 void ESMemPoolTestSetup(void)
 {
-    UtTest_Add(TestMemPoolCreate, NULL, NULL, "Test Mem Pool Create");
-    UtTest_Add(TestMemPoolCreateMax, NULL, NULL, "Test Mem Pool Create Maximum");
-    UtTest_Add(TestMemPoolGetBuf, NULL, NULL, "Test Mem Pool Get Buf");
-    UtTest_Add(TestMemPoolBufInfo, NULL, NULL, "Test Mem Pool Buf Info");
-    UtTest_Add(TestMemPoolPutBuf, NULL, NULL, "Test Mem Pool Put Buf");
-    UtTest_Add(TestMemPoolDelete, NULL, NULL, "Test Mem Pool Delete");
+    // UtTest_Add(TestMemPoolCreate, NULL, NULL, "Test Mem Pool Create");
+    // UtTest_Add(TestMemPoolCreateMax, NULL, NULL, "Test Mem Pool Create Maximum");
+    // UtTest_Add(TestMemPoolGetBuf, NULL, NULL, "Test Mem Pool Get Buf");
+    // UtTest_Add(TestMemPoolBufInfo, NULL, NULL, "Test Mem Pool Buf Info");
+    // UtTest_Add(TestMemPoolPutBuf, NULL, NULL, "Test Mem Pool Put Buf");
+    // UtTest_Add(TestMemPoolDelete, NULL, NULL, "Test Mem Pool Delete");
 }

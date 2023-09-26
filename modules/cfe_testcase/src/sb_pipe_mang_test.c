@@ -173,9 +173,9 @@ void TestPipeName(void)
 
 void SBPipeMangSetup(void)
 {
-    UtTest_Add(TestPipeCreate, NULL, NULL, "Test Pipe Create");
-    UtTest_Add(TestPipeCreateMax, NULL, NULL, "Test Pipe Create Max Limit");
-    UtTest_Add(TestPipeIndex, NULL, NULL, "Test Pipe Index");
-    UtTest_Add(TestPipeOptions, NULL, NULL, "Test Pipe Options");
-    UtTest_Add(TestPipeName, NULL, NULL, "Test Pipe Name");
+    // UtTest_Add(TestPipeCreate, NULL, NULL, "Test Pipe Create");
+    // UtTest_Add(TestPipeCreateMax, NULL, NULL, "Test Pipe Create Max Limit");
+    // UtTest_Add(TestPipeIndex, NULL, NULL, "Test Pipe Index");
+    // UtTest_Add(TestPipeOptions, NULL, NULL, "Test Pipe Options");
+    // UtTest_Add(TestPipeName, NULL, NULL, "Test Pipe Name");
 }

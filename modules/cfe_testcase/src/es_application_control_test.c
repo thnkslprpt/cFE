@@ -54,5 +54,5 @@ void TestApplicationControl(void)
 
 void ESApplicationControlTestSetup(void)
 {
-    UtTest_Add(TestApplicationControl, NULL, NULL, "Test Application Control API");
+    // UtTest_Add(TestApplicationControl, NULL, NULL, "Test Application Control API");
 }

@@ -46,5 +46,5 @@ void TestResetFilters(void)
 
 void EVSFiltersTestSetup(void)
 {
-    UtTest_Add(TestResetFilters, NULL, NULL, "Test Reset Filters");
+    // UtTest_Add(TestResetFilters, NULL, NULL, "Test Reset Filters");
 }

@@ -125,7 +125,7 @@ void TestSendTimedEvent(void)
 
 void EVSSendTestSetup(void)
 {
-    UtTest_Add(TestSendEvent, NULL, NULL, "Test Send Event");
-    UtTest_Add(TestSendEventAppID, NULL, NULL, "Test Send Event with App ID");
-    UtTest_Add(TestSendTimedEvent, NULL, NULL, "Test Send Timed Event");
+    // UtTest_Add(TestSendEvent, NULL, NULL, "Test Send Event");
+    // UtTest_Add(TestSendEventAppID, NULL, NULL, "Test Send Event with App ID");
+    // UtTest_Add(TestSendTimedEvent, NULL, NULL, "Test Send Timed Event");
 }

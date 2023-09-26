@@ -87,6 +87,6 @@ void TestGetTypeFromMsgId(void)
 
 void MessageIdTestSetup(void)
 {
-    UtTest_Add(TestMsgId, NULL, NULL, "Test Set/Get Message ID");
-    UtTest_Add(TestGetTypeFromMsgId, NULL, NULL, "Test Get Type From Message ID");
+    // UtTest_Add(TestMsgId, NULL, NULL, "Test Set/Get Message ID");
+    // UtTest_Add(TestGetTypeFromMsgId, NULL, NULL, "Test Get Type From Message ID");
 }

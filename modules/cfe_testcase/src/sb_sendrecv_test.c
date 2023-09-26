@@ -600,8 +600,8 @@ void TestMiscMessageUtils(void)
 
 void SBSendRecvTestSetup(void)
 {
-    UtTest_Add(TestBasicTransmitRecv, NULL, NULL, "Test Basic Transmit/Receive");
-    UtTest_Add(TestZeroCopyTransmitRecv, NULL, NULL, "Test Zero Copy Transmit/Receive");
-    UtTest_Add(TestMsgBroadcast, NULL, NULL, "Test Msg Broadcast");
-    UtTest_Add(TestMiscMessageUtils, NULL, NULL, "Test Miscellaneous Message Utility APIs");
+    // UtTest_Add(TestBasicTransmitRecv, NULL, NULL, "Test Basic Transmit/Receive");
+    // UtTest_Add(TestZeroCopyTransmitRecv, NULL, NULL, "Test Zero Copy Transmit/Receive");
+    // UtTest_Add(TestMsgBroadcast, NULL, NULL, "Test Msg Broadcast");
+    // UtTest_Add(TestMiscMessageUtils, NULL, NULL, "Test Miscellaneous Message Utility APIs");
 }

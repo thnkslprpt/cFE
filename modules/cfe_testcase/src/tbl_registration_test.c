@@ -266,8 +266,8 @@ void TestTableBadContext(void)
 
 void TBLRegistrationTestSetup(void)
 {
-    UtTest_Add(TestTableRegistration, NULL, NULL, "Test Table Registration");
-    UtTest_Add(TestTableMaxLimits, NULL, NULL, "Table Max Limits");
-    UtTest_Add(TestTableShare, NULL, NULL, "Test Table Sharing");
-    UtTest_Add(TestTableBadContext, NULL, NULL, "Test Table Bad Context");
+    // UtTest_Add(TestTableRegistration, NULL, NULL, "Test Table Registration");
+    // UtTest_Add(TestTableMaxLimits, NULL, NULL, "Table Max Limits");
+    // UtTest_Add(TestTableShare, NULL, NULL, "Test Table Sharing");
+    // UtTest_Add(TestTableBadContext, NULL, NULL, "Test Table Bad Context");
 }

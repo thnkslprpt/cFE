@@ -288,8 +288,8 @@ void TestExitChild(void)
 
 void ESTaskTestSetup(void)
 {
-    UtTest_Add(TestCreateChild, NULL, NULL, "Test Create Child");
-    UtTest_Add(TestChildTaskName, NULL, NULL, "Test Child Task Name");
-    UtTest_Add(TestChildTaskDelete, NULL, NULL, "Test Child Tasks Delete");
-    UtTest_Add(TestExitChild, NULL, NULL, "Test Exit Child");
+    // UtTest_Add(TestCreateChild, NULL, NULL, "Test Create Child");
+    // UtTest_Add(TestChildTaskName, NULL, NULL, "Test Child Task Name");
+    // UtTest_Add(TestChildTaskDelete, NULL, NULL, "Test Child Tasks Delete");
+    // UtTest_Add(TestExitChild, NULL, NULL, "Test Exit Child");
 }

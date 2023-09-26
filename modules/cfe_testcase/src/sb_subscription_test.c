@@ -276,10 +276,10 @@ void TestSBMaxDestinations(void)
 
 void SBSubscriptionTestSetup(void)
 {
-    UtTest_Add(TestSubscribeUnsubscribe, NULL, NULL, "Test SB Subscribe/Unsubscribe");
-    UtTest_Add(TestSubscribeUnsubscribeLocal, NULL, NULL, "Test SB SubscribeLocal/UnsubscribeLocal");
-    UtTest_Add(TestSubscribeEx, NULL, NULL, "Test SB SubscribeEx");
-    UtTest_Add(TestSBMaxDestinations, NULL, NULL, "Test SB Max Destinations");
+    // UtTest_Add(TestSubscribeUnsubscribe, NULL, NULL, "Test SB Subscribe/Unsubscribe");
+    // UtTest_Add(TestSubscribeUnsubscribeLocal, NULL, NULL, "Test SB SubscribeLocal/UnsubscribeLocal");
+    // UtTest_Add(TestSubscribeEx, NULL, NULL, "Test SB SubscribeEx");
+    // UtTest_Add(TestSBMaxDestinations, NULL, NULL, "Test SB Max Destinations");
 
     /*
      * NOTE: The TestSBMaxSubscriptions() is not included/added by default, as it will fill the

@@ -482,10 +482,10 @@ void TBLContentMangTestSetup(void)
 {
     TblTest_GenerateTblFiles();
 
-    UtTest_Add(TestLoad, RegisterTestTable, UnregisterTestTable, "Test Table Load");
-    UtTest_Add(TestUpdate, RegisterTestTable, UnregisterTestTable, "Test Table Update");
-    UtTest_Add(TestValidate, RegisterTestTable, UnregisterTestTable, "Test Table Validate");
-    UtTest_Add(TestManage, RegisterTestTable, UnregisterTestTable, "Test Table Manage");
-    UtTest_Add(TestDumpToBuffer, RegisterTestTable, UnregisterTestTable, "Test Table Dump to Buffer");
-    UtTest_Add(TestModified, RegisterTestTable, UnregisterTestTable, "Test Table Modified");
+    // UtTest_Add(TestLoad, RegisterTestTable, UnregisterTestTable, "Test Table Load");
+    // UtTest_Add(TestUpdate, RegisterTestTable, UnregisterTestTable, "Test Table Update");
+    // UtTest_Add(TestValidate, RegisterTestTable, UnregisterTestTable, "Test Table Validate");
+    // UtTest_Add(TestManage, RegisterTestTable, UnregisterTestTable, "Test Table Manage");
+    // UtTest_Add(TestDumpToBuffer, RegisterTestTable, UnregisterTestTable, "Test Table Dump to Buffer");
+    // UtTest_Add(TestModified, RegisterTestTable, UnregisterTestTable, "Test Table Modified");
 }

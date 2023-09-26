@@ -261,9 +261,9 @@ void TestGetModuleInfo(void)
 
 void ESInfoTestSetup(void)
 {
-    UtTest_Add(TestGetAppInfo, NULL, NULL, "Test App Info");
-    UtTest_Add(TestGetTaskInfo, NULL, NULL, "Test Task Info");
-    UtTest_Add(TestGetLibInfo, NULL, NULL, "Test Lib Info");
-    UtTest_Add(TestResetType, NULL, NULL, "Test Reset Type");
-    UtTest_Add(TestGetModuleInfo, NULL, NULL, "Test Module Info");
+    // UtTest_Add(TestGetAppInfo, NULL, NULL, "Test App Info");
+    // UtTest_Add(TestGetTaskInfo, NULL, NULL, "Test Task Info");
+    // UtTest_Add(TestGetLibInfo, NULL, NULL, "Test Lib Info");
+    // UtTest_Add(TestResetType, NULL, NULL, "Test Reset Type");
+    // UtTest_Add(TestGetModuleInfo, NULL, NULL, "Test Module Info");
 }

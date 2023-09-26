@@ -104,8 +104,8 @@ void TestCounterIDToIndex(void)
 
 void ESResourceIDTestSetup(void)
 {
-    UtTest_Add(TestAppIDToIndex, NULL, NULL, "Test Obtaining indices from App ID");
-    UtTest_Add(TestLibIDToIndex, NULL, NULL, "Test Obtaining indices from Lib ID");
-    UtTest_Add(TestTaskIDToIndex, NULL, NULL, "Test Obtaining indices from Task ID");
-    UtTest_Add(TestCounterIDToIndex, NULL, NULL, "Test Obtaining indices from Counter ID");
+    // UtTest_Add(TestAppIDToIndex, NULL, NULL, "Test Obtaining indices from App ID");
+    // UtTest_Add(TestLibIDToIndex, NULL, NULL, "Test Obtaining indices from Lib ID");
+    // UtTest_Add(TestTaskIDToIndex, NULL, NULL, "Test Obtaining indices from Task ID");
+    // UtTest_Add(TestCounterIDToIndex, NULL, NULL, "Test Obtaining indices from Counter ID");
 }

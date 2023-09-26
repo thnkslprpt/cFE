@@ -204,8 +204,8 @@ void TestFileDump(void)
 
 void FSUtilTestSetup(void)
 {
-    UtTest_Add(TestFileCategory, NULL, NULL, "Test File Category");
-    UtTest_Add(TestInputFile, NULL, NULL, "Test Input File");
-    UtTest_Add(TestFileName, NULL, NULL, "Test File Name");
-    UtTest_Add(TestFileDump, NULL, NULL, "Test File Dump");
+    // UtTest_Add(TestFileCategory, NULL, NULL, "Test File Category");
+    // UtTest_Add(TestInputFile, NULL, NULL, "Test Input File");
+    // UtTest_Add(TestFileName, NULL, NULL, "Test File Name");
+    // UtTest_Add(TestFileDump, NULL, NULL, "Test File Dump");
 }

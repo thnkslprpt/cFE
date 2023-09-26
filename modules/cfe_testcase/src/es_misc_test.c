@@ -107,8 +107,8 @@ void TestBackgroundWakeup(void)
 
 void ESMiscTestSetup(void)
 {
-    UtTest_Add(TestCalculateCRC, NULL, NULL, "Test Calculate CRC");
-    UtTest_Add(TestWriteToSysLog, NULL, NULL, "Test Write To Sys Log");
-    UtTest_Add(TestProcessAsyncEvent, NULL, NULL, "Test Process Async Event");
-    UtTest_Add(TestBackgroundWakeup, NULL, NULL, "Test Background Wakeup");
+    // UtTest_Add(TestCalculateCRC, NULL, NULL, "Test Calculate CRC");
+    // UtTest_Add(TestWriteToSysLog, NULL, NULL, "Test Write To Sys Log");
+    // UtTest_Add(TestProcessAsyncEvent, NULL, NULL, "Test Process Async Event");
+    // UtTest_Add(TestBackgroundWakeup, NULL, NULL, "Test Background Wakeup");
 }

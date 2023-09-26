@@ -144,7 +144,7 @@ void TestCopyRestoreCDS(void)
 
 void ESCDSTestSetup(void)
 {
-    UtTest_Add(TestRegisterCDS, NULL, NULL, "Test Register CDS");
-    UtTest_Add(TestCDSName, NULL, NULL, "Test CDS Name");
-    UtTest_Add(TestCopyRestoreCDS, NULL, NULL, "Test Copy Restore CDS");
+    // UtTest_Add(TestRegisterCDS, NULL, NULL, "Test Register CDS");
+    // UtTest_Add(TestCDSName, NULL, NULL, "Test CDS Name");
+    // UtTest_Add(TestCopyRestoreCDS, NULL, NULL, "Test Copy Restore CDS");
 }

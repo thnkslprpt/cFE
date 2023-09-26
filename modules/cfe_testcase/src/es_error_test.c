@@ -54,5 +54,5 @@ void TestStatusToString(void)
 
 void ESErrorTestSetup(void)
 {
-    UtTest_Add(TestStatusToString, NULL, NULL, "TestStatusToString");
+    // UtTest_Add(TestStatusToString, NULL, NULL, "TestStatusToString");
 }

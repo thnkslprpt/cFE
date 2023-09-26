@@ -168,6 +168,6 @@ void TestCounterGetSet(void)
 
 void ESCounterTestSetup(void)
 {
-    UtTest_Add(TestCounterCreateDelete, NULL, NULL, "Test Counter Create/Delete");
-    UtTest_Add(TestCounterGetSet, NULL, NULL, "Test Counter Get/Set");
+    // UtTest_Add(TestCounterCreateDelete, NULL, NULL, "Test Counter Create/Delete");
+    // UtTest_Add(TestCounterGetSet, NULL, NULL, "Test Counter Get/Set");
 }

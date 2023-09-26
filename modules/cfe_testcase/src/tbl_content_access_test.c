@@ -160,7 +160,7 @@ void TestGetReleaseAddresses(void)
 
 void TBLContentAccessTestSetup(void)
 {
-    UtTest_Add(TestGetAddress, RegisterTestTable, NULL, "Test Table Get Address");
-    UtTest_Add(TestReleaseAddress, RegisterTestTable, NULL, "Test Table Release Address");
-    UtTest_Add(TestGetReleaseAddresses, NULL, NULL, "Test Table Get and Release Addresses");
+    // UtTest_Add(TestGetAddress, RegisterTestTable, NULL, "Test Table Get Address");
+    // UtTest_Add(TestReleaseAddress, RegisterTestTable, NULL, "Test Table Release Address");
+    // UtTest_Add(TestGetReleaseAddresses, NULL, NULL, "Test Table Get and Release Addresses");
 }

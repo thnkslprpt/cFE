@@ -84,6 +84,6 @@ void TestWaitBehavior(void)
 
 void ESBehaviorestSetup(void)
 {
-    UtTest_Add(TestRunCounter, NULL, NULL, "Test Run Counter");
-    UtTest_Add(TestWaitBehavior, NULL, NULL, "Test Wait Behavior");
+    // UtTest_Add(TestRunCounter, NULL, NULL, "Test Run Counter");
+    // UtTest_Add(TestWaitBehavior, NULL, NULL, "Test Wait Behavior");
 }

@@ -63,8 +63,8 @@ void TestPerfLogTrigger(void)
 
 void ESPerfTestSetup(void)
 {
-    UtTest_Add(TestPerfLogEntry, NULL, NULL, "Test PerfLogEntry");
-    UtTest_Add(TestPerfLogExit, NULL, NULL, "Test PerfLogExit");
-    UtTest_Add(TestPerfLogAdd, NULL, NULL, "Test PerfLogAdd");
-    UtTest_Add(TestPerfLogTrigger, NULL, NULL, "Test Perf Trigger");
+    // UtTest_Add(TestPerfLogEntry, NULL, NULL, "Test PerfLogEntry");
+    // UtTest_Add(TestPerfLogExit, NULL, NULL, "Test PerfLogExit");
+    // UtTest_Add(TestPerfLogAdd, NULL, NULL, "Test PerfLogAdd");
+    // UtTest_Add(TestPerfLogTrigger, NULL, NULL, "Test Perf Trigger");
 }

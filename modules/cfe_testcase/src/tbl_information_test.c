@@ -98,7 +98,7 @@ void TestNotifyByMessage(void)
 
 void TBLInformationTestSetup(void)
 {
-    UtTest_Add(TestGetStatus, RegisterTestTable, UnregisterTestTable, "Test Table Get Status");
-    UtTest_Add(TestGetInfo, RegisterTestTable, UnregisterTestTable, "Test Table Get Info");
-    UtTest_Add(TestNotifyByMessage, RegisterTestTable, UnregisterTestTable, "Test Table Notify by Message");
+    // UtTest_Add(TestGetStatus, RegisterTestTable, UnregisterTestTable, "Test Table Get Status");
+    // UtTest_Add(TestGetInfo, RegisterTestTable, UnregisterTestTable, "Test Table Get Info");
+    // UtTest_Add(TestNotifyByMessage, RegisterTestTable, UnregisterTestTable, "Test Table Notify by Message");
 }

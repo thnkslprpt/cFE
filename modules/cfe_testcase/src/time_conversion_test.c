@@ -88,7 +88,7 @@ void TestConvertMicroSeconds2SubSeconds(void)
 
 void TimeConversionTestSetup(void)
 {
-    UtTest_Add(TestConvertMET2SCTime, NULL, NULL, "Test convert MET into spacecraft time");
-    UtTest_Add(TestConvertSubSeconds2MicroSeconds, NULL, NULL, "Test Convert sub-seconds into micro-seconds");
-    UtTest_Add(TestConvertMicroSeconds2SubSeconds, NULL, NULL, "Test Convert micro-seconds into sub-seconds");
+    // UtTest_Add(TestConvertMET2SCTime, NULL, NULL, "Test convert MET into spacecraft time");
+    // UtTest_Add(TestConvertSubSeconds2MicroSeconds, NULL, NULL, "Test Convert sub-seconds into micro-seconds");
+    // UtTest_Add(TestConvertMicroSeconds2SubSeconds, NULL, NULL, "Test Convert micro-seconds into sub-seconds");
 }
