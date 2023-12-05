@@ -421,7 +421,8 @@ void TestZeroCopyTransmitRecv(void)
     UtPrintf("Testing: CFE_SB_TransmitBuffer");
 
     /* Initialize the message content */
-    UtAssert_INT32_EQ(CFE_MSG_Init(&CmdBuf->Msg, CFE_FT_CMD_MSGID, sizeof(CFE_FT_TestCmdMessage_t)), CFE_SUCCESS);
+    UtAssert_INT32_EQ(CFE_MSG_Init(CFE_MSG_PTR(CmdBuf), CFE_FT_CMD_MSGID, sizeof(CFE_FT_TestCmdMessage_t)),
+                      CFE_SUCCESS);
     UtAssert_INT32_EQ(CFE_MSG_Init(&TlmBuf->Msg, CFE_FT_TLM_MSGID, sizeof(CFE_FT_TestTlmMessage_t)), CFE_SUCCESS);
 
     UtAssert_INT32_EQ(CFE_SB_TransmitBuffer(CmdBuf, true), CFE_SUCCESS);
