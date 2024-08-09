@@ -378,41 +378,34 @@ CFE_Status_t CFE_TBL_Load(CFE_TBL_Handle_t TblHandle, CFE_TBL_SrcEnum_t SrcType,
         CFE_EVS_SendEventWithAppID(CFE_TBL_HANDLE_ACCESS_ERR_EID, CFE_EVS_EventType_ERROR,
                                    CFE_TBL_Global.TableTaskAppId, "%s: No access to Tbl Handle=%d", AppName,
                                    (int)TblHandle);
+        return Status;
+    }
+
+    AccessDescPtr = CFE_TBL_TxnAccDesc(&Txn);
+    RegRecPtr     = CFE_TBL_TxnRegRec(&Txn);
+    ThisAppId     = CFE_TBL_TxnAppId(&Txn);
+
+    /* Translate AppID of caller into App Name */
+    CFE_ES_GetAppName(AppName, ThisAppId, sizeof(AppName));
+
+    /* Check to see if this is a dump only table */
+    if (RegRecPtr->DumpOnly)
+    {
+        Status = CFE_TBL_LoadDumpOnlyTable(RegRecPtr, AppName, SrcDataPtr);
+
         StillProcessing = false;
     }
 
-    if (StillProcessing)
+    /* Loads by an Application are not allowed if a table load is already in progress */
+    if (StillProcessing && RegRecPtr->LoadInProgress != CFE_TBL_NO_LOAD_IN_PROGRESS)
     {
-        AccessDescPtr = CFE_TBL_TxnAccDesc(&Txn);
-        RegRecPtr     = CFE_TBL_TxnRegRec(&Txn);
-        ThisAppId     = CFE_TBL_TxnAppId(&Txn);
+        CFE_EVS_SendEventWithAppID(CFE_TBL_LOAD_IN_PROGRESS_ERR_EID, CFE_EVS_EventType_ERROR,
+                                CFE_TBL_Global.TableTaskAppId, "%s: Load already in progress for '%s'", AppName,
+                                RegRecPtr->Name);
 
-        /* Translate AppID of caller into App Name */
-        CFE_ES_GetAppName(AppName, ThisAppId, sizeof(AppName));
+        Status = CFE_TBL_ERR_LOAD_IN_PROGRESS;
 
-        /* Check to see if this is a dump only table */
-        if (RegRecPtr->DumpOnly)
-        {
-            Status = CFE_TBL_LoadDumpOnlyTable(RegRecPtr, AppName, SrcDataPtr);
-
-            StillProcessing = false;
-        }
-    }
-
-    if (StillProcessing)
-    {
-        /* Loads by an Application are not allowed if a table load is already in progress */
-        if (RegRecPtr->LoadInProgress != CFE_TBL_NO_LOAD_IN_PROGRESS)
-        {
-            CFE_EVS_SendEventWithAppID(CFE_TBL_LOAD_IN_PROGRESS_ERR_EID, CFE_EVS_EventType_ERROR,
-                                    CFE_TBL_Global.TableTaskAppId, "%s: Load already in progress for '%s'", AppName,
-                                    RegRecPtr->Name);
-
-            Status = CFE_TBL_ERR_LOAD_IN_PROGRESS;
-
-            StillProcessing = false;
-
-        }
+        StillProcessing = false;
     }
 
     if (StillProcessing)

@@ -1711,18 +1711,18 @@ CFE_Status_t CFE_TBL_LoadDumpOnlyTable(CFE_TBL_RegistryRec_t *RegRecPtr, const c
     }
     else
     {
-    /* The Application is allowed to call Load once when the address  */
-    /* of the dump only table is being defined by the application.    */
-    RegRecPtr->Buffers[0].BufferPtr = (void *)SrcDataPtr;
-    RegRecPtr->TableLoadedOnce      = true;
+        /* The Application is allowed to call Load once when the address  */
+        /* of the dump only table is being defined by the application.    */
+        RegRecPtr->Buffers[0].BufferPtr = (void *)SrcDataPtr;
+        RegRecPtr->TableLoadedOnce      = true;
 
-    snprintf(RegRecPtr->Buffers[0].DataSource, sizeof(RegRecPtr->Buffers[0].DataSource), "Addr 0x%08lX",
-             (unsigned long)SrcDataPtr);
+        snprintf(RegRecPtr->Buffers[0].DataSource, sizeof(RegRecPtr->Buffers[0].DataSource), "Addr 0x%08lX",
+                (unsigned long)SrcDataPtr);
 
-    RegRecPtr->Buffers[0].FileTime = CFE_TIME_ZERO_VALUE;
+        RegRecPtr->Buffers[0].FileTime = CFE_TIME_ZERO_VALUE;
 
-    CFE_EVS_SendEventWithAppID(CFE_TBL_LOAD_SUCCESS_INF_EID, CFE_EVS_EventType_DEBUG, CFE_TBL_Global.TableTaskAppId,
-                               "Successfully loaded '%s' from '%s'", RegRecPtr->Name, RegRecPtr->Buffers[0].DataSource);
+        CFE_EVS_SendEventWithAppID(CFE_TBL_LOAD_SUCCESS_INF_EID, CFE_EVS_EventType_DEBUG, CFE_TBL_Global.TableTaskAppId,
+                                "Successfully loaded '%s' from '%s'", RegRecPtr->Name, RegRecPtr->Buffers[0].DataSource);
     }
 
     return Status;
@@ -1859,7 +1859,7 @@ CFE_Status_t CFE_TBL_PerformUpdate(CFE_TBL_RegistryRec_t *RegRecPtr, const CFE_T
         CFE_TBL_NotifyTblUsersOfUpdate(RegRecPtr);
 
         /* If the table is a critical table, update the appropriate CDS with the new data */
-        if (RegRecPtr->CriticalTable == true)
+        if (RegRecPtr->CriticalTable)
         {
             CFE_TBL_UpdateCriticalTblCDS(RegRecPtr);
         }
