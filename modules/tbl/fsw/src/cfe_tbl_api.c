@@ -387,15 +387,6 @@ CFE_Status_t CFE_TBL_Load(CFE_TBL_Handle_t TblHandle, CFE_TBL_SrcEnum_t SrcType,
         RegRecPtr     = CFE_TBL_TxnRegRec(&Txn);
         ThisAppId     = CFE_TBL_TxnAppId(&Txn);
 
-        /*
-        * This is not the end of the transaction - this is just put here for now
-        * until the many inline "return" statements in this function can be cleaned up.
-        *
-        * This means nearly everything is subject to race conditions, but it is no worse
-        * than it had been before.
-        */
-        CFE_TBL_TxnFinish(&Txn);
-
         /* Translate AppID of caller into App Name */
         CFE_ES_GetAppName(AppName, ThisAppId, sizeof(AppName));
 
@@ -488,6 +479,8 @@ CFE_Status_t CFE_TBL_Load(CFE_TBL_Handle_t TblHandle, CFE_TBL_SrcEnum_t SrcType,
             CFE_TBL_Global.LastTblUpdated = AccessDescPtr->RegIndex;
         }
     }
+
+    CFE_TBL_TxnFinish(&Txn);
 
     return Status;
 }
