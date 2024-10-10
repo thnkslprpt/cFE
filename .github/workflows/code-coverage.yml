@@ -114,12 +114,18 @@ jobs:
           echo "branch_diff=$branch_diff" >> $GITHUB_ENV
           line_diff=$(echo $line_nums | awk '{ print $4 - $3 }')
           echo "line_diff=$line_diff" >> $GITHUB_ENV
-          if [ $branch_diff -gt ${{ env.ALLOWED_MISSED_BRANCHES }} ] || [ $line_diff -gt ${{ env.ALLOWED_MISSED_LINES }} ]
+
+          if [ $branch_diff -gt ${{ env.ALLOWED_MISSED_BRANCHES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
             echo "::error::$branch_diff branches missed, while only ${{ env.ALLOWED_MISSED_BRANCHES }} are allowed."
+            exit -1
+          fi
+
+          if [ $line_diff -gt ${{ env.ALLOWED_MISSED_LINES }} ]
+          then
+            grep -A 3 "Overall coverage rate" lcov_out.txt
             echo "::error::$line_diff lines missed, while only ${{ env.ALLOWED_MISSED_LINES }} are allowed."
-            echo "::error::Please review the coverage report and ensure the coverage meets the required thresholds."
             exit -1
           fi
 
