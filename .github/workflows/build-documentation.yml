@@ -1,7 +1,6 @@
 name: cFS Documentation and Guides
 
 on:
-  push:
   pull_request:
   workflow_dispatch:
   schedule:
