@@ -13,7 +13,7 @@ env:
   ENABLE_UNIT_TESTS: true
   OMIT_DEPRECATED: true
   BUILDTYPE: debug
-  ALLOWED_MISSED_BRANCHES: 40
+  ALLOWED_MISSED_BRANCHES: 39
   ALLOWED_MISSED_LINES: 17
 
 jobs:
@@ -111,7 +111,9 @@ jobs:
           line_nums=$(grep -A 3 "Overall coverage rate" lcov_out.txt | grep lines | grep -oP "[0-9]+[0-9]*")
 
           branch_diff=$(echo $branch_nums | awk '{ print $4 - $3 }')
+          echo "branch_diff=$branch_diff" >> $GITHUB_ENV
           line_diff=$(echo $line_nums | awk '{ print $4 - $3 }')
+          echo "line_diff=$line_diff" >> $GITHUB_ENV
           if [ $branch_diff -gt ${{ env.ALLOWED_MISSED_BRANCHES }} ] || [ $line_diff -gt ${{ env.ALLOWED_MISSED_LINES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
@@ -122,26 +124,20 @@ jobs:
 
       - name: Enforce Keeping Branch Coverage Minimum Up-To-Date
         run: |
-          branch_nums=$(grep -A 3 "Overall coverage rate" lcov_out.txt | grep branches | grep -oP "[0-9]+[0-9]*")
-
-          branch_diff=$(echo $branch_nums | awk '{ print $4 - $3 }')
           if [ $branch_diff -lt ${{ env.ALLOWED_MISSED_BRANCHES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
-                      echo "::error::${{ branch_diff }} uncovered branch${{ branch_diff == 1 && '' || 'es' }} reported, but ${{ env.ALLOWED_MISSED_BRANCHES }} ${{ branch_diff == 1 && 'is' || 'are' }} allowed."
+                      echo "::error::${{ env.branch_diff }} uncovered branch${{ env.branch_diff == 1 && '' || 'es' }} reported, but ${{ env.ALLOWED_MISSED_BRANCHES }} ${{ env.branch_diff == 1 && 'is' || 'are' }} allowed."
                       echo "::error::Please update (lower) the 'ALLOWED_MISSED_BRANCHES' variable to $branch_diff in order to match the new coverage level."
             exit -1
           fi
 
       - name: Enforce Keeping Line Coverage Minimum Up-To-Date
         run: |
-          line_nums=$(grep -A 3 "Overall coverage rate" lcov_out.txt | grep lines | grep -oP "[0-9]+[0-9]*")
-
-          line_diff=$(echo $line_nums | awk '{ print $4 - $3 }')
           if [ $line_diff -lt ${{ env.ALLOWED_MISSED_LINES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
-            echo "::error::${{ line_diff }} uncovered branch${{ line_diff == 1 && '' || 's' }} reported, but ${{ env.ALLOWED_MISSED_BRANCHES }} ${{ line_diff == 1 && 'is' || 'are' }} allowed."
+            echo "::error::${{ env.line_diff }} uncovered branch${{ env.line_diff == 1 && '' || 's' }} reported, but ${{ env.ALLOWED_MISSED_BRANCHES }} ${{ env.line_diff == 1 && 'is' || 'are' }} allowed."
             echo "::error::Please update (lower) the 'ALLOWED_MISSED_LINES' variable to $line_diff in order to match the new coverage level."
             exit -1
           fi
