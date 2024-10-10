@@ -117,8 +117,8 @@ jobs:
           if [ $branch_diff -gt ${{ env.ALLOWED_MISSED_BRANCHES }} ] || [ $line_diff -gt ${{ env.ALLOWED_MISSED_LINES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
-            echo "$branch_diff branches missed, ${{ env.ALLOWED_MISSED_BRANCHES }} allowed"
-            echo "$line_diff lines missed, ${{ env.ALLOWED_MISSED_LINES }} allowed"
+            echo "${{ env.branch_diff }} branches missed, ${{ env.ALLOWED_MISSED_BRANCHES }} allowed"
+            echo "${{ env.line_diff }} lines missed, ${{ env.ALLOWED_MISSED_LINES }} allowed"
             exit -1
           fi
 
