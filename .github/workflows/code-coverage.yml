@@ -13,9 +13,9 @@ env:
   ENABLE_UNIT_TESTS: true
   OMIT_DEPRECATED: true
   BUILDTYPE: debug
-  ALLOWED_MISSED_BRANCHES: 40
+  ALLOWED_MISSED_BRANCHES: 39
   ALLOWED_MISSED_LINES: 17
-
+  ALLOWED_MISSED_FUNCTIONS: 0
 jobs:
 
   #Check for duplicate actions. Skips push actions if there is a matching or duplicate pull-request action.
@@ -109,23 +109,33 @@ jobs:
         run: |
           branch_nums=$(grep -A 3 "Overall coverage rate" lcov_out.txt | grep branches | grep -oP "[0-9]+[0-9]*")
           line_nums=$(grep -A 3 "Overall coverage rate" lcov_out.txt | grep lines | grep -oP "[0-9]+[0-9]*")
+          function_nums=$(grep -A 3 "Overall coverage rate" lcov_out.txt | grep functions | grep -oP "[0-9]+[0-9]*")
 
           branch_diff=$(echo $branch_nums | awk '{ print $4 - $3 }')
           echo "branch_diff=$branch_diff" >> $GITHUB_ENV
           line_diff=$(echo $line_nums | awk '{ print $4 - $3 }')
           echo "line_diff=$line_diff" >> $GITHUB_ENV
+          function_diff=$(echo $function_nums | awk '{ print $4 - $3 }')
+          echo "function_diff=$function_diff" >> $GITHUB_ENV
 
           if [ $branch_diff -gt ${{ env.ALLOWED_MISSED_BRANCHES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
-            echo "::error::$branch_diff branches missed, while only ${{ env.ALLOWED_MISSED_BRANCHES }} are allowed."
+            echo "::error::$branch_diff uncovered branch$([ $branch_diff -eq 1 ] && echo '' || echo 'es') reported, but ${{ env.ALLOWED_MISSED_BRANCHES }} $([ $branch_diff -eq 1 ] && echo 'is' || echo 'are') allowed."
             exit -1
           fi
 
           if [ $line_diff -gt ${{ env.ALLOWED_MISSED_LINES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
-            echo "::error::$line_diff lines missed, while only ${{ env.ALLOWED_MISSED_LINES }} are allowed."
+            echo "::error::$line_diff uncovered line$([ $line_diff -eq 1 ] && echo '' || echo 's') reported, but ${{ env.ALLOWED_MISSED_LINES }} $([ $line_diff -eq 1 ] && echo 'is' || echo 'are') allowed."
+            exit -1
+          fi
+
+          if [ $function_diff -gt ${{ env.ALLOWED_MISSED_FUNCTIONS }} ]
+          then
+            grep -A 3 "Overall coverage rate" lcov_out.txt
+            echo "::error::$function_diff uncovered function$([ $function_diff -eq 1 ] && echo '' || echo 's') reported, but ${{ env.ALLOWED_MISSED_FUNCTIONS }} $([ $function_diff -eq 1 ] && echo 'is' || echo 'are') allowed."
             exit -1
           fi
 
@@ -146,5 +156,15 @@ jobs:
             grep -A 3 "Overall coverage rate" lcov_out.txt
             echo "::error::$line_diff uncovered line$([ $line_diff -eq 1 ] && echo '' || echo 's') reported, but ${{ env.ALLOWED_MISSED_LINES }} $([ $line_diff -eq 1 ] && echo 'is' || echo 'are') allowed."
             echo "::error::Please update (lower) the 'ALLOWED_MISSED_LINES' variable to $line_diff in order to match the new coverage level."
+            exit -1
+          fi
+
+      - name: Enforce Keeping Function Coverage Minimum Up-To-Date
+        run: |
+          if [ $function_diff -lt ${{ env.ALLOWED_MISSED_FUNCTIONS }} ]
+          then
+            grep -A 3 "Overall coverage rate" lcov_out.txt
+            echo "::error::$function_diff uncovered function$([ $function_diff -eq 1 ] && echo '' || echo 's') reported, but ${{ env.ALLOWED_MISSED_FUNCTIONS }} $([ $function_diff -eq 1 ] && echo 'is' || echo 'are') allowed."
+            echo "::error::Please update (lower) the 'ALLOWED_MISSED_FUNCTIONS' variable to $function_diff in order to match the new coverage level."
             exit -1
           fi
