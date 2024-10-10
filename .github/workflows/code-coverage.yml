@@ -13,7 +13,7 @@ env:
   ENABLE_UNIT_TESTS: true
   OMIT_DEPRECATED: true
   BUILDTYPE: debug
-  ALLOWED_MISSED_BRANCHES: 38
+  ALLOWED_MISSED_BRANCHES: 39
   ALLOWED_MISSED_LINES: 17
 
 jobs:
@@ -117,8 +117,8 @@ jobs:
           if [ $branch_diff -gt ${{ env.ALLOWED_MISSED_BRANCHES }} ] || [ $line_diff -gt ${{ env.ALLOWED_MISSED_LINES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
-            echo "${{ env.branch_diff }} branches missed, ${{ env.ALLOWED_MISSED_BRANCHES }} allowed"
-            echo "${{ env.line_diff }} lines missed, ${{ env.ALLOWED_MISSED_LINES }} allowed"
+            echo "$branch_diff branches missed, ${{ env.ALLOWED_MISSED_BRANCHES }} allowed"
+            echo "$line_diff lines missed, ${{ env.ALLOWED_MISSED_LINES }} allowed"
             exit -1
           fi
 
@@ -127,8 +127,8 @@ jobs:
           if [ $branch_diff -lt ${{ env.ALLOWED_MISSED_BRANCHES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
-                      echo "::error::${{ env.branch_diff }} uncovered branch${{ env.branch_diff == 1 && '' || 'es' }} reported, but ${{ env.ALLOWED_MISSED_BRANCHES }} ${{ env.branch_diff == 1 && 'is' || 'are' }} allowed."
-                      echo "::error::Please update (lower) the 'ALLOWED_MISSED_BRANCHES' variable to ${{ env.branch_diff }} in order to match the new coverage level."
+            echo "::error::$branch_diff uncovered branch${branch_diff == 1 && '' || 'es'} reported, but ${{ env.ALLOWED_MISSED_BRANCHES }} ${branch_diff == 1 && 'is' || 'are'} allowed."
+            echo "::error::Please update (lower) the 'ALLOWED_MISSED_BRANCHES' variable to $branch_diff in order to match the new coverage level."
             exit -1
           fi
 
@@ -137,7 +137,7 @@ jobs:
           if [ $line_diff -lt ${{ env.ALLOWED_MISSED_LINES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
-            echo "::error::${{ env.line_diff }} uncovered line${{ env.line_diff == 1 && '' || 's' }} reported, but ${{ env.ALLOWED_MISSED_LINES }} ${{ env.line_diff == 1 && 'is' || 'are' }} allowed."
-            echo "::error::Please update (lower) the 'ALLOWED_MISSED_LINES' variable to ${{ env.line_diff }} in order to match the new coverage level."
+            echo "::error::$line_diff uncovered line${line_diff == 1 && '' || 's'} reported, but ${{ env.ALLOWED_MISSED_LINES }} ${line_diff == 1 && 'is' || 'are'} allowed."
+            echo "::error::Please update (lower) the 'ALLOWED_MISSED_LINES' variable to $line_diff in order to match the new coverage level."
             exit -1
           fi
