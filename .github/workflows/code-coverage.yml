@@ -13,6 +13,8 @@ env:
   ENABLE_UNIT_TESTS: true
   OMIT_DEPRECATED: true
   BUILDTYPE: debug
+  ALLOWED_MISSED_BRANCHES: 39
+  ALLOWED_MISSED_LINES: 19
 
 jobs:
 
@@ -105,17 +107,32 @@ jobs:
 
       - name: Confirm Minimum Coverage
         run: |
-          missed_branches=39
-          missed_lines=19
           branch_nums=$(grep -A 3 "Overall coverage rate" lcov_out.txt | grep branches | grep -oP "[0-9]+[0-9]*")
           line_nums=$(grep -A 3 "Overall coverage rate" lcov_out.txt | grep lines | grep -oP "[0-9]+[0-9]*")
 
           branch_diff=$(echo $branch_nums | awk '{ print $4 - $3 }')
           line_diff=$(echo $line_nums | awk '{ print $4 - $3 }')
-          if [ $branch_diff -gt $missed_branches ] || [ $line_diff -gt $missed_lines ]
+          if [ $branch_diff -gt ${{ env.ALLOWED_MISSED_BRANCHES }} ] || [ $line_diff -gt ${{ env.ALLOWED_MISSED_LINES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
-            echo "$branch_diff branches missed, $missed_branches allowed"
-            echo "$line_diff lines missed, $missed_lines allowed"
+            echo "$branch_diff branches missed, ${{ env.ALLOWED_MISSED_BRANCHES }} allowed"
+            echo "$line_diff lines missed, ${{ env.ALLOWED_MISSED_LINES }} allowed"
             exit -1
           fi
+
+      # - name: Confirm Minimum Coverage
+      #   run: |
+      #     missed_branches=39
+      #     missed_lines=19
+      #     branch_nums=$(grep -A 3 "Overall coverage rate" lcov_out.txt | grep branches | grep -oP "[0-9]+[0-9]*")
+      #     line_nums=$(grep -A 3 "Overall coverage rate" lcov_out.txt | grep lines | grep -oP "[0-9]+[0-9]*")
+
+      #     branch_diff=$(echo $branch_nums | awk '{ print $4 - $3 }')
+      #     line_diff=$(echo $line_nums | awk '{ print $4 - $3 }')
+      #     if [ $branch_diff -gt $missed_branches ] || [ $line_diff -gt $missed_lines ]
+      #     then
+      #       grep -A 3 "Overall coverage rate" lcov_out.txt
+      #       echo "$branch_diff branches missed, $missed_branches allowed"
+      #       echo "$line_diff lines missed, $missed_lines allowed"
+      #       exit -1
+      #     fi
