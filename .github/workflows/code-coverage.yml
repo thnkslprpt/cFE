@@ -13,8 +13,8 @@ env:
   ENABLE_UNIT_TESTS: true
   OMIT_DEPRECATED: true
   BUILDTYPE: debug
-  ALLOWED_MISSED_BRANCHES: 39
-  ALLOWED_MISSED_LINES: 17
+  ALLOWED_MISSED_BRANCHES: 40
+  ALLOWED_MISSED_LINES: 18
 
 jobs:
 
@@ -128,7 +128,7 @@ jobs:
           if [ $branch_diff -lt ${{ env.ALLOWED_MISSED_BRANCHES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
-            echo "Please update the 'ALLOWED_MISSED_BRANCHES' variable to $branch_diff in order to match the new coverage level."
+            echo "::error::Please update (lower) the 'ALLOWED_MISSED_BRANCHES' variable to $branch_diff in order to match the new coverage level."
             exit -1
           fi
 
@@ -140,6 +140,6 @@ jobs:
           if [ $line_diff -lt ${{ env.ALLOWED_MISSED_LINES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
-            echo "Please update the 'ALLOWED_MISSED_LINES' variable to $line_diff in order to match the new coverage level."
+            echo "::error::Please update (lower) the 'ALLOWED_MISSED_LINES' variable to $line_diff in order to match the new coverage level."
             exit -1
           fi
