@@ -128,7 +128,8 @@ jobs:
           if [ $branch_diff -lt ${{ env.ALLOWED_MISSED_BRANCHES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
-            echo "::error::Please update (lower) the 'ALLOWED_MISSED_BRANCHES' variable to $branch_diff in order to match the new coverage level."
+                      echo "::error::${{ branch_diff }} uncovered branch${{ branch_diff == 1 && '' || 'es' }} reported, but ${{ env.ALLOWED_MISSED_BRANCHES }} ${{ branch_diff == 1 && 'is' || 'are' }} allowed."
+                      echo "::error::Please update (lower) the 'ALLOWED_MISSED_BRANCHES' variable to $branch_diff in order to match the new coverage level."
             exit -1
           fi
 
@@ -140,6 +141,7 @@ jobs:
           if [ $line_diff -lt ${{ env.ALLOWED_MISSED_LINES }} ]
           then
             grep -A 3 "Overall coverage rate" lcov_out.txt
+            echo "::error::${{ line_diff }} uncovered branch${{ line_diff == 1 && '' || 's' }} reported, but ${{ env.ALLOWED_MISSED_BRANCHES }} ${{ line_diff == 1 && 'is' || 'are' }} allowed."
             echo "::error::Please update (lower) the 'ALLOWED_MISSED_LINES' variable to $line_diff in order to match the new coverage level."
             exit -1
           fi
