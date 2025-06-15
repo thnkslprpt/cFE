@@ -80,30 +80,21 @@ CFE_ES_TaskId_t CFE_ES_TaskId_FromOSAL(osal_id_t id)
 CFE_ES_AppRecord_t *CFE_ES_LocateAppRecordByName(const char *Name)
 {
     CFE_ES_AppRecord_t *AppRecPtr;
-    uint32              Count;
 
     /*
     ** Search the Application table for an app with a matching name.
     */
-    AppRecPtr = CFE_ES_Global.AppTable;
-    Count     = CFE_PLATFORM_ES_MAX_APPLICATIONS;
-    while (true)
+    for (AppRecPtr = CFE_ES_Global.AppTable;
+         AppRecPtr < CFE_ES_Global.AppTable + CFE_PLATFORM_ES_MAX_APPLICATIONS;
+         AppRecPtr++)
     {
-        if (Count == 0)
-        {
-            AppRecPtr = NULL;
-            break;
-        }
         if (CFE_ES_AppRecordIsUsed(AppRecPtr) && strcmp(Name, CFE_ES_AppRecordGetName(AppRecPtr)) == 0)
         {
-            break;
+            return AppRecPtr;
         }
-
-        ++AppRecPtr;
-        --Count;
     }
 
-    return AppRecPtr;
+    return NULL;
 }
 
 /*----------------------------------------------------------------
@@ -115,30 +106,21 @@ CFE_ES_AppRecord_t *CFE_ES_LocateAppRecordByName(const char *Name)
 CFE_ES_LibRecord_t *CFE_ES_LocateLibRecordByName(const char *Name)
 {
     CFE_ES_LibRecord_t *LibRecPtr;
-    uint32              Count;
 
     /*
     ** Search the Library table for a library with a matching name.
     */
-    LibRecPtr = CFE_ES_Global.LibTable;
-    Count     = CFE_PLATFORM_ES_MAX_LIBRARIES;
-    while (true)
+    for (LibRecPtr = CFE_ES_Global.LibTable;
+         LibRecPtr < CFE_ES_Global.LibTable + CFE_PLATFORM_ES_MAX_LIBRARIES;
+         LibRecPtr++)
     {
-        if (Count == 0)
-        {
-            LibRecPtr = NULL;
-            break;
-        }
         if (CFE_ES_LibRecordIsUsed(LibRecPtr) && strcmp(Name, CFE_ES_LibRecordGetName(LibRecPtr)) == 0)
         {
-            break;
+            return LibRecPtr;
         }
-
-        ++LibRecPtr;
-        --Count;
     }
 
-    return LibRecPtr;
+    return NULL;
 }
 
 /*----------------------------------------------------------------
@@ -150,30 +132,21 @@ CFE_ES_LibRecord_t *CFE_ES_LocateLibRecordByName(const char *Name)
 CFE_ES_GenCounterRecord_t *CFE_ES_LocateCounterRecordByName(const char *Name)
 {
     CFE_ES_GenCounterRecord_t *CounterRecPtr;
-    uint32                     Count;
 
     /*
     ** Search the Counter table for a matching name.
     */
-    CounterRecPtr = CFE_ES_Global.CounterTable;
-    Count         = CFE_PLATFORM_ES_MAX_GEN_COUNTERS;
-    while (true)
+    for (CounterRecPtr = CFE_ES_Global.CounterTable;
+         CounterRecPtr < CFE_ES_Global.CounterTable + CFE_PLATFORM_ES_MAX_GEN_COUNTERS;
+         CounterRecPtr++)
     {
-        if (Count == 0)
-        {
-            CounterRecPtr = NULL;
-            break;
-        }
         if (CFE_ES_CounterRecordIsUsed(CounterRecPtr) && strcmp(Name, CFE_ES_CounterRecordGetName(CounterRecPtr)) == 0)
         {
-            break;
+            return CounterRecPtr;
         }
-
-        ++CounterRecPtr;
-        --Count;
     }
 
-    return CounterRecPtr;
+    return NULL;
 }
 
 /*----------------------------------------------------------------
