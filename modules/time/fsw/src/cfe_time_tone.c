@@ -459,7 +459,7 @@ CFE_Status_t CFE_TIME_ToneSendTime(CFE_TIME_SysTime_t NewTime)
 
     /*
     ** Need to get reference to obtain the current leap seconds
-    ** only if using internal clock source
+    ** only if using external clock source
     */
     if (CFE_TIME_Global.ClockSource != CFE_TIME_SourceSelect_INTERNAL)
     {
