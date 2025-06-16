@@ -297,7 +297,7 @@ int32 CFE_TIME_ToneSendMET(CFE_TIME_SysTime_t NewMET)
  *
  *-----------------------------------------------------------------*/
 #if (CFE_PLATFORM_TIME_CFG_SRC_GPS == true) || (CFE_PLATFORM_TIME_CFG_SRC_TIME == true)
-static int32 CFE_TIME_ToneSendCommon(CFE_TIME_SysTime_t NewTime, int16 LeapSeconds)
+static CFE_Status_t CFE_TIME_ToneSendSTCF(CFE_TIME_SysTime_t NewTime, int16 LeapSeconds)
 {
     CFE_TIME_Reference_t Reference;
     CFE_TIME_SysTime_t   NewSTCF;
@@ -307,8 +307,8 @@ static int32 CFE_TIME_ToneSendCommon(CFE_TIME_SysTime_t NewTime, int16 LeapSecon
     CFE_TIME_Compare_t   MinResult;
     CFE_TIME_Compare_t   MaxResult;
 
-    int16 ClockState;
-    int32 Result = CFE_SUCCESS;
+    int16        ClockState;
+    CFE_Status_t Result = CFE_SUCCESS;
 
     /* Zero out the Reference variable because we pass it into
      * a function before using it
@@ -435,12 +435,9 @@ static int32 CFE_TIME_ToneSendCommon(CFE_TIME_SysTime_t NewTime, int16 LeapSecon
  *
  *-----------------------------------------------------------------*/
 #if (CFE_PLATFORM_TIME_CFG_SRC_GPS == true)
-int32 CFE_TIME_ToneSendGPS(CFE_TIME_SysTime_t NewTime, int16 NewLeaps)
+CFE_Status_t CFE_TIME_ToneSendGPS(CFE_TIME_SysTime_t NewTime, int16 NewLeaps)
 {
-    /*
-    ** Simply call the common function with the provided leap seconds
-    */
-    return CFE_TIME_ToneSendCommon(NewTime, NewLeaps);
+    return CFE_TIME_ToneSendSTCF(NewTime, NewLeaps);
 }
 #endif /* CFE_PLATFORM_TIME_CFG_SRC_GPS */
 
@@ -451,7 +448,7 @@ int32 CFE_TIME_ToneSendGPS(CFE_TIME_SysTime_t NewTime, int16 NewLeaps)
  *
  *-----------------------------------------------------------------*/
 #if (CFE_PLATFORM_TIME_CFG_SRC_TIME == true)
-int32 CFE_TIME_ToneSendTime(CFE_TIME_SysTime_t NewTime)
+CFE_Status_t CFE_TIME_ToneSendTime(CFE_TIME_SysTime_t NewTime)
 {
     CFE_TIME_Reference_t Reference;
 
@@ -469,10 +466,7 @@ int32 CFE_TIME_ToneSendTime(CFE_TIME_SysTime_t NewTime)
         CFE_TIME_GetReference(&Reference);
     }
 
-    /*
-    ** Call the common function using the existing leap seconds from reference
-    */
-    return CFE_TIME_ToneSendCommon(NewTime, Reference.AtToneLeapSeconds);
+    return CFE_TIME_ToneSendSTCF(NewTime, Reference.AtToneLeapSeconds);
 }
 #endif /* CFE_PLATFORM_TIME_CFG_SRC_TIME */
 
