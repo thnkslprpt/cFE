@@ -356,7 +356,13 @@ static CFE_Status_t CFE_TIME_ToneSendSTCF(CFE_TIME_SysTime_t NewTime, int16 Leap
 ** Restore leap seconds if default time format is UTC...
 */
 #if (CFE_MISSION_TIME_CFG_DEFAULT_UTC == true)
+    #if (CFE_PLATFORM_TIME_CFG_SRC_TIME == true)
+        /* TIME source: use leap seconds from current reference */
+        NewSTCF.Seconds += Reference.AtToneLeapSeconds;
+    #else
+        /* GPS source: use the provided leap seconds */
         NewSTCF.Seconds += LeapSeconds;
+    #endif
 #endif
 
         /*
@@ -400,14 +406,22 @@ static CFE_Status_t CFE_TIME_ToneSendSTCF(CFE_TIME_SysTime_t NewTime, int16 Leap
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneMET.Subseconds  = CFE_MAKE_BIG32(NewMET.Subseconds);
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneSTCF.Seconds    = CFE_MAKE_BIG32(NewSTCF.Seconds);
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneSTCF.Subseconds = CFE_MAKE_BIG32(NewSTCF.Subseconds);
+#if (CFE_PLATFORM_TIME_CFG_SRC_TIME == true)
+            CFE_TIME_Global.ToneDataCmd.Payload.AtToneLeapSeconds     = CFE_MAKE_BIG16(Reference.AtToneLeapSeconds);
+#else
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneLeapSeconds     = CFE_MAKE_BIG16(LeapSeconds);
+#endif
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneState           = CFE_MAKE_BIG16(ClockState);
 
 #else /* !CFE_PLATFORM_TIME_CFG_BIGENDIAN */
 
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneMET         = NewMET;
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneSTCF        = NewSTCF;
+#if (CFE_PLATFORM_TIME_CFG_SRC_TIME == true)
+            CFE_TIME_Global.ToneDataCmd.Payload.AtToneLeapSeconds = Reference.AtToneLeapSeconds;
+#else
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneLeapSeconds = LeapSeconds;
+#endif
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneState       = ClockState;
 
 #endif /* CFE_PLATFORM_TIME_CFG_BIGENDIAN */
@@ -426,7 +440,7 @@ static CFE_Status_t CFE_TIME_ToneSendSTCF(CFE_TIME_SysTime_t NewTime, int16 Leap
 
     return Result;
 }
-#endif /* CFE_PLATFORM_TIME_CFG_SRC_GPS || CFE_PLATFORM_TIME_CFG_SRC_TIME */
+#endif
 
 /*----------------------------------------------------------------
  *
@@ -450,23 +464,11 @@ CFE_Status_t CFE_TIME_ToneSendGPS(CFE_TIME_SysTime_t NewTime, int16 NewLeaps)
 #if (CFE_PLATFORM_TIME_CFG_SRC_TIME == true)
 CFE_Status_t CFE_TIME_ToneSendTime(CFE_TIME_SysTime_t NewTime)
 {
-    CFE_TIME_Reference_t Reference;
-
-    /* Zero out the Reference variable because we pass it into
-     * a function before using it
-     * */
-    memset(&Reference, 0, sizeof(CFE_TIME_Reference_t));
-
     /*
-    ** Need to get reference to obtain the current leap seconds
-    ** only if using external clock source
+    ** Simply call the common helper function
+    ** TIME source doesn't provide leap seconds, so pass 0
     */
-    if (CFE_TIME_Global.ClockSource != CFE_TIME_SourceSelect_INTERNAL)
-    {
-        CFE_TIME_GetReference(&Reference);
-    }
-
-    return CFE_TIME_ToneSendSTCF(NewTime, Reference.AtToneLeapSeconds);
+    return CFE_TIME_ToneSendSTCF(NewTime, 0);
 }
 #endif /* CFE_PLATFORM_TIME_CFG_SRC_TIME */
 
