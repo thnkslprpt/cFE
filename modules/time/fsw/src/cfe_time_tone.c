@@ -359,7 +359,7 @@ static CFE_Status_t CFE_TIME_ToneSendSTCF(CFE_TIME_SysTime_t NewTime, int16 Leap
     #if (CFE_PLATFORM_TIME_CFG_SRC_TIME == true)
         /* TIME source: use leap seconds from current reference */
         NewSTCF.Seconds += Reference.AtToneLeapSeconds;
-    #else
+    #elif (CFE_PLATFORM_TIME_CFG_SRC_GPS == true)
         /* GPS source: use the provided leap seconds */
         NewSTCF.Seconds += LeapSeconds;
     #endif
@@ -408,7 +408,7 @@ static CFE_Status_t CFE_TIME_ToneSendSTCF(CFE_TIME_SysTime_t NewTime, int16 Leap
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneSTCF.Subseconds = CFE_MAKE_BIG32(NewSTCF.Subseconds);
 #if (CFE_PLATFORM_TIME_CFG_SRC_TIME == true)
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneLeapSeconds     = CFE_MAKE_BIG16(Reference.AtToneLeapSeconds);
-#else
+#elif (CFE_PLATFORM_TIME_CFG_SRC_GPS == true)
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneLeapSeconds     = CFE_MAKE_BIG16(LeapSeconds);
 #endif
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneState           = CFE_MAKE_BIG16(ClockState);
@@ -419,7 +419,7 @@ static CFE_Status_t CFE_TIME_ToneSendSTCF(CFE_TIME_SysTime_t NewTime, int16 Leap
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneSTCF        = NewSTCF;
 #if (CFE_PLATFORM_TIME_CFG_SRC_TIME == true)
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneLeapSeconds = Reference.AtToneLeapSeconds;
-#else
+#elif (CFE_PLATFORM_TIME_CFG_SRC_GPS == true)
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneLeapSeconds = LeapSeconds;
 #endif
             CFE_TIME_Global.ToneDataCmd.Payload.AtToneState       = ClockState;
@@ -465,8 +465,7 @@ CFE_Status_t CFE_TIME_ToneSendGPS(CFE_TIME_SysTime_t NewTime, int16 NewLeaps)
 CFE_Status_t CFE_TIME_ToneSendTime(CFE_TIME_SysTime_t NewTime)
 {
     /*
-    ** Simply call the common helper function
-    ** TIME source doesn't provide leap seconds, so pass 0
+    ** TIME source doesn't provide leap seconds, so just pass 0 to the helper function
     */
     return CFE_TIME_ToneSendSTCF(NewTime, 0);
 }
