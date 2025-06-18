@@ -635,7 +635,8 @@ int32 CFE_EVS_SetEventFormatModeCmd(const CFE_EVS_SetEventFormatModeCmd_t *data)
     const CFE_EVS_SetEventFormatMode_Payload_t *CmdPtr = &data->Payload;
     int32                                       Status;
 
-    if ((CmdPtr->MsgFormat == CFE_EVS_MsgFormat_SHORT) || (CmdPtr->MsgFormat == CFE_EVS_MsgFormat_LONG))
+    if ((CmdPtr->MsgFormat == CFE_EVS_MsgFormat_SHORT) || (CmdPtr->MsgFormat == CFE_EVS_MsgFormat_LONG) ||
+        (CmdPtr->MsgFormat == CFE_EVS_MsgFormat_MEDIUM))
     {
         CFE_EVS_Global.EVS_TlmPkt.Payload.MessageFormatMode = CmdPtr->MsgFormat;
 

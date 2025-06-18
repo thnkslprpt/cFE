@@ -236,4 +236,10 @@ typedef struct CFE_EVS_ShortEventTlm
     CFE_EVS_ShortEventTlm_Payload_t Payload;         /**< \brief Telemetry payload */
 } CFE_EVS_ShortEventTlm_t;
 
+typedef struct CFE_EVS_MediumEventTlm
+{
+    CFE_MSG_TelemetryHeader_t        TelemetryHeader; /**< \brief Telemetry header */
+    CFE_EVS_MediumEventTlm_Payload_t Payload;         /**< \brief Telemetry payload */
+} CFE_EVS_MediumEventTlm_t;
+
 #endif

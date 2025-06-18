@@ -41,5 +41,7 @@
                                                                               */
 #define CFE_EVS_SHORT_EVENT_MSG_MID \
     CFE_PLATFORM_TLM_TOPICID_TO_MIDV(CFE_MISSION_EVS_SHORT_EVENT_MSG_TOPICID) /* 0x0809 */
+#define CFE_EVS_MEDIUM_EVENT_MSG_MID \
+    CFE_PLATFORM_TLM_TOPICID_TO_MIDV(CFE_MISSION_EVS_MEDIUM_EVENT_MSG_TOPICID) /* 0x080A */
 
 #endif

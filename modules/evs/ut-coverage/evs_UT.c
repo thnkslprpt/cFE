@@ -128,6 +128,11 @@ static UT_SoftwareBusSnapshot_Entry_t UT_EVS_SHORTFMT_SNAPSHOTDATA = {
     .SnapshotOffset = offsetof(CFE_EVS_ShortEventTlm_t, Payload.PacketID.EventID),
     .SnapshotSize   = sizeof(uint16)};
 
+static UT_SoftwareBusSnapshot_Entry_t UT_EVS_MEDIUMFMT_SNAPSHOTDATA = {
+    .MsgId          = CFE_SB_MSGID_WRAP_VALUE(0),
+    .SnapshotOffset = offsetof(CFE_EVS_MediumEventTlm_t, Payload.PacketID.EventID),
+    .SnapshotSize   = sizeof(uint16)};
+
 typedef struct
 {
     uint16 EventID;
@@ -154,8 +159,9 @@ void UT_InitData_EVS(void)
 {
     UT_InitData();
 
-    UT_EVS_LONGFMT_SNAPSHOTDATA.MsgId  = CFE_SB_MSGID_C(CFE_EVS_LONG_EVENT_MSG_MID);
-    UT_EVS_SHORTFMT_SNAPSHOTDATA.MsgId = CFE_SB_MSGID_C(CFE_EVS_SHORT_EVENT_MSG_MID);
+    UT_EVS_LONGFMT_SNAPSHOTDATA.MsgId   = CFE_SB_MSGID_C(CFE_EVS_LONG_EVENT_MSG_MID);
+    UT_EVS_SHORTFMT_SNAPSHOTDATA.MsgId  = CFE_SB_MSGID_C(CFE_EVS_SHORT_EVENT_MSG_MID);
+    UT_EVS_MEDIUMFMT_SNAPSHOTDATA.MsgId = CFE_SB_MSGID_C(CFE_EVS_MEDIUM_EVENT_MSG_MID);
 
     UT_SetHandlerFunction(UT_KEY(CFE_MSG_GetMsgTime), UT_CFE_MSG_GetMsgTime_CustomHandler, NULL);
 }
@@ -199,6 +205,12 @@ static void UT_EVS_DoDispatchCheckEventsShort(void *MsgPtr, size_t MsgSize, UT_T
                                               UT_EVS_EventCapture_t *EventCapture)
 {
     UT_EVS_DoDispatchCheckEvents_Impl(MsgPtr, MsgSize, DispatchId, &UT_EVS_SHORTFMT_SNAPSHOTDATA, EventCapture);
+}
+
+static void UT_EVS_DoDispatchCheckEventsMedium(void *MsgPtr, size_t MsgSize, UT_TaskPipeDispatchId_t DispatchId,
+                                               UT_EVS_EventCapture_t *EventCapture)
+{
+    UT_EVS_DoDispatchCheckEvents_Impl(MsgPtr, MsgSize, DispatchId, &UT_EVS_MEDIUMFMT_SNAPSHOTDATA, EventCapture);
 }
 
 static void UT_EVS_DoGenericCheckEvents(void (*Func)(void), UT_EVS_EventCapture_t *EventCapture)
@@ -734,6 +746,11 @@ void Test_Format(void)
         .SnapshotBuffer = &CapturedMsg,
         .SnapshotOffset = offsetof(CFE_EVS_ShortEventTlm_t, Payload.PacketID),
         .SnapshotSize   = sizeof(CapturedMsg)};
+    UT_SoftwareBusSnapshot_Entry_t  MediumFmtSnapshotData = {
+        .MsgId          = CFE_SB_MSGID_WRAP_VALUE(CFE_EVS_MEDIUM_EVENT_MSG_MID),
+        .SnapshotBuffer = &CapturedMsg,
+        .SnapshotOffset = offsetof(CFE_EVS_MediumEventTlm_t, Payload.PacketID),
+        .SnapshotSize   = sizeof(CapturedMsg)};
     EVS_AppData_t *      AppDataPtr;
     CFE_ES_AppId_t       AppID;
     UT_EVS_MSGInitData_t MsgData;
@@ -780,7 +797,7 @@ void Test_Format(void)
     UT_SetDataBuffer(UT_KEY(CFE_SB_TransmitMsg), &MsgSend, sizeof(MsgSend), false);
     CFE_EVS_SendEvent(0, CFE_EVS_EventType_INFORMATION, "Short format check 1");
 
-    /* Note implementation initializes both short and long message */
+    /* Note implementation always initializes long message, plus the selected format (short in this case) */
     UtAssert_INT32_EQ(UT_GetStubCount(UT_KEY(CFE_MSG_Init)), 2);
     UtAssert_INT32_EQ(UT_GetStubCount(UT_KEY(CFE_SB_TransmitMsg)), 1);
     UtAssert_BOOL_TRUE(CFE_SB_MsgId_Equal(MsgData.MsgId, ShortFmtSnapshotData.MsgId));
@@ -838,8 +855,64 @@ void Test_Format(void)
      */
     CFE_UtAssert_SUCCESS(CFE_EVS_SendTimedEvent(time, 0, CFE_EVS_EventType_INFORMATION, "%s", long_msg));
 
+    /* Test set event format mode command using a valid command to set medium
+     * format, reports implicitly via event
+     */
+    UT_InitData_EVS();
+    modecmd.Payload.MsgFormat = CFE_EVS_MsgFormat_MEDIUM;
+    UT_EVS_DoDispatchCheckEventsMedium(&modecmd, sizeof(modecmd), UT_TPID_CFE_EVS_CMD_SET_EVENT_FORMAT_MODE_CC,
+                                       &UT_EVS_EventBuf);
+    UtAssert_UINT32_EQ(UT_EVS_EventBuf.EventID, CFE_EVS_SETEVTFMTMOD_EID);
+
+    /* Test for medium event sent when configured to do so */
+    UT_InitData_EVS();
+    UT_SetHookFunction(UT_KEY(CFE_MSG_Init), UT_EVS_MSGInitHook, &MsgData);
+    UT_SetDataBuffer(UT_KEY(CFE_SB_TransmitMsg), &MsgSend, sizeof(MsgSend), false);
+    CFE_EVS_SendEvent(0, CFE_EVS_EventType_INFORMATION, "Medium format check 1");
+
+    /* Note implementation always initializes long message, plus the selected format (medium in this case) */
+    UtAssert_INT32_EQ(UT_GetStubCount(UT_KEY(CFE_MSG_Init)), 2);
+    UtAssert_INT32_EQ(UT_GetStubCount(UT_KEY(CFE_SB_TransmitMsg)), 1);
+    UtAssert_BOOL_TRUE(CFE_SB_MsgId_Equal(MsgData.MsgId, MediumFmtSnapshotData.MsgId));
+    UtAssert_BOOL_FALSE(CFE_SB_MsgId_Equal(MsgData.MsgId, ShortFmtSnapshotData.MsgId));
+    UtAssert_BOOL_FALSE(CFE_SB_MsgId_Equal(MsgData.MsgId, LongFmtSnapshotData.MsgId));
+
+    /* Confirm the right message was sent */
+    UtAssert_ADDRESS_EQ(MsgSend, MsgData.MsgPtr);
+
+    /* Test event medium format mode command was successful */
+    UT_InitData_EVS();
+    memset(&CapturedMsg, 0xFF, sizeof(CapturedMsg));
+    UT_SetHookFunction(UT_KEY(CFE_SB_TransmitMsg), UT_SoftwareBusSnapshotHook, &MediumFmtSnapshotData);
+    CFE_EVS_SendEvent(0, CFE_EVS_EventType_INFORMATION, "Medium format check (SendEvent)");
+    EventID[0] = CapturedMsg.EventID;
+    memset(&CapturedMsg, 0xFF, sizeof(CapturedMsg));
+    CFE_EVS_SendTimedEvent(time, 0, CFE_EVS_EventType_INFORMATION, "Medium format check (SendTimedEvent)");
+    EventID[1] = CapturedMsg.EventID;
+    memset(&CapturedMsg, 0xFF, sizeof(CapturedMsg));
+    CFE_EVS_SendEventWithAppID(0, CFE_EVS_EventType_INFORMATION, AppID, "Medium format check (SendEventWithAppID)");
+    UtAssert_ZERO(EventID[0]);
+    UtAssert_ZERO(EventID[1]);
+    UtAssert_ZERO(CapturedMsg.EventID);
+
+    /* Test sending an event using a string length greater than
+     * the maximum allowed in medium format
+     */
+    UT_InitData_EVS();
+    CFE_UtAssert_SUCCESS(CFE_EVS_SendEvent(0, CFE_EVS_EventType_INFORMATION, "%s", long_msg));
+
+    /* Test sending an event with application ID using a string length
+     * greater than the maximum allowed in medium format
+     */
+    CFE_UtAssert_SUCCESS(CFE_EVS_SendEventWithAppID(0, CFE_EVS_EventType_INFORMATION, AppID, "%s", long_msg));
+
+    /* Test sending a timed event using a string length greater than
+     * the maximum allowed in medium format
+     */
+    CFE_UtAssert_SUCCESS(CFE_EVS_SendTimedEvent(time, 0, CFE_EVS_EventType_INFORMATION, "%s", long_msg));
+
     /* Force an invalid format and send for code coverage */
-    CFE_EVS_Global.EVS_TlmPkt.Payload.MessageFormatMode = CFE_EVS_MsgFormat_LONG + 1;
+    CFE_EVS_Global.EVS_TlmPkt.Payload.MessageFormatMode = CFE_EVS_MsgFormat_MEDIUM + 1;
     CFE_UtAssert_SUCCESS(CFE_EVS_SendEvent(0, CFE_EVS_EventType_INFORMATION, "%s", long_msg));
 }
 

@@ -187,12 +187,13 @@
 **  \cfeevscfg Default EVS Message Format Mode
 **
 **  \par Description:
-**       Defines the default message format (long or short) for event messages being
-**       sent to the ground. Choose between #CFE_EVS_MsgFormat_LONG or
-**       #CFE_EVS_MsgFormat_SHORT.
+**       Defines the default message format (long, medium, or short) for event messages being
+**       sent to the ground. Choose between #CFE_EVS_MsgFormat_LONG, #CFE_EVS_MsgFormat_MEDIUM,
+**       or #CFE_EVS_MsgFormat_SHORT.
 **
 **  \par Limits
-**       The valid settings are #CFE_EVS_MsgFormat_LONG or #CFE_EVS_MsgFormat_SHORT
+**       The valid settings are #CFE_EVS_MsgFormat_LONG, #CFE_EVS_MsgFormat_MEDIUM,
+**       or #CFE_EVS_MsgFormat_SHORT
 */
 #define CFE_PLATFORM_EVS_DEFAULT_MSG_FORMAT_MODE CFE_EVS_MsgFormat_LONG
 

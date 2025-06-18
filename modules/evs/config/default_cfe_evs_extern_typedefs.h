@@ -40,7 +40,12 @@ enum CFE_EVS_MsgFormat
     /**
      * @brief Long Format Messages
      */
-    CFE_EVS_MsgFormat_LONG = 1
+    CFE_EVS_MsgFormat_LONG = 1,
+
+    /**
+     * @brief Medium Format Messages
+     */
+    CFE_EVS_MsgFormat_MEDIUM = 2
 };
 
 /**

@@ -452,12 +452,14 @@ void EVS_DisableTypes(EVS_AppData_t *AppDataPtr, uint8 BitMask)
 void EVS_GenerateEventTelemetry(EVS_AppData_t *AppDataPtr, uint16 EventID, CFE_EVS_EventType_Enum_t EventType,
                                 const CFE_TIME_SysTime_t *TimeStamp, const char *MsgSpec, va_list ArgPtr)
 {
-    CFE_EVS_LongEventTlm_t  LongEventTlm;  /* The "long" flavor is always generated, as this is what is logged */
-    CFE_EVS_ShortEventTlm_t ShortEventTlm; /* The "short" flavor is only generated if selected */
-    int                     ExpandedLength;
+    CFE_EVS_LongEventTlm_t   LongEventTlm;   /* The "long" flavor is always generated, as this is what is logged */
+    CFE_EVS_ShortEventTlm_t  ShortEventTlm;  /* The "short" flavor is only generated if selected */
+    CFE_EVS_MediumEventTlm_t MediumEventTlm; /* The "medium" flavor is only generated if selected */
+    int                      ExpandedLength;
 
     memset(&LongEventTlm, 0, sizeof(LongEventTlm));
     memset(&ShortEventTlm, 0, sizeof(ShortEventTlm));
+    memset(&MediumEventTlm, 0, sizeof(MediumEventTlm));
 
     /* Initialize EVS event packets */
     CFE_MSG_Init(CFE_MSG_PTR(LongEventTlm.TelemetryHeader), CFE_SB_ValueToMsgId(CFE_EVS_LONG_EVENT_MSG_MID),
@@ -514,6 +516,21 @@ void EVS_GenerateEventTelemetry(EVS_AppData_t *AppDataPtr, uint16 EventID, CFE_E
         CFE_MSG_SetMsgTime(CFE_MSG_PTR(ShortEventTlm.TelemetryHeader), *TimeStamp);
         ShortEventTlm.Payload.PacketID = LongEventTlm.Payload.PacketID;
         CFE_SB_TransmitMsg(CFE_MSG_PTR(ShortEventTlm.TelemetryHeader), true);
+    }
+    else if (CFE_EVS_Global.EVS_TlmPkt.Payload.MessageFormatMode == CFE_EVS_MsgFormat_MEDIUM)
+    {
+        /*
+         * Initialize the medium format event message from data that was already
+         * gathered in the long format message (medium format includes PacketID and Message)
+         *
+         * This goes out on a separate message ID.
+         */
+        CFE_MSG_Init(CFE_MSG_PTR(MediumEventTlm.TelemetryHeader), CFE_SB_ValueToMsgId(CFE_EVS_MEDIUM_EVENT_MSG_MID),
+                     sizeof(MediumEventTlm));
+        CFE_MSG_SetMsgTime(CFE_MSG_PTR(MediumEventTlm.TelemetryHeader), *TimeStamp);
+        MediumEventTlm.Payload.PacketID = LongEventTlm.Payload.PacketID;
+        memcpy(MediumEventTlm.Payload.Message, LongEventTlm.Payload.Message, sizeof(MediumEventTlm.Payload.Message));
+        CFE_SB_TransmitMsg(CFE_MSG_PTR(MediumEventTlm.TelemetryHeader), true);
     }
 
     /* Increment message send counters (prevent rollover) */

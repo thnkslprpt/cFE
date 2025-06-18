@@ -255,4 +255,18 @@ typedef struct CFE_EVS_ShortEventTlm_Payload
     CFE_EVS_PacketID_t PacketID; /**< \brief Event packet information */
 } CFE_EVS_ShortEventTlm_Payload_t;
 
+/**
+**  \cfeevstlm Event Message Telemetry Packet (Medium format)
+**/
+typedef struct CFE_EVS_MediumEventTlm_Payload
+{
+    CFE_EVS_PacketID_t PacketID;                                    /**< \brief Event packet information */
+    char               Message[CFE_MISSION_EVS_MAX_MESSAGE_LENGTH]; /**< \cfetlmmnemonic \EVS_EVENT
+                                                                 \brief Event message string */
+    uint8 Spare1;                                                   /**< \cfetlmmnemonic \EVS_SPARE1
+                                                                         \brief Structure padding */
+    uint8 Spare2;                                                   /**< \cfetlmmnemonic \EVS_SPARE2
+                                                                     \brief Structure padding */
+} CFE_EVS_MediumEventTlm_Payload_t;
+
 #endif
