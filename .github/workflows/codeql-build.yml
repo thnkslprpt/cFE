@@ -9,9 +9,70 @@ on:
     - cron:  '15 23 * * 0'
 
 jobs:
+  # Original CodeQL job (when not on the test branch)
   codeql:
+    if: github.ref != 'refs/heads/cfe-94-test-has-matching-psp-branch'
     uses: nasa/cFS/.github/workflows/codeql-reusable.yml@main
     with: 
       component-path: cfe
       make: make -j8
       test: true
+
+  # Custom CodeQL job for the test branch
+  codeql-with-psp-branch:
+    if: github.ref == 'refs/heads/cfe-94-test-has-matching-psp-branch' || contains(github.head_ref, 'cfe-94')
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'c' ]
+
+    steps:
+      - name: Checkout bundle
+        uses: actions/checkout@v3
+        with:
+          repository: nasa/cFS
+          submodules: true
+
+      - name: Checkout submodule
+        uses: actions/checkout@v3
+        with:
+          path: cfe
+
+      - name: Update PSP to test branch
+        run: |
+          cd psp
+          git remote add thnkslprpt https://github.com/thnkslprpt/PSP.git || true
+          git fetch thnkslprpt
+          git checkout -b cfe-94-test-has-matching-cfe-branch thnkslprpt/cfe-94-test-has-matching-cfe-branch
+          cd ..
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-and-quality
+
+      - name: Set up for build
+        run: |
+          cp ./cfe/cmake/Makefile.sample Makefile
+          cp -r ./cfe/cmake/sample_defs sample_defs
+          make SIMULATION=native ENABLE_UNIT_TESTS=true OMIT_DEPRECATED=true prep
+
+      - name: Build
+        run: make -j8
+
+      - name: Run tests
+        run: |
+          sudo apt-get install lcov -y
+          make test
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"

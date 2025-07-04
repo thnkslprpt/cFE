@@ -50,6 +50,14 @@ jobs:
         with:
           path: cfe
 
+      - name: Update PSP to test branch
+        run: |
+          cd psp
+          git remote add thnkslprpt https://github.com/thnkslprpt/PSP.git || true
+          git fetch thnkslprpt
+          git checkout -b cfe-94-test-has-matching-cfe-branch thnkslprpt/cfe-94-test-has-matching-cfe-branch
+          cd ..
+
       - name: Check versions
         run: git submodule
 

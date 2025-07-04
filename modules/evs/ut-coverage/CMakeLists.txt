@@ -19,5 +19,5 @@ target_include_directories(coverage-evs-ALL-testrunner PRIVATE
     ${CFE_EVS_SOURCE_DIR}/fsw/src
 )
 
-target_link_libraries(coverage-evs-ALL-testrunner ut_core_private_stubs)
+target_link_libraries(coverage-evs-ALL-testrunner ut_core_private_stubs ut_psp-${CFE_PSP_TARGETNAME}_stubs)
 
