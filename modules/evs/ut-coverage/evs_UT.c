@@ -886,6 +886,7 @@ void Test_Ports(void)
 
     /* Test that no ports output when all are disabled */
     UT_InitData_EVS();
+    LocalSnapshotData.Count = 0;  /* Reset count for this test */
     UT_SetDefaultReturnValue(UT_KEY(CFE_PSP_SendEventToPort), CFE_PSP_SUCCESS);
     UT_SetHookFunction(UT_KEY(CFE_SB_TransmitMsg), UT_SoftwareBusSnapshotHook, &LocalSnapshotData);
     UtAssert_UINT32_EQ(CFE_EVS_SendEvent(0, CFE_EVS_EventType_INFORMATION, "Test ports disabled"), CFE_SUCCESS);
@@ -922,6 +923,7 @@ void Test_Ports(void)
 
     /* Test PSP port output error handling */
     UT_InitData_EVS();
+    LocalSnapshotData.Count = 0;  /* Reset count for this test */
     UT_SetDefaultReturnValue(UT_KEY(CFE_PSP_SendEventToPort), CFE_PSP_ERROR);
     UT_SetHookFunction(UT_KEY(CFE_SB_TransmitMsg), UT_SoftwareBusSnapshotHook, &LocalSnapshotData);
     UtAssert_UINT32_EQ(CFE_EVS_SendEvent(0, CFE_EVS_EventType_INFORMATION, "Test PSP error"), CFE_SUCCESS);
