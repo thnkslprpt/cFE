@@ -1,0 +1,105 @@
+name: "Test with PSP Branch"
+
+on:
+  push:
+    branches:
+      - cfe-94-test-has-matching-psp-branch
+  pull_request:
+  workflow_dispatch:
+
+env:
+  SIMULATION: native
+  ENABLE_UNIT_TESTS: true
+  OMIT_DEPRECATED: true
+  BUILDTYPE: release
+
+jobs:
+  Test-With-PSP-Branch:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout bundle
+        uses: actions/checkout@v3
+        with:
+          repository: nasa/cFS
+          submodules: true
+
+      - name: Checkout CFE submodule
+        uses: actions/checkout@v3
+        with:
+          path: cfe
+
+      - name: Update PSP to test branch
+        run: |
+          cd psp
+          git remote add thnkslprpt https://github.com/thnkslprpt/PSP.git
+          git fetch thnkslprpt
+          git checkout -b cfe-94-test-has-matching-cfe-branch thnkslprpt/cfe-94-test-has-matching-cfe-branch
+          cd ..
+
+      - name: Check versions
+        run: git submodule
+
+      - name: Set up for build
+        run: |
+          cp ./cfe/cmake/Makefile.sample Makefile
+          cp -r ./cfe/cmake/sample_defs sample_defs
+          make prep
+
+      - name: Make Install
+        run: make install
+
+      - name: Run Unit Tests
+        run: make test
+
+      - name: Run cFS
+        run: |
+          ./core-cpu1 &
+          sleep 10
+          ../host/cmdUtil --pktid=0x1806 --cmdcode=17 --endian=LE --uint32=3 --uint32=0x40000000
+          ../host/cmdUtil --pktid=0x1806 --cmdcode=14 --endian=LE --uint32=2
+          ../host/cmdUtil --pktid=0x1806 --cmdcode=4 --endian=LE --string="20:CFE_TEST_APP" --string="20:CFE_TestMain" --string="64:cfe_testcase" --uint32=16384 --uint8=0 --uint8=0 --uint16=100
+
+          sleep 30
+          counter=0
+
+          while [[ ! -f cf/cfe_test.log ]]; do
+            temp=$(grep -c "BEGIN" cf/cfe_test.tmp)
+
+            if [ $temp -eq $counter ]; then
+              echo "Test is frozen. Quitting"
+              break
+            fi
+
+            counter=$(grep -c "BEGIN" cf/cfe_test.tmp)
+            echo "Waiting for CFE Tests"
+            sleep 120
+          done
+
+          ../host/cmdUtil --endian=LE --pktid=0x1806 --cmdcode=2 --half=0x0002
+        working-directory: ./build/exe/cpu1/
+
+      - name: Check for cFS Warnings
+        run: |
+          if [[ -n $(grep -i "warn\|err\|fail" cf/cfe_test.log) ]]; then
+                  grep -i 'warn\|err\|fail' cf/cfe_test.log
+                  exit -1
+          fi
+        working-directory: ./build/exe/cpu1/
+
+      - name: Check for cFS Failures
+        if: success() || failure()
+        run: |
+          if [[ -z $(grep "Summary.* 0 *FAIL" cf/cfe_test.log) ]]; then
+                  grep "Summary\|FAIL" cf/cfe_test.log
+                  exit -1
+          fi
+        working-directory: ./build/exe/cpu1/
+
+      - name: Archive Test Artifacts
+        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: cFS-test-artifacts
+          path: ./build/exe/cpu1/cf/
