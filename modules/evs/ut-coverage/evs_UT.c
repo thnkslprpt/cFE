@@ -873,6 +873,8 @@ void Test_Ports(void)
     UtAssert_UINT32_EQ(CFE_EVS_SendEvent(0, CFE_EVS_EventType_INFORMATION, "Test ports message"), CFE_SUCCESS);
     UtAssert_UINT32_EQ(LocalSnapshotData.Count, 1);
     UtAssert_STUB_COUNT(CFE_TIME_Print, 1);
+    /* Verify that the event was sent to all 4 enabled ports */
+    UtAssert_STUB_COUNT(CFE_PSP_SendEventToPort, 4);
 
     /* Disable all ports to cut down on unneeded output */
     UT_InitData_EVS();
@@ -880,6 +882,14 @@ void Test_Ports(void)
     UT_EVS_DoDispatchCheckEvents(&bitmaskcmd, sizeof(bitmaskcmd), UT_TPID_CFE_EVS_CMD_DISABLE_PORTS_CC,
                                  &UT_EVS_EventBuf);
     UtAssert_UINT32_EQ(UT_EVS_EventBuf.EventID, CFE_EVS_DISPORT_EID);
+
+    /* Test that no ports output when all are disabled */
+    UT_InitData_EVS();
+    UT_SetHookFunction(UT_KEY(CFE_SB_TransmitMsg), UT_SoftwareBusSnapshotHook, &LocalSnapshotData);
+    UtAssert_UINT32_EQ(CFE_EVS_SendEvent(0, CFE_EVS_EventType_INFORMATION, "Test ports disabled"), CFE_SUCCESS);
+    UtAssert_UINT32_EQ(LocalSnapshotData.Count, 1);
+    /* Verify that no port output occurred (CFE_PSP_SendEventToPort not called) */
+    UtAssert_STUB_COUNT(CFE_PSP_SendEventToPort, 0);
 
     /* Test enabling a port using a bitmask that is out of range (high) */
     UT_InitData_EVS();
@@ -907,6 +917,17 @@ void Test_Ports(void)
     UT_EVS_DoDispatchCheckEvents(&bitmaskcmd, sizeof(bitmaskcmd), UT_TPID_CFE_EVS_CMD_ENABLE_PORTS_CC,
                                  &UT_EVS_EventBuf);
     UtAssert_UINT32_EQ(UT_EVS_EventBuf.EventID, CFE_EVS_ENAPORT_EID);
+
+    /* Test PSP port output error handling */
+    UT_InitData_EVS();
+    UT_SetDefaultReturnValue(UT_KEY(CFE_PSP_SendEventToPort), CFE_PSP_ERROR);
+    UT_SetHookFunction(UT_KEY(CFE_SB_TransmitMsg), UT_SoftwareBusSnapshotHook, &LocalSnapshotData);
+    UtAssert_UINT32_EQ(CFE_EVS_SendEvent(0, CFE_EVS_EventType_INFORMATION, "Test PSP error"), CFE_SUCCESS);
+    /* Event should still be sent via SB even if PSP port output fails */
+    UtAssert_UINT32_EQ(LocalSnapshotData.Count, 1);
+    /* Verify error was logged to syslog */
+    UtAssert_STUB_COUNT(CFE_ES_WriteToSysLog, 2); /* 2 ports enabled, both should log error */
+    UT_ClearDefaultReturnValue(UT_KEY(CFE_PSP_SendEventToPort));
 
     /* Test enabling a port 3 and 4, but not 1 and 2 (branch path coverage) */
     UT_InitData_EVS();

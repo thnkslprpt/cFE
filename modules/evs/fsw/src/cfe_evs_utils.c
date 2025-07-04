@@ -583,7 +583,16 @@ void EVS_SendViaPorts(CFE_EVS_LongEventTlm_t *EVS_PktPtr)
  *-----------------------------------------------------------------*/
 void EVS_OutputPort(uint8 PortNum, char *Message)
 {
-    OS_printf("EVS Port%u %s\n", PortNum, Message);
+    int32 Status;
+
+    /* Convert from 1-4 port numbering to 0-3 for PSP API */
+    Status = CFE_PSP_SendEventToPort(PortNum - 1, Message);
+
+    if (Status != CFE_PSP_SUCCESS)
+    {
+        /* Log error but don't fail - this is debug output */
+        CFE_ES_WriteToSysLog("EVS: Failed to send to port %u, Status=%d\n", (unsigned int)PortNum, (int)Status);
+    }
 }
 
 /*----------------------------------------------------------------
