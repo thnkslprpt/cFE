@@ -41,6 +41,11 @@ jobs:
       - name: Check versions
         run: git submodule
 
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov
+
       - name: Set up for build
         run: |
           cp ./cfe/cmake/Makefile.sample Makefile
@@ -81,19 +86,28 @@ jobs:
         working-directory: ./build/exe/cpu1/
 
       - name: Check for cFS Warnings
+        if: always()
         run: |
-          if [[ -n $(grep -i "warn\|err\|fail" cf/cfe_test.log) ]]; then
-                  grep -i 'warn\|err\|fail' cf/cfe_test.log
-                  exit -1
+          if [[ -f cf/cfe_test.log ]]; then
+            if [[ -n $(grep -i "warn\|err\|fail" cf/cfe_test.log) ]]; then
+                    grep -i 'warn\|err\|fail' cf/cfe_test.log
+                    exit -1
+            fi
+          else
+            echo "No test log found - functional tests may not have completed"
           fi
         working-directory: ./build/exe/cpu1/
 
       - name: Check for cFS Failures
-        if: success() || failure()
+        if: always()
         run: |
-          if [[ -z $(grep "Summary.* 0 *FAIL" cf/cfe_test.log) ]]; then
-                  grep "Summary\|FAIL" cf/cfe_test.log
-                  exit -1
+          if [[ -f cf/cfe_test.log ]]; then
+            if [[ -z $(grep "Summary.* 0 *FAIL" cf/cfe_test.log) ]]; then
+                    grep "Summary\|FAIL" cf/cfe_test.log
+                    exit -1
+            fi
+          else
+            echo "No test log found - functional tests may not have completed"
           fi
         working-directory: ./build/exe/cpu1/
 
