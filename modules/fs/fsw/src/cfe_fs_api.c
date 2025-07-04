@@ -169,18 +169,26 @@ CFE_Status_t CFE_FS_ReadHeader(CFE_FS_Header_t *Hdr, osal_id_t FileDes)
  * See description in header file for argument/return detail
  *
  *-----------------------------------------------------------------*/
-void CFE_FS_InitHeader(CFE_FS_Header_t *Hdr, const char *Description, uint32 SubType)
+CFE_Status_t CFE_FS_InitHeader(CFE_FS_Header_t *Hdr, const char *Description, uint32 SubType)
 {
     if (Hdr == NULL || Description == NULL)
     {
         CFE_ES_WriteToSysLog("%s: Failed invalid arguments\n", __func__);
+        return CFE_FS_BAD_ARGUMENT;
     }
-    else
+
+    /* Check if description will be truncated */
+    if (strlen(Description) >= CFE_FS_HDR_DESC_MAX_LEN)
     {
-        memset(Hdr, 0, sizeof(CFE_FS_Header_t));
-        strncpy((char *)Hdr->Description, Description, sizeof(Hdr->Description) - 1);
-        Hdr->SubType = SubType;
+        CFE_ES_WriteToSysLog("%s: Description truncated from %zu to %d characters\n", 
+                             __func__, strlen(Description), CFE_FS_HDR_DESC_MAX_LEN - 1);
     }
+
+    memset(Hdr, 0, sizeof(CFE_FS_Header_t));
+    strncpy((char *)Hdr->Description, Description, sizeof(Hdr->Description) - 1);
+    Hdr->SubType = SubType;
+
+    return CFE_SUCCESS;
 }
 
 /*----------------------------------------------------------------
@@ -732,22 +740,32 @@ bool CFE_FS_RunBackgroundFileDump(uint32 ElapsedTime, void *Arg)
         }
         else
         {
-            CFE_FS_InitHeader(&FileHdr, Meta->Description, Meta->FileSubType);
+            Status = CFE_FS_InitHeader(&FileHdr, Meta->Description, Meta->FileSubType);
 
-            /* write the cFE header to the file */
-            Status = CFE_FS_WriteHeader(State->Fd, &FileHdr);
-            if (Status != sizeof(CFE_FS_Header_t))
+            if (Status != CFE_SUCCESS)
             {
+                /* If header init fails, close file and report error */
                 OS_close(State->Fd);
                 State->Fd = OS_OBJECT_ID_UNDEFINED;
-                Meta->OnEvent(Meta, CFE_FS_FileWriteEvent_HEADER_WRITE_ERROR, Status, State->RecordNum,
-                              sizeof(CFE_FS_Header_t), State->FileSize);
+                Meta->OnEvent(Meta, CFE_FS_FileWriteEvent_HEADER_INIT_ERROR, Status, 0, 0, 0);
             }
             else
             {
-                State->FileSize = sizeof(CFE_FS_Header_t);
-                State->Credit -= sizeof(CFE_FS_Header_t);
-                State->RecordNum = 0;
+                /* write the cFE header to the file */
+                Status = CFE_FS_WriteHeader(State->Fd, &FileHdr);
+                if (Status != sizeof(CFE_FS_Header_t))
+                {
+                    OS_close(State->Fd);
+                    State->Fd = OS_OBJECT_ID_UNDEFINED;
+                    Meta->OnEvent(Meta, CFE_FS_FileWriteEvent_HEADER_WRITE_ERROR, Status, State->RecordNum,
+                                  sizeof(CFE_FS_Header_t), State->FileSize);
+                }
+                else
+                {
+                    State->FileSize = sizeof(CFE_FS_Header_t);
+                    State->Credit -= sizeof(CFE_FS_Header_t);
+                    State->RecordNum = 0;
+                }
             }
         }
     }

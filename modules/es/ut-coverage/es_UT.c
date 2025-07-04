@@ -2140,6 +2140,10 @@ void TestERLog(void)
     CFE_UtAssert_EVENTSENT(CFE_ES_ERLOG2_EID);
 
     UT_ClearEventHistory();
+    CFE_ES_BackgroundERLogFileEventHandler(&State, CFE_FS_FileWriteEvent_HEADER_INIT_ERROR, -1, 10, 10, 100);
+    CFE_UtAssert_EVENTSENT(CFE_ES_INIT_HDR_ERR_EID);
+
+    UT_ClearEventHistory();
     CFE_ES_BackgroundERLogFileEventHandler(&State, CFE_FS_FileWriteEvent_HEADER_WRITE_ERROR, -1, 10, 10, 100);
     CFE_UtAssert_EVENTSENT(CFE_ES_FILEWRITE_ERR_EID);
 

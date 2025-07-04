@@ -91,15 +91,25 @@ void UtTest_Setup(void)
 void Test_CFE_FS_InitHeader(void)
 {
     CFE_FS_Header_t Hdr;
+    char LongDescription[CFE_FS_HDR_DESC_MAX_LEN + 10];
 
     /* Test initializing the header */
     UT_InitData();
-    CFE_FS_InitHeader(&Hdr, "description", 123);
+    UtAssert_INT32_EQ(CFE_FS_InitHeader(&Hdr, "description", 123), CFE_SUCCESS);
     UtAssert_INT32_EQ(Hdr.SubType, 123);
 
-    /* Test calling with NULL pointer argument (no return codes) */
-    CFE_FS_InitHeader(NULL, "description", 123);
-    CFE_FS_InitHeader(&Hdr, NULL, 123);
+    /* Test calling with NULL pointer arguments */
+    UtAssert_INT32_EQ(CFE_FS_InitHeader(NULL, "description", 123), CFE_FS_BAD_ARGUMENT);
+    UtAssert_INT32_EQ(CFE_FS_InitHeader(&Hdr, NULL, 123), CFE_FS_BAD_ARGUMENT);
+
+    /* Test with description that exceeds maximum length */
+    UT_InitData();
+    memset(LongDescription, 'A', sizeof(LongDescription) - 1);
+    LongDescription[sizeof(LongDescription) - 1] = '\0';
+    UtAssert_INT32_EQ(CFE_FS_InitHeader(&Hdr, LongDescription, 456), CFE_SUCCESS);
+    UtAssert_INT32_EQ(Hdr.SubType, 456);
+    /* Verify description was truncated */
+    UtAssert_STRINGBUF_EQ(Hdr.Description, sizeof(Hdr.Description), LongDescription, CFE_FS_HDR_DESC_MAX_LEN - 1);
 }
 
 /*
@@ -614,6 +624,17 @@ void Test_CFE_FS_BackgroundFileDump(void)
     UtAssert_BOOL_TRUE(CFE_FS_RunBackgroundFileDump(100, NULL));
     UtAssert_UINT32_EQ(UT_FS_FileWriteEventCount[CFE_FS_FileWriteEvent_HEADER_WRITE_ERROR],
                        1); /* header error event was sent */
+    UtAssert_BOOL_FALSE(CFE_FS_BackgroundFileDumpIsPending(&State));
+    /* No more pending requests */
+    UtAssert_UINT32_EQ(CFE_FS_Global.FileDump.CompleteCount, CFE_FS_Global.FileDump.RequestCount);
+
+    /* Error initializing header */
+    CFE_UtAssert_SETUP(CFE_FS_BackgroundFileDumpRequest(&State));
+    UT_SetDeferredRetcode(UT_KEY(CFE_FS_InitHeader), 1, CFE_FS_BAD_ARGUMENT);
+
+    UtAssert_BOOL_TRUE(CFE_FS_RunBackgroundFileDump(100, NULL));
+    UtAssert_UINT32_EQ(UT_FS_FileWriteEventCount[CFE_FS_FileWriteEvent_HEADER_INIT_ERROR],
+                       1); /* header init error event was sent */
     UtAssert_BOOL_FALSE(CFE_FS_BackgroundFileDumpIsPending(&State));
     /* No more pending requests */
     UtAssert_UINT32_EQ(CFE_FS_Global.FileDump.CompleteCount, CFE_FS_Global.FileDump.RequestCount);

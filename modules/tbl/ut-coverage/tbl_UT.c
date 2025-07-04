@@ -1034,6 +1034,11 @@ void Test_CFE_TBL_DumpRegCmd(void)
     CFE_UtAssert_EVENTSENT(CFE_TBL_WRITE_TBL_REG_ERR_EID);
 
     UT_ClearEventHistory();
+    CFE_TBL_DumpRegistryEventHandler(&CFE_TBL_Global.RegDumpState, CFE_FS_FileWriteEvent_HEADER_INIT_ERROR,
+                                     CFE_FS_BAD_ARGUMENT, 0, 0, 0);
+    CFE_UtAssert_EVENTSENT(CFE_TBL_WRITE_CFE_HDR_ERR_EID);
+
+    UT_ClearEventHistory();
     CFE_TBL_DumpRegistryEventHandler(&CFE_TBL_Global.RegDumpState, CFE_FS_FileWriteEvent_HEADER_WRITE_ERROR,
                                      CFE_SUCCESS, 10, 10, 1000);
     CFE_UtAssert_EVENTSENT(CFE_TBL_WRITE_CFE_HDR_ERR_EID);
