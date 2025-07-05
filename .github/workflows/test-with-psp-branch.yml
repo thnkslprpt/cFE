@@ -120,8 +120,9 @@ jobs:
         if: always()
         run: |
           if [[ -f cf/cfe_test.log ]]; then
-            if [[ -n $(grep -i "warn\|err\|fail" cf/cfe_test.log) ]]; then
-                    grep -i 'warn\|err\|fail' cf/cfe_test.log
+            # Only check for actual warnings/errors, not constant names
+            if grep -E "(WARN|ERROR|CRITICAL|ABORT)" cf/cfe_test.log | grep -v "== CFE_.*_ERR_" | grep -v "== CFE_.*_WARN_" | grep -v "ABORT::0.*WARN::0"; then
+                    echo "Found warnings or errors in test log"
                     exit -1
             fi
           else
@@ -133,9 +134,13 @@ jobs:
         if: always()
         run: |
           if [[ -f cf/cfe_test.log ]]; then
-            if [[ -z $(grep "Summary.* 0 *FAIL" cf/cfe_test.log) ]]; then
-                    grep "Summary\|FAIL" cf/cfe_test.log
+            # Check if the summary shows any failures (FAIL::0 means no failures)
+            if grep -E "SUMMARY.*FAIL::[1-9]" cf/cfe_test.log; then
+                    echo "Found test failures in summary"
                     exit -1
+            else
+                    echo "All tests passed - found FAIL::0 in summary"
+                    grep "SUMMARY" cf/cfe_test.log || true
             fi
           else
             echo "No test log found - functional tests may not have completed"

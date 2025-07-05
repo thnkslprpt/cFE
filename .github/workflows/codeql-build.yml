@@ -45,6 +45,7 @@ jobs:
         with:
           path: cfe
           fetch-depth: 0
+          ref: ${{ github.sha }}
 
       - name: Update PSP to test branch
         run: |
@@ -74,7 +75,14 @@ jobs:
           sudo apt-get install lcov -y
           make test
 
+      - name: Ensure git references are available
+        run: |
+          cd cfe
+          git log -1 --format="%H %s"
+          cd ..
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
         with:
           category: "/language:${{matrix.language}}"
+          checkout-path: cfe
