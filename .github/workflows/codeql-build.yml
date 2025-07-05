@@ -34,18 +34,16 @@ jobs:
 
     steps:
       - name: Checkout bundle
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: nasa/cFS
           submodules: true
           fetch-depth: 0
 
       - name: Checkout submodule
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: cfe
-          fetch-depth: 0
-          ref: ${{ github.sha }}
 
       - name: Update PSP to test branch
         run: |
@@ -56,7 +54,7 @@ jobs:
           cd ..
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
           queries: security-and-quality
@@ -75,14 +73,11 @@ jobs:
           sudo apt-get install lcov -y
           make test
 
-      - name: Ensure git references are available
-        run: |
-          cd cfe
-          git log -1 --format="%H %s"
-          cd ..
-
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
+        env:
+          CODEQL_ACTION_REPOSITORY: ${{ github.repository }}
+          CODEQL_ACTION_COMMIT: ${{ github.sha }}
+          CODEQL_ACTION_REF: ${{ github.ref }}
         with:
           category: "/language:${{matrix.language}}"
-          checkout-path: cfe
