@@ -38,11 +38,13 @@ jobs:
         with:
           repository: nasa/cFS
           submodules: true
+          fetch-depth: 0
 
       - name: Checkout submodule
         uses: actions/checkout@v3
         with:
           path: cfe
+          fetch-depth: 0
 
       - name: Update PSP to test branch
         run: |

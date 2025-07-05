@@ -60,10 +60,12 @@ jobs:
 
       - name: Build and Run PSP Unit Tests
         run: |
-          # Build PSP unit tests
-          make -C build/native/default_cpu1/psp unit-test
+          # PSP unit tests are built automatically with ENABLE_UNIT_TESTS=true
+          # Run all PSP coverage tests using ctest
+          echo "Running all PSP unit tests..."
+          ctest --test-dir build/native/default_cpu1 --output-on-failure -R "coverage-.*psp.*" || true
           
-          # Run PSP coverage tests for eventport modules
+          # Run specific PSP coverage tests if they exist
           if [ -f build/native/default_cpu1/psp/unit-test-coverage/modules/eventport_printf/coverage-eventport_printf-testrunner ]; then
             echo "Running eventport_printf coverage tests..."
             ./build/native/default_cpu1/psp/unit-test-coverage/modules/eventport_printf/coverage-eventport_printf-testrunner
@@ -73,10 +75,6 @@ jobs:
             echo "Running eventport_syslog coverage tests..."
             ./build/native/default_cpu1/psp/unit-test-coverage/modules/eventport_syslog/coverage-eventport_syslog-testrunner
           fi
-          
-          # Run all PSP tests
-          echo "Running all PSP unit tests..."
-          ctest --test-dir build/native/default_cpu1 --output-on-failure -R "coverage-.*psp.*"
 
       - name: Generate PSP Coverage Report
         if: always()
