@@ -72,6 +72,7 @@ typedef enum
 
     CFE_FS_FileWriteEvent_COMPLETE,           /**< File is completed successfully */
     CFE_FS_FileWriteEvent_CREATE_ERROR,       /**< Unable to create/open file */
+    CFE_FS_FileWriteEvent_HEADER_INIT_ERROR,  /**< Unable to initialize FS header */
     CFE_FS_FileWriteEvent_HEADER_WRITE_ERROR, /**< Unable to write FS header */
     CFE_FS_FileWriteEvent_RECORD_WRITE_ERROR, /**< Unable to write data record */
 

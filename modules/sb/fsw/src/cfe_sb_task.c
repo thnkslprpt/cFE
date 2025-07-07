@@ -746,6 +746,12 @@ void CFE_SB_BackgroundFileEventHandler(void *Meta, CFE_FS_FileWriteEvent_t Event
                                        (int)RecordNum);
             break;
 
+        case CFE_FS_FileWriteEvent_HEADER_INIT_ERROR:
+            CFE_EVS_SendEventWithAppID(CFE_SB_INIT_HDR_ERR_EID, CFE_EVS_EventType_ERROR, CFE_SB_Global.AppId,
+                                       "Error initializing header for %s, Status=0x%x",
+                                       BgFilePtr->FileWrite.FileName, (int)Status);
+            break;
+
         case CFE_FS_FileWriteEvent_HEADER_WRITE_ERROR:
         case CFE_FS_FileWriteEvent_RECORD_WRITE_ERROR:
             CFE_EVS_SendEventWithAppID(CFE_SB_FILEWRITE_ERR_EID, CFE_EVS_EventType_ERROR, CFE_SB_Global.AppId,

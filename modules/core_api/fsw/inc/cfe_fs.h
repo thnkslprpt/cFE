@@ -91,10 +91,14 @@ CFE_Status_t CFE_FS_ReadHeader(CFE_FS_Header_t *Hdr, osal_id_t FileDes);
 **
 ** \param[in]  SubType     Initializes Header's SubType
 **
+** \return Execution status, see \ref CFEReturnCodes
+** \retval #CFE_FS_BAD_ARGUMENT  \copybrief CFE_FS_BAD_ARGUMENT
+** \retval #CFE_SUCCESS          \copybrief CFE_SUCCESS
+**
 ** \sa #CFE_FS_WriteHeader
 **
 ******************************************************************************/
-void CFE_FS_InitHeader(CFE_FS_Header_t *Hdr, const char *Description, uint32 SubType);
+CFE_Status_t CFE_FS_InitHeader(CFE_FS_Header_t *Hdr, const char *Description, uint32 SubType);
 
 /*****************************************************************************/
 /**

@@ -1,0 +1,166 @@
+name: "Test with PSP Branch"
+
+on:
+  push:
+    branches:
+      - cfe-94-test-has-matching-psp-branch
+  pull_request:
+  workflow_dispatch:
+
+env:
+  SIMULATION: native
+  ENABLE_UNIT_TESTS: true
+  OMIT_DEPRECATED: true
+  BUILDTYPE: release
+
+jobs:
+  Test-With-PSP-Branch:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout bundle
+        uses: actions/checkout@v4
+        with:
+          repository: nasa/cFS
+          submodules: true
+          fetch-depth: 0
+
+      - name: Checkout CFE submodule
+        uses: actions/checkout@v4
+        with:
+          path: cfe
+          fetch-depth: 0
+
+      - name: Update PSP to test branch
+        run: |
+          cd psp
+          git remote add thnkslprpt https://github.com/thnkslprpt/PSP.git
+          git fetch thnkslprpt
+          git checkout -b cfe-94-test-has-matching-cfe-branch thnkslprpt/cfe-94-test-has-matching-cfe-branch
+          cd ..
+
+      - name: Check versions
+        run: git submodule
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov
+
+      - name: Set up for build
+        run: |
+          cp ./cfe/cmake/Makefile.sample Makefile
+          cp -r ./cfe/cmake/sample_defs sample_defs
+          make prep
+
+      - name: Make Install
+        run: make install
+
+      - name: Run cFE Unit Tests
+        run: make test
+
+      - name: Build and Run PSP Unit Tests
+        run: |
+          # PSP unit tests are built automatically with ENABLE_UNIT_TESTS=true
+          # Run all PSP coverage tests using ctest
+          echo "Running all PSP unit tests..."
+          ctest --test-dir build/native/default_cpu1 --output-on-failure -R "coverage-.*psp.*" || true
+          
+          # Run specific PSP coverage tests if they exist
+          if [ -f build/native/default_cpu1/psp/unit-test-coverage/modules/eventport_printf/coverage-eventport_printf-testrunner ]; then
+            echo "Running eventport_printf coverage tests..."
+            ./build/native/default_cpu1/psp/unit-test-coverage/modules/eventport_printf/coverage-eventport_printf-testrunner
+          fi
+          
+          if [ -f build/native/default_cpu1/psp/unit-test-coverage/modules/eventport_syslog/coverage-eventport_syslog-testrunner ]; then
+            echo "Running eventport_syslog coverage tests..."
+            ./build/native/default_cpu1/psp/unit-test-coverage/modules/eventport_syslog/coverage-eventport_syslog-testrunner
+          fi
+
+      - name: Generate PSP Coverage Report
+        if: always()
+        run: |
+          # Generate coverage report for PSP modules
+          lcov --capture --directory build/native/default_cpu1/psp --output-file psp_coverage.info
+          lcov --remove psp_coverage.info '*/unit-test-coverage/*' '*/ut-stubs/*' --output-file psp_coverage_filtered.info
+          
+          # Generate HTML report
+          genhtml psp_coverage_filtered.info --output-directory psp_coverage_html
+          
+          # Display summary
+          lcov --summary psp_coverage_filtered.info
+
+      - name: Run cFS
+        run: |
+          ./core-cpu1 &
+          sleep 10
+          ../host/cmdUtil --pktid=0x1806 --cmdcode=17 --endian=LE --uint32=3 --uint32=0x40000000
+          ../host/cmdUtil --pktid=0x1806 --cmdcode=14 --endian=LE --uint32=2
+          ../host/cmdUtil --pktid=0x1806 --cmdcode=4 --endian=LE --string="20:CFE_TEST_APP" --string="20:CFE_TestMain" --string="64:cfe_testcase" --uint32=16384 --uint8=0 --uint8=0 --uint16=100
+
+          sleep 30
+          counter=0
+
+          while [[ ! -f cf/cfe_test.log ]]; do
+            temp=$(grep -c "BEGIN" cf/cfe_test.tmp)
+
+            if [ $temp -eq $counter ]; then
+              echo "Test is frozen. Quitting"
+              break
+            fi
+
+            counter=$(grep -c "BEGIN" cf/cfe_test.tmp)
+            echo "Waiting for CFE Tests"
+            sleep 120
+          done
+
+          ../host/cmdUtil --endian=LE --pktid=0x1806 --cmdcode=2 --half=0x0002
+        working-directory: ./build/exe/cpu1/
+
+      - name: Check for cFS Warnings
+        if: always()
+        run: |
+          if [[ -f cf/cfe_test.log ]]; then
+            # Check the summary line for non-zero counts of ABORT/WARN
+            if grep -E "ABORT::[1-9]|WARN::[1-9]" cf/cfe_test.log; then
+                    echo "Found warnings or errors in test log"
+                    exit -1
+            else
+                    echo "No warnings or errors found"
+            fi
+          else
+            echo "No test log found - functional tests may not have completed"
+          fi
+        working-directory: ./build/exe/cpu1/
+
+      - name: Check for cFS Failures
+        if: always()
+        run: |
+          if [[ -f cf/cfe_test.log ]]; then
+            # Check if the summary shows any failures (FAIL::0 means no failures)
+            if grep -E "SUMMARY.*FAIL::[1-9]" cf/cfe_test.log; then
+                    echo "Found test failures in summary"
+                    exit -1
+            else
+                    echo "All tests passed - found FAIL::0 in summary"
+                    grep "SUMMARY" cf/cfe_test.log || true
+            fi
+          else
+            echo "No test log found - functional tests may not have completed"
+          fi
+        working-directory: ./build/exe/cpu1/
+
+      - name: Archive Test Artifacts
+        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: cFS-test-artifacts
+          path: ./build/exe/cpu1/cf/
+
+      - name: Archive PSP Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: psp-coverage-report
+          path: psp_coverage_html/

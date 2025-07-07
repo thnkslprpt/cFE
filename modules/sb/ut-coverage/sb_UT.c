@@ -867,6 +867,10 @@ void Test_SB_Cmds_BackgroundFileWriteEvents(void)
     CFE_UtAssert_EVENTSENT(CFE_SB_FILEWRITE_ERR_EID);
 
     UT_ClearEventHistory();
+    CFE_SB_BackgroundFileEventHandler(&State, CFE_FS_FileWriteEvent_HEADER_INIT_ERROR, CFE_FS_BAD_ARGUMENT, 0, 0, 0);
+    CFE_UtAssert_EVENTSENT(CFE_SB_INIT_HDR_ERR_EID);
+
+    UT_ClearEventHistory();
     CFE_SB_BackgroundFileEventHandler(&State, CFE_FS_FileWriteEvent_HEADER_WRITE_ERROR, CFE_SUCCESS, 10, 10, 1000);
     CFE_UtAssert_EVENTSENT(CFE_SB_FILEWRITE_ERR_EID);
 

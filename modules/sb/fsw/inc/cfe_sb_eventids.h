@@ -449,6 +449,17 @@
 #define CFE_SB_SND_RTG_ERR1_EID 40
 
 /**
+ * \brief SB File Write Header Init Failure Event ID
+ *
+ *  \par Type: ERROR
+ *
+ *  \par Cause:
+ *
+ *  A SB file write failure due to header initialization error.
+ */
+#define CFE_SB_INIT_HDR_ERR_EID 41
+
+/**
  * \brief SB Invalid Command Code Received Event ID
  *
  *  \par Type: ERROR

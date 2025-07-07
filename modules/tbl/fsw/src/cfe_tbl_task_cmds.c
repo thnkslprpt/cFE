@@ -1123,6 +1123,13 @@ void CFE_TBL_DumpRegistryEventHandler(void *Meta, CFE_FS_FileWriteEvent_t Event,
                                        StatePtr->FileWrite.FileName, (unsigned int)Status);
             break;
 
+        case CFE_FS_FileWriteEvent_HEADER_INIT_ERROR:
+            CFE_EVS_SendEventWithAppID(CFE_TBL_WRITE_CFE_HDR_ERR_EID, CFE_EVS_EventType_ERROR,
+                                       CFE_TBL_Global.TableTaskAppId,
+                                       "Error initializing cFE File Header for '%s', Status=0x%08X",
+                                       StatePtr->FileWrite.FileName, (unsigned int)Status);
+            break;
+
         case CFE_FS_FileWriteEvent_HEADER_WRITE_ERROR:
             CFE_EVS_SendEventWithAppID(CFE_TBL_WRITE_CFE_HDR_ERR_EID, CFE_EVS_EventType_ERROR,
                                        CFE_TBL_Global.TableTaskAppId,

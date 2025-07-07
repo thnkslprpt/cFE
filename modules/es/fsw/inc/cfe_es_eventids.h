@@ -822,6 +822,17 @@
 #define CFE_ES_FILEWRITE_ERR_EID 74
 
 /**
+ * \brief ES File Header Init Failed Event ID
+ *
+ *  \par Type: ERROR
+ *
+ *  \par Cause:
+ *
+ *  ES File Write failure initializing file header.
+ */
+#define CFE_ES_INIT_HDR_ERR_EID 75
+
+/**
  * \brief ES Delete CDS Command Delete Failed Event ID
  *
  *  \par Type: ERROR

@@ -91,15 +91,25 @@ void UtTest_Setup(void)
 void Test_CFE_FS_InitHeader(void)
 {
     CFE_FS_Header_t Hdr;
+    char LongDescription[CFE_FS_HDR_DESC_MAX_LEN + 10];
 
     /* Test initializing the header */
     UT_InitData();
-    CFE_FS_InitHeader(&Hdr, "description", 123);
+    UtAssert_INT32_EQ(CFE_FS_InitHeader(&Hdr, "description", 123), CFE_SUCCESS);
     UtAssert_INT32_EQ(Hdr.SubType, 123);
 
-    /* Test calling with NULL pointer argument (no return codes) */
-    CFE_FS_InitHeader(NULL, "description", 123);
-    CFE_FS_InitHeader(&Hdr, NULL, 123);
+    /* Test calling with NULL pointer arguments */
+    UtAssert_INT32_EQ(CFE_FS_InitHeader(NULL, "description", 123), CFE_FS_BAD_ARGUMENT);
+    UtAssert_INT32_EQ(CFE_FS_InitHeader(&Hdr, NULL, 123), CFE_FS_BAD_ARGUMENT);
+
+    /* Test with description that exceeds maximum length */
+    UT_InitData();
+    memset(LongDescription, 'A', sizeof(LongDescription) - 1);
+    LongDescription[sizeof(LongDescription) - 1] = '\0';
+    UtAssert_INT32_EQ(CFE_FS_InitHeader(&Hdr, LongDescription, 456), CFE_SUCCESS);
+    UtAssert_INT32_EQ(Hdr.SubType, 456);
+    /* Verify description was truncated */
+    UtAssert_STRINGBUF_EQ(Hdr.Description, sizeof(Hdr.Description), LongDescription, CFE_FS_HDR_DESC_MAX_LEN - 1);
 }
 
 /*
@@ -579,6 +589,8 @@ void Test_CFE_FS_BackgroundFileDump(void)
     MyBuffer[0] = 10;
     MyBuffer[1] = 20;
     UT_SetDataBuffer(UT_KEY(UT_FS_DataGetter), MyBuffer, sizeof(MyBuffer), false);
+    /* Set EOF after a reasonable number of records to prevent infinite loop */                                                                                                                                                                                                                                                                                                                                         │ │
+│ │ UT_SetDeferredRetcode(UT_KEY(UT_FS_DataGetter), 10, true);
     UtAssert_BOOL_TRUE(CFE_FS_RunBackgroundFileDump(1, NULL));
     UtAssert_STUB_COUNT(OS_OpenCreate, 1); /* confirm OS_open() was invoked */
     UtAssert_INT32_LTEQ(CFE_FS_Global.FileDump.Current.Credit, 0);
@@ -618,10 +630,25 @@ void Test_CFE_FS_BackgroundFileDump(void)
     /* No more pending requests */
     UtAssert_UINT32_EQ(CFE_FS_Global.FileDump.CompleteCount, CFE_FS_Global.FileDump.RequestCount);
 
+    /* Error initializing header */
+    CFE_UtAssert_SETUP(CFE_FS_BackgroundFileDumpRequest(&State));
+    UT_SetDeferredRetcode(UT_KEY(CFE_FS_InitHeader), 1, CFE_FS_BAD_ARGUMENT);
+    /* Set up data/EOF in case dump proceeds despite header error */                                                                                                                                                                                                                                                                                                                                                    │ │
+    UT_SetDataBuffer(UT_KEY(UT_FS_DataGetter), MyBuffer, sizeof(MyBuffer), false);
+    UT_SetDeferredRetcode(UT_KEY(UT_FS_DataGetter), 5, true);
+
+    UtAssert_BOOL_TRUE(CFE_FS_RunBackgroundFileDump(100, NULL));
+    UtAssert_UINT32_EQ(UT_FS_FileWriteEventCount[CFE_FS_FileWriteEvent_HEADER_INIT_ERROR],
+                       1); /* header init error event was sent */
+    UtAssert_BOOL_FALSE(CFE_FS_BackgroundFileDumpIsPending(&State));
+    /* No more pending requests */
+    UtAssert_UINT32_EQ(CFE_FS_Global.FileDump.CompleteCount, CFE_FS_Global.FileDump.RequestCount);
+
     /* Error writing data */
     CFE_UtAssert_SETUP(CFE_FS_BackgroundFileDumpRequest(&State));
     UT_SetDeferredRetcode(UT_KEY(OS_write), 2, OS_ERROR);
     UT_SetDataBuffer(UT_KEY(UT_FS_DataGetter), MyBuffer, sizeof(MyBuffer), false);
+    UT_SetDeferredRetcode(UT_KEY(UT_FS_DataGetter), 10, true); /* Set EOF to prevent infinite loop */
     UtAssert_BOOL_TRUE(CFE_FS_RunBackgroundFileDump(100, NULL));
     /* record error event was sent */
     UtAssert_UINT32_EQ(UT_FS_FileWriteEventCount[CFE_FS_FileWriteEvent_RECORD_WRITE_ERROR], 1);
@@ -632,6 +659,8 @@ void Test_CFE_FS_BackgroundFileDump(void)
     UT_ResetState(UT_KEY(UT_FS_DataGetter));
 
     /* Request multiple file dumps, check queuing logic */
+    UT_SetDataBuffer(UT_KEY(UT_FS_DataGetter), MyBuffer, sizeof(MyBuffer), false);
+    UT_SetDeferredRetcode(UT_KEY(UT_FS_DataGetter), 100, true); /* High count to cover all queue operations */
     CFE_UtAssert_SETUP(CFE_FS_BackgroundFileDumpRequest(&State));
     UtAssert_INT32_EQ(CFE_FS_BackgroundFileDumpRequest(&State), CFE_STATUS_REQUEST_ALREADY_PENDING);
 
@@ -655,7 +684,10 @@ void Test_CFE_FS_BackgroundFileDump(void)
     UtAssert_BOOL_TRUE(CFE_FS_RunBackgroundFileDump(100, NULL));
     UtAssert_BOOL_FALSE(CFE_FS_RunBackgroundFileDump(100, NULL));
 
+    UT_ResetState(UT_KEY(UT_FS_DataGetter));
     CFE_UtAssert_SETUP(CFE_FS_BackgroundFileDumpRequest(&State));
-    UT_SetDeferredRetcode(UT_KEY(UT_FS_DataGetter), 2, true); /* avoid infinite loop */
+    UtPrintf("FS TEST: Setting up data buffer and EOF for final test\n");
+    UT_SetDataBuffer(UT_KEY(UT_FS_DataGetter), MyBuffer, sizeof(MyBuffer), false);
+    UT_SetDeferredRetcode(UT_KEY(UT_FS_DataGetter), 10, true); /* avoid infinite loop */
     UtAssert_BOOL_FALSE(CFE_FS_RunBackgroundFileDump(100, NULL));
 }
