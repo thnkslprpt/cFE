@@ -42,7 +42,6 @@
 /*
 ** Macro Definitions
 */
-#define CFE_ES_CHECK_PATTERN      ((uint16)0x5a5a)
 #define CFE_ES_MEMORY_ALLOCATED   ((uint16)0xaaaa)
 #define CFE_ES_MEMORY_DEALLOCATED ((uint16)0xdddd)
 
