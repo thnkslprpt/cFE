@@ -121,7 +121,7 @@ int32 CFE_ES_GenPoolRecyclePoolBlock(CFE_ES_GenPoolRecord_t *PoolRecPtr, uint16 
     if (Status == CFE_SUCCESS)
     {
         RecycleBucketId = BdPtr->Allocated - CFE_ES_MEMORY_DEALLOCATED;
-        if (BdPtr->CheckBits != CFE_ES_CHECK_PATTERN || RecycleBucketId != BucketId)
+        if (!CFE_ES_GenPoolValidateCheckBits(BdPtr->CheckBits, BdPtr->ActualSize) || RecycleBucketId != BucketId)
         {
             /* sanity check failed - possible pool corruption? */
             Status = CFE_ES_BUFFER_NOT_IN_POOL;
@@ -203,9 +203,9 @@ int32 CFE_ES_GenPoolCreatePoolBlock(CFE_ES_GenPoolRecord_t *PoolRecPtr, uint16 B
     Status = PoolRecPtr->Retrieve(PoolRecPtr, DescOffset, &BdPtr);
     if (Status == CFE_SUCCESS)
     {
-        BdPtr->CheckBits  = CFE_ES_CHECK_PATTERN;
-        BdPtr->Allocated  = CFE_ES_MEMORY_ALLOCATED + BucketId; /* Flag memory block as allocated */
         BdPtr->ActualSize = NewSize;
+        BdPtr->CheckBits  = CFE_ES_GenPoolCalculateCheckBits(NewSize);
+        BdPtr->Allocated  = CFE_ES_MEMORY_ALLOCATED + BucketId; /* Flag memory block as allocated */
         BdPtr->NextOffset = 0;
 
         Status = PoolRecPtr->Commit(PoolRecPtr, DescOffset, BdPtr);
@@ -408,7 +408,7 @@ int32 CFE_ES_GenPoolGetBlockSize(CFE_ES_GenPoolRecord_t *PoolRecPtr, size_t *Blo
         BucketId  = BdPtr->Allocated - CFE_ES_MEMORY_ALLOCATED;
         BucketPtr = CFE_ES_GenPoolGetBucketState(PoolRecPtr, BucketId);
 
-        if (BdPtr->CheckBits != CFE_ES_CHECK_PATTERN || BucketPtr == NULL || BdPtr->ActualSize == 0 ||
+        if (!CFE_ES_GenPoolValidateCheckBits(BdPtr->CheckBits, BdPtr->ActualSize) || BucketPtr == NULL || BdPtr->ActualSize == 0 ||
             BucketPtr->BlockSize < BdPtr->ActualSize)
         {
             /* This does not appear to be a valid data buffer */
@@ -451,7 +451,7 @@ int32 CFE_ES_GenPoolPutBlock(CFE_ES_GenPoolRecord_t *PoolRecPtr, size_t *BlockSi
         BucketId  = BdPtr->Allocated - CFE_ES_MEMORY_ALLOCATED;
         BucketPtr = CFE_ES_GenPoolGetBucketState(PoolRecPtr, BucketId);
 
-        if (BdPtr->CheckBits != CFE_ES_CHECK_PATTERN || BucketPtr == NULL || BdPtr->ActualSize == 0 ||
+        if (!CFE_ES_GenPoolValidateCheckBits(BdPtr->CheckBits, BdPtr->ActualSize) || BucketPtr == NULL || BdPtr->ActualSize == 0 ||
             BucketPtr->BlockSize < BdPtr->ActualSize)
         {
             /* This does not appear to be a valid data buffer */
@@ -528,7 +528,7 @@ int32 CFE_ES_GenPoolRebuild(CFE_ES_GenPoolRecord_t *PoolRecPtr)
          * then do further inspection to find the block size
          * and allocated/deallocated status.
          */
-        if (BdPtr->CheckBits == CFE_ES_CHECK_PATTERN)
+        if (CFE_ES_GenPoolValidateCheckBits(BdPtr->CheckBits, BdPtr->ActualSize))
         {
             /* Test if block is deallocated */
             BucketId  = BdPtr->Allocated - CFE_ES_MEMORY_DEALLOCATED;

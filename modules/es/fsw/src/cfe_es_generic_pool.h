@@ -42,7 +42,6 @@
 /*
 ** Macro Definitions
 */
-#define CFE_ES_CHECK_PATTERN      ((uint16)0x5a5a)
 #define CFE_ES_MEMORY_ALLOCATED   ((uint16)0xaaaa)
 #define CFE_ES_MEMORY_DEALLOCATED ((uint16)0xdddd)
 
@@ -55,7 +54,7 @@
 
 typedef struct CFE_ES_GenPoolBD
 {
-    uint16 CheckBits;  /**< Set to a fixed bit pattern after init */
+    uint16 CheckBits;  /**< Validation bits calculated from ActualSize */
     uint16 Allocated;  /**< Set to a bit pattern depending on allocation state */
     size_t ActualSize; /**< The actual requested size of the block */
     size_t NextOffset; /**< The offset of the next descriptor in the free stack */
@@ -115,6 +114,43 @@ struct CFE_ES_GenPoolRecord
     uint16                 NumBuckets; /**< Number of entries in the "Buckets" array that are valid */
     CFE_ES_GenPoolBucket_t Buckets[CFE_PLATFORM_ES_POOL_MAX_BUCKETS]; /**< Bucket States */
 };
+
+/*
+** Inline functions for CheckBits calculation and validation
+*/
+
+/**
+ * \brief Calculate CheckBits value based on ActualSize
+ *
+ * Uses the lower 16 bits of ActualSize and its one's complement 
+ * to create a unique check pattern for each block size.
+ *
+ * \param[in] ActualSize  The actual size of the memory block
+ *
+ * \return The calculated CheckBits value
+ */
+static inline uint16 CFE_ES_GenPoolCalculateCheckBits(size_t ActualSize)
+{
+    /* Use lower 16 bits of ActualSize XORed with its one's complement */
+    uint16 sizeLow = (uint16)(ActualSize & 0xFFFF);
+    return (uint16)(sizeLow ^ ~sizeLow);
+}
+
+/**
+ * \brief Validate CheckBits value against ActualSize
+ *
+ * Verifies that the CheckBits field matches the expected value
+ * calculated from ActualSize.
+ *
+ * \param[in] CheckBits   The CheckBits value to validate
+ * \param[in] ActualSize  The actual size of the memory block
+ *
+ * \return true if CheckBits is valid, false otherwise
+ */
+static inline bool CFE_ES_GenPoolValidateCheckBits(uint16 CheckBits, size_t ActualSize)
+{
+    return (CheckBits == CFE_ES_GenPoolCalculateCheckBits(ActualSize));
+}
 
 /*****************************************************************************/
 /*
