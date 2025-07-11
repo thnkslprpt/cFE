@@ -2450,7 +2450,7 @@ void TestGenericPool(void)
     CFE_UtAssert_SETUP(ES_UT_PoolDirectRetrieve(&Pool1, Offset1 - CFE_ES_GENERIC_POOL_DESCRIPTOR_SIZE, &BdPtr));
     BdPtr->CheckBits = ~((uint16)BdPtr->ActualSize);
     UtAssert_INT32_EQ(CFE_ES_GenPoolPutBlock(&Pool1, &BlockSize, Offset1), CFE_ES_POOL_BLOCK_INVALID);
-    BdPtr->CheckBits  = CFE_ES_CHECK_PATTERN;
+    BdPtr->CheckBits  = ~((uint16)BdPtr->ActualSize);
     BdPtr->ActualSize = 0;
     UtAssert_INT32_EQ(CFE_ES_GenPoolPutBlock(&Pool1, &BlockSize, Offset1), CFE_ES_POOL_BLOCK_INVALID);
 
