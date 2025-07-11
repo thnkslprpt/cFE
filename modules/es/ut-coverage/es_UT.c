@@ -543,7 +543,7 @@ void ES_UT_SetupSingleCDSRegistry(const char *CDSName, size_t BlockSize, bool Is
     LocalRegRecPtr->BlockOffset = CFE_ES_Global.CDSVars.Pool.TailPosition + sizeof(LocalBD);
     LocalRegRecPtr->BlockSize   = BlockSize;
 
-    LocalBD.CheckBits  = CFE_ES_CHECK_PATTERN;
+    LocalBD.CheckBits  = ~((uint16)BlockSize);
     LocalBD.Allocated  = CFE_ES_MEMORY_ALLOCATED + 1;
     LocalBD.ActualSize = BlockSize;
     LocalBD.NextOffset = 0;
@@ -2418,7 +2418,7 @@ void TestGenericPool(void)
     Pool1.Buckets[0].FirstOffset  = CFE_ES_GENERIC_POOL_DESCRIPTOR_SIZE;
     Pool1.Buckets[0].ReleaseCount = Pool1.Buckets[0].RecycleCount + 1;
     CFE_UtAssert_SETUP(ES_UT_PoolDirectRetrieve(&Pool1, 0, &BdPtr));
-    BdPtr->CheckBits = CFE_ES_CHECK_PATTERN;
+    BdPtr->CheckBits = ~((uint16)BdPtr->ActualSize);
     BdPtr->Allocated = Pool1.NumBuckets + CFE_ES_MEMORY_DEALLOCATED;
     UtAssert_INT32_EQ(CFE_ES_GenPoolGetBlock(&Pool1, &Offset1, Pool1.Buckets[0].BlockSize), CFE_ES_CDS_ACCESS_ERROR);
 
